@@ -303,7 +303,6 @@
             while (n--) {
                 u8arr[n] = bstr.charCodeAt(n);
             }
-            // Mengembalikan objek File (Blob)
             return new File([u8arr], filename, { type: mime });
         }
 
@@ -355,7 +354,7 @@
                     // 'file' adalah kunci yang diharapkan oleh Google Apps Script (data.file)
                     formData.append('file', fileBlob); 
                 } else {
-                    // Jika tidak ada base64 (walaupun seharusnya selalu ada), berikan placeholder
+                    // Jika tidak ada base64, kirim placeholder agar Apps Script tahu tidak ada file
                     formData.append('file_uploaded', 'No File Found in Storage');
                 }
 
@@ -367,6 +366,7 @@
                 })
                 .then(response => {
                     // Anggap sukses (karena no-cors tidak bisa cek status 200)
+                    console.log('Data dan File Pelanggan Dikirim.');
                     localStorage.removeItem('pendingOrderDetails'); // Bersihkan setelah pengiriman
                     alert('Order berhasil! Data, rincian, dan foto Anda telah diterima oleh AW Design Studio. Anda akan diarahkan ke Menu Layanan.');
                     window.location.href = 'MENU LAYANAN.HTML';

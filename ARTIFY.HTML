@@ -348,6 +348,11 @@
         const promptInput = document.getElementById('prompt-input');
         let isPhotoUploaded = false; 
 
+        function getActiveData(group) {
+            const activeBtn = document.querySelector(`.selection-grid[data-group="${group}"] .selection-btn.active`);
+            return activeBtn ? activeBtn.getAttribute('data-value') : 'N/A';
+        }
+
         function selectOption(selectedButton, groupName) {
             const parent = selectedButton.closest('.selection-grid');
             const buttons = parent.querySelectorAll('.selection-btn');
@@ -380,8 +385,8 @@
         });
         
         function checkCompleteness() {
-            const isTypeSelected = document.querySelector('.selection-grid[data-group="type"] .selection-btn.active') !== null;
-            const isStyleSelected = document.querySelector('.selection-grid[data-group="style"] .selection-btn.active') !== null;
+            const isTypeSelected = getActiveData('type') !== 'N/A';
+            const isStyleSelected = getActiveData('style') !== 'N/A';
             
             if (isPhotoUploaded && isTypeSelected && isStyleSelected) {
                 btnProcess.disabled = false;
@@ -390,6 +395,32 @@
             }
         }
         
+        // --- LOGIKA PENYIMPANAN DATA ORDER ---
+        btnProcess.addEventListener('click', () => {
+             if (!btnProcess.disabled) {
+                // Ambil semua data rincian
+                const jenis = getActiveData('type');
+                const gaya = getActiveData('style');
+                const ratio = getActiveData('ratio');
+                const prompt = promptInput.value;
+                
+                const orderDetails = {
+                    layanan: 'Artify', // WAJIB SAMA DENGAN NAMA SHEET
+                    jenis: jenis,
+                    gaya: gaya,
+                    ratio: ratio,
+                    prompt: prompt,
+                };
+                
+                // Menyimpan rincian ke Local Storage
+                localStorage.setItem('pendingOrderDetails', JSON.stringify(orderDetails));
+
+                // Redirect ke Disclaimer
+                window.location.href = 'DISCLAIMER edit.html'; 
+             }
+        });
+        // --- AKHIR LOGIKA PENYIMPANAN DATA ORDER ---
+
         document.addEventListener('DOMContentLoaded', checkCompleteness);
         
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {

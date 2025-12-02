@@ -321,7 +321,7 @@
 
         <div class="input-section instruction-section">
              <h3 class="step-title">Instruksi Tambahan (Opsional)</h3>
-             <textarea placeholder="Contoh: Letakkan di atas meja kayu, tambahkan bunga di samping produk..."></textarea>
+             <textarea id="instruksi-tambahan" placeholder="Contoh: Letakkan di atas meja kayu, tambahkan bunga di samping produk..."></textarea>
         </div>
 
 
@@ -336,6 +336,12 @@
         const fileInput = document.getElementById('photo-upload');
         const btnProcess = document.getElementById('btn-process');
         let isPhotoUploaded = false; 
+        const instruksiInput = document.getElementById('instruksi-tambahan');
+
+        function getActiveData(group) {
+            const activeBtn = document.querySelector(`.selection-grid[data-group="${group}"] .selection-btn.active`);
+            return activeBtn ? activeBtn.getAttribute('data-value') : 'N/A';
+        }
 
         function selectOption(selectedButton, groupName) {
             const parent = selectedButton.closest('.selection-grid');
@@ -370,6 +376,31 @@
                 btnProcess.disabled = true;
             }
         }
+        
+        // --- LOGIKA PENYIMPANAN DATA ORDER ---
+        btnProcess.addEventListener('click', () => {
+            if (!btnProcess.disabled) {
+                const lighting = getActiveData('lighting');
+                const ambiance = getActiveData('ambiance');
+                const ratio = getActiveData('ratio');
+                const instruksi = instruksiInput.value;
+                
+                const orderDetails = {
+                    layanan: 'Pro Photoshoot', // WAJIB SAMA DENGAN NAMA SHEET
+                    lighting: lighting,
+                    ambiance: ambiance,
+                    ratio: ratio,
+                    instruksi: instruksi,
+                };
+                
+                // Menyimpan rincian ke Local Storage
+                localStorage.setItem('pendingOrderDetails', JSON.stringify(orderDetails));
+                
+                // Redirect ke Disclaimer
+                window.location.href = 'DISCLAIMER edit.html';
+            }
+        });
+        // --- AKHIR LOGIKA PENYIMPANAN DATA ORDER ---
         
         document.addEventListener('DOMContentLoaded', () => {
             btnProcess.disabled = !isPhotoUploaded;

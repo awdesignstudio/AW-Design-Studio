@@ -462,12 +462,17 @@
         });
         
         promptInput.addEventListener('input', checkCompleteness);
+        
+        function getActiveRatio() {
+            const activeBtn = document.querySelector('.ratio-btn.active');
+            return activeBtn ? activeBtn.getAttribute('data-ratio') : 'N/A';
+        }
 
         function checkCompleteness(uploadedCount = null) {
             const currentCount = uploadedCount !== null ? uploadedCount : (imageUpload.files ? imageUpload.files.length : 0);
             const isImageCountValid = currentCount >= 2 && currentCount <= 5;
             const isPromptFilled = promptInput.value.trim().length > 0;
-            const isRatioSelected = document.querySelector('.ratio-btn.active') !== null;
+            const isRatioSelected = getActiveRatio() !== 'N/A';
             
             if (isImageCountValid && isPromptFilled && isRatioSelected) {
                 btnOrder.disabled = false;
@@ -476,14 +481,50 @@
             }
         }
         
-        document.addEventListener('DOMContentLoaded', checkCompleteness);
-
+        // --- LOGIKA PENYIMPANAN DATA ORDER ---
         btnOrder.addEventListener('click', () => {
              if (!btnOrder.disabled) {
-                 const selectedRatio = document.querySelector('.ratio-btn.active').getAttribute('data-ratio');
-                 alert(`Order Image Fusion diterima! (${imageUpload.files.length} Foto, Rasio: ${selectedRatio}).`);
+                 const selectedRatio = getActiveRatio();
+                 const prompt = promptInput.value;
+                 const fileCount = imageUpload.files ? imageUpload.files.length : 0;
+                 
+                 const orderDetails = {
+                     layanan: 'Image Fusion', // WAJIB SAMA DENGAN NAMA SHEET
+                     file_count: fileCount,
+                     ratio: selectedRatio,
+                     prompt: prompt,
+                 };
+
+                 // Menyimpan rincian ke Local Storage
+                 localStorage.setItem('pendingOrderDetails', JSON.stringify(orderDetails));
+
+                 // Mengarahkan ke Disclaimer untuk melanjutkan
+                 window.location.href = 'DISCLAIMER edit.html'; 
              }
         });
+        // --- AKHIR LOGIKA PENYIMPANAN DATA ORDER ---
+        
+        document.addEventListener('DOMContentLoaded', checkCompleteness);
+
+        // ... (Drag and drop logic remains the same)
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadZone.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        function handleDrop(e) {
+            let dt = e.dataTransfer;
+            let files = dt.files;
+            
+            // Simpan file di input agar count ter-update
+            imageUpload.files = files;
+            imageUpload.dispatchEvent(new Event('change')); 
+        }
+        uploadZone.addEventListener('drop', handleDrop, false);
     </script>
 </body>
 </html>

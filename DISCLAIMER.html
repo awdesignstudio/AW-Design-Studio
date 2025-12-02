@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disclaimer - AW Design Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. SETUP CSS VARIABLE (Sama dengan tema sebelumnya) --- */
+        :root {
+            --bg-dark: #09090b;
+            --surface-dark: #18181b;
+            --surface-light: #27272a;
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+            --glow: 0 0 20px rgba(168, 85, 247, 0.3);
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --border: rgba(255, 255, 255, 0.1);
+            --success: #10b981; /* Warna hijau neon untuk checklist */
+        }
+
+        * { box-sizing: border-box; font-family: 'Outfit', sans-serif; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 10% 90%, rgba(236, 72, 153, 0.1) 0%, transparent 40%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-main);
+            padding: 20px;
+        }
+
+        /* --- 2. CONTAINER UTAMA (MODAL) --- */
+        .disclaimer-card {
+            background: rgba(24, 24, 27, 0.8);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            width: 100%;
+            max-width: 650px; /* Lebih lebar untuk teks */
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh; /* Agar tidak melebihi tinggi layar */
+        }
+
+        /* Header */
+        .card-header {
+            padding: 32px 32px 20px 32px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(255,255,255,0.02);
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* --- 3. LIST SYARAT (SCROLLABLE) --- */
+        .terms-container {
+            padding: 24px 32px;
+            overflow-y: auto; /* Bisa discroll jika panjang */
+            flex-grow: 1;
+        }
+
+        /* Custom Scrollbar */
+        .terms-container::-webkit-scrollbar { width: 6px; }
+        .terms-container::-webkit-scrollbar-track { background: var(--surface-dark); }
+        .terms-container::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 10px; }
+
+        /* Item Syarat Individual */
+        .term-item {
+            background: var(--surface-light);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .term-item:hover {
+            border-color: #52525b;
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* Logic Styles ketika checked */
+        .term-item.checked {
+            border-color: rgba(16, 185, 129, 0.4);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        /* --- 4. CUSTOM CHECKBOX (NEON STYLE) --- */
+        /* Sembunyikan input asli */
+        .term-item input[type="checkbox"] {
+            display: none;
+        }
+
+        /* Kotak Checkbox Custom */
+        .custom-checkbox {
+            width: 24px;
+            height: 24px;
+            min-width: 24px; /* Mencegah penyusutan */
+            border: 2px solid #52525b;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            margin-top: 2px;
+        }
+
+        /* Ikon Centang (SVG) */
+        .custom-checkbox svg {
+            width: 14px;
+            height: 14px;
+            color: black;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.2s cubic-bezier(0.5, 1.6, 0.4, 0.7);
+        }
+
+        /* State Checked */
+        .term-item input:checked + .custom-checkbox {
+            background: var(--success);
+            border-color: var(--success);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+        }
+
+        .term-item input:checked + .custom-checkbox svg {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Teks Konten */
+        .term-content h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: #f4f4f5;
+        }
+
+        .term-content p {
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--text-muted);
+        }
+
+        /* --- 5. FOOTER & BUTTON --- */
+        .card-footer {
+            padding: 24px 32px;
+            border-top: 1px solid var(--border);
+            background: rgba(24, 24, 27, 0.9);
+            text-align: center;
+        }
+
+        .btn-proceed {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: var(--primary-gradient);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            opacity: 1;
+        }
+        
+        /* State Disabled */
+        .btn-proceed:disabled {
+            background: #3f3f46;
+            cursor: not-allowed;
+            opacity: 0.5;
+            box-shadow: none;
+            color: #71717a;
+        }
+
+        .btn-proceed:not(:disabled):hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
+        }
+
+        .status-text {
+            margin-bottom: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="disclaimer-card">
+        <div class="card-header">
+            <h1>AW Design Studio</h1>
+            <p class="subtitle">Sebelum melanjutkan proses pemesanan jasa edit foto, mohon luangkan waktu sejenak membaca dan menyetujui poin-poin penting di bawah ini.
+    **Persetujuan Anda atas 6 poin Disclaimer** ini wajib dilakukan untuk menghindari kesalahpahaman saat pengerjaan, revisi, hingga penggunaan hasil akhir. Terima kasih.</p>
+        </div>
+
+        <div class="terms-container">
+            
+            <label class="term-item">
+                <input type="checkbox" onchange="checkStatus(this)">
+                <div class="custom-checkbox">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="term-content">
+                    <h3>1. Kebijakan Konten (SARA & Pornografi)</h3>
+                    <p>Saya Mengerti. Kami TIDAK MELAYANI pornografi/NSFW, kekerasan gore, atau SARA. Admin berhak membatalkan pesanan jika melanggar.</p>
+                </div>
+            </label>
+
+            <label class="term-item">
+                <input type="checkbox" onchange="checkStatus(this)">
+                <div class="custom-checkbox">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="term-content">
+                    <h3>2. Disclaimer Kemiripan Wajah (AI Limitations)</h3>
+                    <p>Saya Paham. AI bukan copy-paste. Tingkat kemiripan 80-90%. Akan ada sedikit perbedaan artistik (AI Style) pada hasil akhir.</p>
+                </div>
+            </label>
+
+            <label class="term-item">
+                <input type="checkbox" onchange="checkStatus(this)">
+                <div class="custom-checkbox">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="term-content">
+                    <h3>3. Kebijakan Revisi</h3>
+                    <p>Setuju. Revisi hanya untuk kesalahan sistem/AI (cacat, jari lebih) atau typo teks. Tidak berlaku untuk masalah selera.</p>
+                </div>
+            </label>
+
+            <label class="term-item">
+                <input type="checkbox" onchange="checkStatus(this)">
+                <div class="custom-checkbox">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="term-content">
+                    <h3>4. Batasan Konsistensi (Revisi)</h3>
+                    <p>Saya Paham Keterbatasan AI. Teknologi AI tidak dapat menjamin konsistensi 100% antara gambar revisi dengan gambar sebelumnya.</p>
+                </div>
+            </label>
+
+            <label class="term-item">
+                <input type="checkbox" onchange="checkStatus(this)">
+                <div class="custom-checkbox">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="term-content">
+                    <h3>5. Hak Cipta & Penggunaan Komersial</h3>
+                    <p>Saya Memahami. Hak komersial milik klien setelah lunas. AW Design Studio tidak menjamin keunikan 100% dan bebas dari tuntutan hukum.</p>
+                </div>
+            </label>
+
+            <label class="term-item">
+                <input type="checkbox" onchange="checkStatus(this)">
+                <div class="custom-checkbox">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="term-content">
+                    <h3>6. Format dan Resolusi Gambar</h3>
+                    <p>Saya Setuju. Format JPEG/PNG min 4MP (2,5K). Upscale resolusi tinggi wajib konfirmasi WA (ada biaya tambahan).</p>
+                </div>
+            </label>
+
+        </div>
+
+        <div class="card-footer">
+            <p class="status-text" id="status-label">Mohon setujui semua poin di atas untuk melanjutkan.</p>
+            <button class="btn-proceed" id="btn-submit" disabled onclick="window.location.href='MENU LAYANAN.HTML'">
+                Lanjut ke menu Edit Foto 
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function checkStatus(element) {
+            // 1. Efek Visual pada Card (Tambah border hijau tipis saat dicentang)
+            const parent = element.parentElement;
+            if (element.checked) {
+                parent.classList.add('checked');
+            } else {
+                parent.classList.remove('checked');
+            }
+
+            // 2. Logika Tombol Submit
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const btnSubmit = document.getElementById('btn-submit');
+            const statusLabel = document.getElementById('status-label');
+            
+            // Cek apakah semua checkbox tercentang
+            let allChecked = true;
+            let checkedCount = 0;
+            
+            checkboxes.forEach(box => {
+                if (!box.checked) {
+                    allChecked = false;
+                } else {
+                    checkedCount++;
+                }
+            });
+
+            // Update status tombol
+            if (allChecked) {
+                btnSubmit.disabled = false;
+                statusLabel.innerHTML = "Terima kasih. Silakan lanjutkan ke pengisian data pemesan.";
+                statusLabel.style.color = "#10b981"; // Hijau
+            } else {
+                btnSubmit.disabled = true;
+                const remaining = checkboxes.length - checkedCount;
+                statusLabel.innerHTML = `Mohon setujui ${remaining} poin lagi untuk melanjutkan.`;
+                statusLabel.style.color = "#a1a1aa"; // Abu-abu
+            }
+        }
+    </script>
+
+</body>
+</html>

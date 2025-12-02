@@ -262,6 +262,11 @@
         const btnProcess = document.getElementById('btn-process');
         let isPhotoUploaded = false; 
 
+        function getActiveRatio() {
+            const activeBtn = document.querySelector('.ratio-btn.active');
+            return activeBtn ? activeBtn.getAttribute('data-ratio') : 'N/A';
+        }
+
         function selectRatio(selectedButton) {
             const buttons = document.querySelectorAll('.ratio-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
@@ -285,6 +290,26 @@
             }
         });
         
+        // --- LOGIKA PENYIMPANAN DATA ORDER ---
+        btnProcess.addEventListener('click', () => {
+             if (isPhotoUploaded) {
+                const selectedRatio = getActiveRatio();
+                
+                const orderDetails = {
+                    layanan: 'TrueVision', // WAJIB SAMA DENGAN NAMA SHEET
+                    ratio: selectedRatio,
+                    // Tidak ada input tambahan yang perlu dikirim
+                };
+
+                // Menyimpan rincian ke Local Storage
+                localStorage.setItem('pendingOrderDetails', JSON.stringify(orderDetails));
+
+                // Mengarahkan ke Disclaimer untuk melanjutkan
+                window.location.href = 'DISCLAIMER edit.html';
+             }
+        });
+        // --- AKHIR LOGIKA PENYIMPANAN DATA ORDER ---
+        
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             dropzone.addEventListener(eventName, preventDefaults, false);
         });
@@ -303,13 +328,6 @@
             fileInput.files = files;
             fileInput.dispatchEvent(new Event('change')); 
         }
-        
-        btnProcess.addEventListener('click', () => {
-             if (isPhotoUploaded) {
-                const selectedRatio = document.querySelector('.ratio-btn.active').getAttribute('data-ratio');
-                alert(`Memproses TrueVision untuk foto dengan Rasio ${selectedRatio}.`);
-             }
-        });
         
         document.addEventListener('DOMContentLoaded', () => {
             btnProcess.disabled = !isPhotoUploaded;

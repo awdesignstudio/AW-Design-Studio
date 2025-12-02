@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* 1. SETUP VARIABEL & DASAR (Sama dengan tema sebelumnya) */
+        /* --- 1. SETUP CSS VARIABLE (Konsisten dengan tema AW Design Studio) --- */
         :root {
             --bg-dark: #09090b;
             --surface-dark: #18181b;
@@ -17,7 +17,8 @@
             --text-main: #ffffff;
             --text-muted: #a1a1aa;
             --border: rgba(255, 255, 255, 0.1);
-            --neon-accent: #a855f7; /* Ditambahkan untuk konsistensi */
+            --neon-accent: #a855f7; 
+            --neon-cyan: #00bcd4;
         }
 
         * {
@@ -30,8 +31,8 @@
         body {
             background-color: var(--bg-dark);
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 40%);
+                radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 10% 90%, rgba(236, 72, 153, 0.1) 0%, transparent 40%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -39,8 +40,7 @@
             color: var(--text-main);
             padding: 20px;
         }
-
-        /* CSS KHUSUS TOMBOL KEMBALI */
+        
         .back-button {
             display: inline-flex;
             align-items: center;
@@ -62,234 +62,161 @@
             color: var(--neon-accent);
         }
 
-        /* 2. KARTU UTAMA (GLASSMORPHISM) */
-        .fusion-card {
-            background: rgba(24, 24, 27, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+        .order-card {
+            background: rgba(24, 24, 27, 0.8);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
             width: 100%;
-            max-width: 520px;
-            padding: 32px;
+            max-width: 500px;
             border-radius: 24px;
             border: 1px solid var(--border);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+            padding: 32px;
             max-height: 95vh;
             overflow-y: auto;
         }
-        /* ... (CSS lanjutan) ... */
 
-        /* Garis neon di bagian atas */
-        .fusion-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: var(--primary-gradient);
+        .card-header {
+            margin-bottom: 25px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
         }
 
-        /* 3. HEADER */
-        header {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-
-        h1 {
-            font-size: 32px;
+        h2.title {
+            font-size: 28px;
             font-weight: 700;
-            margin-bottom: 8px;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: -0.5px;
+            color: var(--neon-accent);
+            margin-bottom: 4px;
         }
 
-        p.subtitle {
+        p.description {
             font-size: 14px;
             color: var(--text-muted);
-            line-height: 1.5;
-            max-width: 90%;
-            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        .step-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            margin-top: 25px;
         }
         
-        /* 4. BAGIAN UPLOAD (GRID MODERN) */
-        .label-section {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-            margin-bottom: 12px;
+        /* UPLOAD SECTION MODIFIED FOR ZIP */
+        .upload-dropzone {
+            min-height: 120px;
+            border: 2px dashed var(--neon-cyan);
+            border-radius: 16px;
             display: flex;
-            justify-content: space-between;
-        }
-
-        .upload-container {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            margin-bottom: 32px;
-        }
-
-        .upload-slot {
-            aspect-ratio: 1/1;
-            background: var(--surface-light);
-            border: 1px dashed var(--border);
-            border-radius: 12px;
-            display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-        }
-
-        /* Style untuk slot kosong/belum aktif */
-        .upload-slot.empty {
-            opacity: 0.3; 
-            border-style: dotted;
+            text-align: center;
             background: var(--surface-dark);
-        }
-
-        /* Style untuk slot sudah terisi */
-        .upload-slot.filled {
-            opacity: 1;
-            border: 1px solid var(--neon-accent);
-            background-color: rgba(168, 85, 247, 0.1);
-            color: var(--neon-accent);
-        }
-
-        /* Style untuk slot klik/hover */
-        .upload-slot:hover {
-            border-color: #a855f7;
-            background: rgba(168, 85, 247, 0.1);
-            transform: translateY(-2px);
-            box-shadow: var(--glow);
-        }
-
-        .upload-slot svg {
-            color: currentColor;
-            width: 20px;
-            height: 20px;
-            transition: color 0.3s;
+            transition: all 0.3s;
+            padding: 15px;
         }
         
-        .upload-slot span {
-            font-size: 12px;
-            position: absolute;
-            bottom: 4px;
-            color: var(--text-muted);
+        .upload-dropzone:hover {
+            border-color: var(--neon-accent);
+            background: rgba(168, 85, 247, 0.1);
         }
 
-        /* 5. BAGIAN INPUT TEXT (Dark & Clean) */
+        .upload-icon svg {
+            width: 36px;
+            height: 36px;
+            color: var(--neon-cyan);
+            margin-bottom: 10px;
+            stroke-width: 1.5;
+        }
+
+        .upload-text {
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .upload-count-status {
+            font-size: 12px;
+            color: var(--text-main);
+            margin-top: 5px;
+            font-weight: 700;
+        }
+        
+        /* PROMPT */
         .prompt-wrapper {
             position: relative;
-            margin-bottom: 32px;
+            margin-bottom: 25px;
         }
 
         textarea {
             width: 100%;
-            height: 120px;
-            background: var(--surface-dark);
+            height: 100px;
+            padding: 12px;
+            padding-right: 40px; 
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 16px;
-            color: white;
-            font-size: 15px;
-            resize: none;
+            border-radius: 10px;
+            resize: none; 
+            font-size: 14px;
             outline: none;
-            transition: all 0.3s ease;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+            color: var(--text-main);
+            background: var(--surface-dark);
+            transition: border-color 0.2s;
         }
+        
+        textarea:focus { border-color: var(--neon-accent); }
+        textarea::placeholder { color: #71717a; }
 
-        textarea:focus {
-            border-color: #a855f7;
-            box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2), inset 0 2px 4px rgba(0,0,0,0.3);
-        }
-
-        textarea::placeholder {
-            color: #52525b;
-        }
-
-        .ai-badge {
+        .magic-icon {
             position: absolute;
-            bottom: 16px;
-            right: 16px;
-            background: var(--surface-light);
-            padding: 6px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            color: var(--text-muted);
-            border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            pointer-events: none;
+            top: 10px; 
+            right: 12px;
+            color: var(--neon-accent);
+            cursor: pointer;
+            z-index: 10;
         }
 
-        .ai-sparkle {
-            color: #fbbf24;
-        }
-
-        /* 6. PILIHAN RASIO (Futuristic Buttons) */
+        /* RATIO */
         .ratio-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 32px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
         .ratio-btn {
-            background: transparent;
+            padding: 12px 10px;
+            background: var(--surface-dark);
             border: 1px solid var(--border);
-            color: var(--text-muted);
-            padding: 12px;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            text-align: center;
         }
-
-        .ratio-btn span {
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .ratio-icon {
-            width: 20px;
-            height: 20px;
-            border: 2px solid currentColor;
-            border-radius: 4px;
-            opacity: 0.7;
-        }
-
-        /* Bentuk icon rasio manual dengan CSS */
-        .icon-1-1 { width: 18px; height: 18px; }
-        .icon-16-9 { width: 22px; height: 14px; }
-        .icon-9-16 { width: 14px; height: 22px; }
-
-        /* State Active */
+        
         .ratio-btn.active {
-            background: rgba(168, 85, 247, 0.1);
-            border-color: #a855f7;
-            color: white;
-            box-shadow: var(--glow);
+            border-color: var(--neon-accent); 
+            background: rgba(168, 85, 247, 0.1); 
+            color: var(--text-main); 
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
         }
 
-        .ratio-btn.active .ratio-icon {
-            opacity: 1;
-            border-color: #a855f7;
+        .ratio-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor; 
+            fill: none;
+            margin-bottom: 5px;
         }
-
-        /* 7. GENERATE BUTTON (CTA) */
-        .generate-btn {
+        
+        /* ACTION BUTTON */
+        .btn-order {
+            margin-top: 30px;
             width: 100%;
             padding: 16px;
             border: none;
@@ -299,216 +226,208 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            transition: all 0.3s;
         }
 
-        .generate-btn:hover:not(:disabled) {
+        .btn-order:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
         }
         
-        /* State Disabled */
-        .generate-btn:disabled {
+        .btn-order:disabled {
             background: #3f3f46;
             cursor: not-allowed;
             opacity: 0.5;
             box-shadow: none;
-            transform: none;
         }
 
     </style>
 </head>
 <body>
-    
-    <div class="fusion-card">
-        
+
+    <div class="order-card">
         <a href="MENU LAYANAN.HTML" class="back-button">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
             Kembali ke Menu Utama
         </a>
 
-        <header>
-            <h1>Image Fusion</h1>
-            <p class="subtitle">Pilih 2 hingga 5 gambar, tambahkan panduan teks, dan kami akan meraciknya menjadi visual baru.</p>
-        </header>
-
-        <input type="file" id="image-upload" accept="image/*" multiple max="5" style="display: none;">
-
-        <div class="label-section">
-            <span>Source Images</span>
-            <span id="image-count-status">0 / 5</span>
+        <div class="card-header">
+            <h2 class="title">Image Fusion</h2>
+            <p class="description">Gabungkan 2 hingga 5 foto menjadi satu karya digital yang harmonis dan artistik.</p>
         </div>
-        
-        <div class="upload-container" id="upload-zone">
-            <div class="upload-slot empty">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-                <span>Min 2</span>
+
+        <div class="input-section upload-section">
+            <h3 class="step-title">1. Unggah Foto Sumber (Wajib)</h3>
+            <p class="description" style="padding-bottom: 10px; border-bottom: none;">
+                <b style="color: yellow;">PENTING:</b> Mohon **kompres** 2-5 foto Anda menjadi **satu file ZIP/RAR** dan unggah di sini.
+            </p>
+            <div class="upload-dropzone" id="dropzone">
+                <div class="upload-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>
+                </div>
+                <div class="upload-text" id="upload-text-status">Klik atau seret file ZIP/RAR</div>
+                <div class="upload-count-status" id="image-count-status">0 / 1 File Kompresi</div>
             </div>
-            <div class="upload-slot empty">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-                <span>Min 2</span>
-            </div>
-            <div class="upload-slot empty">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-            </div>
-            <div class="upload-slot empty">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-            </div>
-            <div class="upload-slot empty">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
+            <input type="file" id="image-upload" accept="application/zip, application/x-rar-compressed, image/*" style="display: none;">
+        </div>
+
+        <div class="input-section instruction-section">
+            <h3 class="step-title">2. Instruksi (Wajib Diisi)</h3>
+            <div class="prompt-wrapper">
+                <textarea id="prompt-input" placeholder="Jelaskan bagaimana foto-foto tersebut harus digabungkan. Contoh: Gabungkan foto A dan B, lalu jadikan foto C sebagai latar belakang dengan efek cat minyak."></textarea>
+                <div class="magic-icon" onclick="autoFillPrompt()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"></path></svg>
+                </div>
             </div>
         </div>
 
-        <div class="label-section">
-            <span>AI Instructions</span>
-        </div>
-        <div class="prompt-wrapper">
-            <textarea id="prompt-input" placeholder="Deskripsikan hasil akhir yang diinginkan... (Cth: Cyberpunk city style, neon lights, highly detailed)"></textarea>
-            <div class="ai-badge">
-                <svg class="ai-sparkle" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"></path></svg>
-                AI Enhanced
+        <div class="input-section ratio-section">
+            <h3 class="step-title">3. Pilih Rasio</h3>
+            <div class="ratio-grid">
+                
+                <button class="ratio-btn active" data-ratio="1:1" onclick="selectRatio(this)">
+                    <svg viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" /></svg>
+                    1:1
+                </button>
+                
+                <button class="ratio-btn" data-ratio="3:4" onclick="selectRatio(this)">
+                    <svg viewBox="0 0 24 24" stroke-width="2"><rect x="7" y="3" width="10" height="18" rx="2" /></svg>
+                    3:4
+                </button>
+
+                <button class="ratio-btn" data-ratio="16:9" onclick="selectRatio(this)">
+                    <svg viewBox="0 0 24 24" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2" /></svg>
+                    16:9
+                </button>
+
+                <button class="ratio-btn" data-ratio="9:16" onclick="selectRatio(this)">
+                    <svg viewBox="0 0 24 24" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" /></svg>
+                    9:16
+                </button>
+
             </div>
         </div>
 
-        <div class="label-section">
-            <span>Output Dimension</span>
-        </div>
-        <div class="ratio-grid">
-            <button class="ratio-btn active" data-ratio="1:1" onclick="selectRatio(this)">
-                <div class="ratio-icon icon-1-1"></div>
-                <span>Square (1:1)</span>
-            </button>
-            <button class="ratio-btn" data-ratio="16:9" onclick="selectRatio(this)">
-                <div class="ratio-icon icon-16-9"></div>
-                <span>Landscape (16:9)</span>
-            </button>
-            <button class="ratio-btn" data-ratio="9:16" onclick="selectRatio(this)">
-                <div class="ratio-icon icon-9-16"></div>
-                <span>Portrait (9:16)</span>
-            </button>
-        </div>
-
-        <button class="generate-btn" id="btn-order" disabled>
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>
+        <button class="btn-order" id="btn-order" disabled>
             Order Image Fusion
         </button>
 
     </div>
 
     <script>
+        const dropzone = document.getElementById('dropzone');
         const imageUpload = document.getElementById('image-upload');
-        const uploadZone = document.getElementById('upload-zone');
-        const imageSlots = document.querySelectorAll('.upload-slot');
+        const uploadTextStatus = document.getElementById('upload-text-status');
+        const imageCountStatus = document.getElementById('image-count-status');
         const promptInput = document.getElementById('prompt-input');
         const btnOrder = document.getElementById('btn-order');
-        const imageCountStatus = document.getElementById('image-count-status');
-        const MAX_IMAGES = 5;
 
-        function selectRatio(selectedButton) {
-            const buttons = document.querySelectorAll('.ratio-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            selectedButton.classList.add('active');
-            checkCompleteness();
-        }
+        let selectedFile = null;
 
-        const handleClick = (e) => {
-            e.preventDefault();
-            imageUpload.click();
-        };
-        
-        uploadZone.addEventListener('click', handleClick);
-
-        imageUpload.addEventListener('change', function() {
-            const files = this.files;
-            let fileCount = files ? files.length : 0;
-            
-            if (fileCount > MAX_IMAGES) {
-                alert(`Maksimum ${MAX_IMAGES} foto diizinkan.`);
-                fileCount = MAX_IMAGES;
-            }
-            
-            imageSlots.forEach((slot, index) => {
-                slot.classList.remove('filled', 'empty');
-                slot.innerHTML = '';
-                
-                if (index < fileCount) {
-                    slot.classList.add('filled');
-                    slot.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path fill-rule="evenodd" d="M19.921 11.758a.625.625 0 0 0-.256-.47L14.12 6.545a.625.625 0 0 0-.845.918l4.471 4.128a.625.625 0 0 1 0 .937l-4.471 4.128a.625.625 0 0 0 .845.918l5.545-4.743a.625.625 0 0 0 .256-.469Z" clip-rule="evenodd"></path></svg>`; 
-                } else {
-                    slot.classList.add('empty');
-                    slot.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>`;
-                    if (index < 2) {
-                         slot.innerHTML += `<span>Min 2</span>`;
-                    }
-                }
-            });
-            
-            imageCountStatus.textContent = `${fileCount} / ${MAX_IMAGES}`;
-            checkCompleteness(fileCount);
-        });
-        
-        promptInput.addEventListener('input', checkCompleteness);
-        
         function getActiveRatio() {
             const activeBtn = document.querySelector('.ratio-btn.active');
             return activeBtn ? activeBtn.getAttribute('data-ratio') : 'N/A';
         }
 
-        function checkCompleteness(uploadedCount = null) {
-            const currentCount = uploadedCount !== null ? uploadedCount : (imageUpload.files ? imageUpload.files.length : 0);
-            const isImageCountValid = currentCount >= 2 && currentCount <= 5;
+        function selectRatio(selectedButton) {
+            document.querySelectorAll('.ratio-btn').forEach(btn => btn.classList.remove('active'));
+            selectedButton.classList.add('active');
+            checkCompleteness();
+        }
+
+        function autoFillPrompt() {
+            promptInput.value = "Gabungkan foto_1 sebagai subjek utama dengan latar belakang blur dari foto_2. Aplikasikan gaya cat minyak.";
+            promptInput.dispatchEvent(new Event('input')); 
+        }
+
+        dropzone.addEventListener('click', () => {
+            imageUpload.click();
+        });
+
+        imageUpload.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                selectedFile = this.files[0];
+                const fileName = selectedFile.name;
+                
+                if (selectedFile.size > 10 * 1024 * 1024) { // Peringatan lebih tinggi untuk ZIP
+                     alert('Peringatan: Ukuran file lebih dari 10MB. Proses Base64 mungkin gagal atau lambat. Gunakan file yang lebih kecil.');
+                }
+                
+                uploadTextStatus.textContent = `File Terpilih: ${fileName}`;
+                imageCountStatus.textContent = `1 / 1 File Kompresi`;
+                dropzone.style.borderColor = 'var(--neon-accent)';
+                dropzone.style.background = 'rgba(168, 85, 247, 0.1)';
+                dropzone.querySelector('.upload-icon svg').style.color = 'var(--neon-accent)';
+                
+                checkCompleteness();
+            } else {
+                 selectedFile = null;
+                 imageCountStatus.textContent = `0 / 1 File Kompresi`;
+                 checkCompleteness();
+            }
+        });
+
+        function checkCompleteness() {
+            const isImageUploaded = selectedFile !== null;
             const isPromptFilled = promptInput.value.trim().length > 0;
             const isRatioSelected = getActiveRatio() !== 'N/A';
             
-            if (isImageCountValid && isPromptFilled && isRatioSelected) {
+            if (isImageUploaded && isPromptFilled && isRatioSelected) {
                 btnOrder.disabled = false;
             } else {
                 btnOrder.disabled = true;
             }
         }
         
-        // --- LOGIKA PENYIMPANAN DATA ORDER ---
-        btnOrder.addEventListener('click', () => {
-             if (!btnOrder.disabled) {
-                 const selectedRatio = getActiveRatio();
-                 const prompt = promptInput.value;
-                 const fileCount = imageUpload.files ? imageUpload.files.length : 0;
-                 
-                 const orderDetails = {
-                     layanan: 'Image Fusion', // WAJIB SAMA DENGAN NAMA SHEET
-                     file_count: fileCount,
-                     ratio: selectedRatio,
-                     prompt: prompt,
-                 };
+        // --- FUNGSI BASE64 DAN ORDER BARU ---
+        function processFileAndOrder() {
+            if (!selectedFile) return;
 
-                 // Menyimpan rincian ke Local Storage
-                 localStorage.setItem('pendingOrderDetails', JSON.stringify(orderDetails));
+            const reader = new FileReader();
 
-                 // Mengarahkan ke Disclaimer untuk melanjutkan
-                 window.location.href = 'DISCLAIMER edit.html'; 
-             }
-        });
-        // --- AKHIR LOGIKA PENYIMPANAN DATA ORDER ---
-        
+            reader.onloadstart = () => {
+                btnOrder.textContent = "Processing File...";
+                btnOrder.disabled = true;
+            };
+
+            reader.onload = function(event) {
+                const base64String = event.target.result;
+                
+                // Ambil data rincian
+                const ratio = getActiveRatio();
+                const prompt = promptInput.value;
+
+                const orderData = {
+                    layanan: 'Image Fusion',
+                    ratio: ratio,
+                    prompt: prompt,
+                    file_base64: base64String,
+                    file_name: selectedFile.name,
+                    file_type: selectedFile.type
+                };
+                
+                localStorage.setItem('pendingOrderDetails', JSON.stringify(orderData));
+                window.location.href = 'DISCLAIMER edit.html';
+            };
+
+            reader.onerror = (error) => {
+                alert('Gagal membaca file. Ukuran file mungkin terlalu besar atau format tidak didukung. Coba file lain.');
+                btnOrder.textContent = "Order Image Fusion";
+                btnOrder.disabled = false;
+            };
+
+            reader.readAsDataURL(selectedFile);
+        }
+
+        btnOrder.addEventListener('click', processFileAndOrder);
+        // --- AKHIR FUNGSI BASE64 DAN ORDER BARU ---
+
         document.addEventListener('DOMContentLoaded', checkCompleteness);
+        promptInput.addEventListener('input', checkCompleteness);
 
-        // ... (Drag and drop logic remains the same)
+        // Drag and drop listeners (dipertahankan)
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            uploadZone.addEventListener(eventName, preventDefaults, false);
+            dropzone.addEventListener(eventName, preventDefaults, false);
         });
 
         function preventDefaults (e) {
@@ -518,13 +437,10 @@
 
         function handleDrop(e) {
             let dt = e.dataTransfer;
-            let files = dt.files;
-            
-            // Simpan file di input agar count ter-update
-            imageUpload.files = files;
+            imageUpload.files = dt.files;
             imageUpload.dispatchEvent(new Event('change')); 
         }
-        uploadZone.addEventListener('drop', handleDrop, false);
+        dropzone.addEventListener('drop', handleDrop, false);
     </script>
 </body>
 </html>

@@ -1,4 +1,337 @@
-<script>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Sketch - AW Design Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. SETUP CSS VARIABLE (Konsisten dengan tema AW Design Studio) --- */
+        :root {
+            --bg-dark: #09090b;
+            --surface-dark: #18181b;
+            --surface-light: #27272a;
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+            --glow: 0 0 20px rgba(168, 85, 247, 0.3);
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --border: rgba(255, 255, 255, 0.1);
+            --neon-accent: #a855f7;
+            --neon-cyan: #00bcd4; /* Aksen untuk upload */
+        }
+
+        * { box-sizing: border-box; font-family: 'Outfit', sans-serif; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 10% 90%, rgba(236, 72, 153, 0.1) 0%, transparent 40%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-main);
+            padding: 20px;
+        }
+        
+        /* CSS KHUSUS TOMBOL KEMBALI */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 12px;
+            margin-bottom: 20px;
+            background: var(--surface-light);
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-size: 14px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .back-button:hover {
+            background: rgba(168, 85, 247, 0.1);
+            border-color: var(--neon-accent);
+            color: var(--neon-accent);
+        }
+
+        /* --- 2. CONTAINER UTAMA (CARD) --- */
+        .order-card {
+            background: rgba(24, 24, 27, 0.8);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+            padding: 32px;
+            max-height: 95vh; 
+            overflow-y: auto;
+        }
+        /* ... (CSS lanjutan) ... */
+
+        /* Header */
+        .card-header {
+            margin-bottom: 15px;
+        }
+
+        h2.title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--neon-accent);
+            margin-bottom: 4px;
+        }
+
+        p.description {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 300;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+        }
+
+        /* Sub-Heading */
+        .step-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            margin-top: 25px;
+        }
+
+        /* --- 3. UPLOAD SECTION --- */
+        .upload-dropzone {
+            height: 160px;
+            border: 2px dashed var(--neon-cyan);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            text-align: center;
+            background: var(--surface-dark);
+            transition: all 0.3s;
+        }
+        
+        .upload-dropzone:hover {
+            border-color: var(--neon-accent);
+            background: rgba(168, 85, 247, 0.1);
+        }
+
+        .upload-icon svg {
+            width: 48px;
+            height: 48px;
+            color: var(--neon-cyan);
+            margin-bottom: 10px;
+            stroke-width: 1.5;
+        }
+
+        .upload-text {
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* --- 4. SELECTION BUTTONS (TUJUAN & RASIO) --- */
+        .selection-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        /* Grid 3 Kolom untuk Tujuan Gambar */
+        .goal-grid {
+             display: grid;
+             grid-template-columns: repeat(3, 1fr);
+             gap: 10px;
+             margin-bottom: 10px;
+        }
+        .goal-grid .selection-btn {
+            /* Membuat tombol Kustom mengambil 3 kolom di baris kedua */
+            grid-column: span 3;
+        }
+        /* Grid untuk rasio (3 kolom) */
+        .ratio-grid {
+             display: grid;
+             grid-template-columns: repeat(3, 1fr);
+        }
+
+        .selection-btn {
+            flex-grow: 1; 
+            padding: 12px 10px;
+            background: var(--surface-dark);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            text-align: center;
+        }
+        
+        .selection-btn.active {
+            border-color: var(--neon-accent); 
+            background: rgba(168, 85, 247, 0.1); 
+            color: var(--text-main); 
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+        }
+
+        .selection-btn svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor; 
+            fill: none;
+        }
+
+        /* --- 5. TEXTAREA & MAGIC BUTTON --- */
+        .prompt-wrapper {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 12px;
+            padding-right: 40px; /* Ruang untuk ikon */
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            resize: none; 
+            font-size: 14px;
+            outline: none;
+            color: var(--text-main);
+            background: var(--surface-dark);
+            transition: border-color 0.2s;
+        }
+
+        textarea:focus { border-color: var(--neon-accent); }
+        textarea::placeholder { color: #71717a; }
+
+        .magic-icon {
+            position: absolute;
+            top: 10px; 
+            right: 12px;
+            color: var(--neon-accent);
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        /* --- 6. ACTION BUTTON --- */
+        .btn-process {
+            margin-top: 30px;
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: var(--primary-gradient);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-process:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
+        }
+        
+        .btn-process:disabled {
+            background: #3f3f46;
+            cursor: not-allowed;
+            opacity: 0.5;
+            box-shadow: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="order-card">
+        
+        <a href="MENU LAYANAN.HTML" class="back-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            Kembali ke Menu Utama
+        </a>
+
+        <div class="card-header">
+            <h2 class="title">Smart Sketch</h2>
+            <p class="description">Ubah gambar sketsa Anda menjadi visual digital yang keren dengan bantuan AI.</p>
+        </div>
+
+        <div class="input-section upload-section">
+            <h3 class="step-title">1. Unggah Gambar Sketsa</h3>
+            <div class="upload-dropzone" id="dropzone">
+                <div class="upload-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15.232 5.232l3.536 3.536M12 21l-3.536-3.536L17.464 5.536l3.536 3.536L12 21zM9 12l-7 7l1.5 1.5l7-7"></path></svg>
+                </div>
+                <div class="upload-text" id="upload-text-status">Klik atau seret sketsa</div>
+            </div>
+            <input type="file" id="photo-upload" accept="image/*" style="display: none;">
+        </div>
+        
+        <div class="input-section goal-section">
+            <h3 class="step-title">2. Tujuan Gambar</h3>
+            <div class="selection-grid goal-grid" data-group="goal">
+                
+                <button class="selection-btn active" data-value="Logo" onclick="selectOption(this, 'goal')">Logo</button>
+                <button class="selection-btn" data-value="Banner" onclick="selectOption(this, 'goal')">Banner</button>
+                <button class="selection-btn" data-value="Produk" onclick="selectOption(this, 'goal')">Produk</button>
+                
+                <button class="selection-btn" data-value="3DRender" onclick="selectOption(this, 'goal')">3D Render</button>
+                <button class="selection-btn" data-value="Kartun" onclick="selectOption(this, 'goal')">Kartun</button>
+                <button class="selection-btn" data-value="Realistis" onclick="selectOption(this, 'goal')">Realistis</button>
+
+                <button class="selection-btn" data-value="Kustom" onclick="selectOption(this, 'goal')">Kustom</button>
+            </div>
+        </div>
+
+        <div class="input-section instruction-section">
+            <h3 class="step-title">3. Instruksi</h3>
+            <div class="prompt-wrapper">
+                <textarea id="prompt-input" placeholder="Klik tombol magic untuk mengisi otomatis..."></textarea>
+                <div class="magic-icon" onclick="autoFillPrompt()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"></path></svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-section ratio-section">
+            <h3 class="step-title">4. Pilih Rasio</h3>
+            <div class="selection-grid ratio-grid" data-group="ratio">
+                
+                <button class="selection-btn active" data-value="1:1" onclick="selectOption(this, 'ratio')">
+                    <svg viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" /></svg>
+                    1:1
+                </button>
+
+                <button class="selection-btn" data-value="16:9" onclick="selectOption(this, 'ratio')">
+                    <svg viewBox="0 0 24 24" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2" /></svg>
+                    16:9
+                </button>
+
+                <button class="selection-btn" data-value="9:16" onclick="selectOption(this, 'ratio')">
+                    <svg viewBox="0 0 24 24" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" /></svg>
+                    9:16
+                </button>
+
+            </div>
+        </div>
+
+        <button class="btn-process" id="btn-process" disabled>
+            Order Smart Sketch
+        </button>
+
+    </div>
+
+    <script>
         const dropzone = document.getElementById('dropzone');
         const fileInput = document.getElementById('photo-upload');
         const uploadTextStatus = document.getElementById('upload-text-status');
@@ -22,8 +355,8 @@
         }
 
         function autoFillPrompt() {
-            promptInput.value = "Buat sketsa dengan gaya pensil hitam putih, detail rambut dan bayangan yang tajam.";
-            promptInput.dispatchEvent(new Event('input')); 
+            promptInput.value = "Ubah sketsa ini menjadi logo minimalis 3D dengan warna neon biru dan latar belakang gelap.";
+            promptInput.dispatchEvent(new Event('input'));
         }
 
         dropzone.addEventListener('click', () => {
@@ -126,3 +459,5 @@
         promptInput.addEventListener('input', checkCompleteness);
 
     </script>
+</body>
+</html>

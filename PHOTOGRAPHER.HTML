@@ -478,12 +478,25 @@
     </div>
 
     <script>
-        // --- 1. LOGIKA UTILITY ---
-        let isPhotoUploaded = false; 
+        const fileInput = document.getElementById('photo-upload');
+        const btnProcess = document.getElementById('btn-process');
+        let selectedFile = null; 
 
         function getActiveData(groupName) {
-            const activeBtn = document.querySelector(`#${document.querySelector('.tab-content-panel.active').id} .selection-grid[data-group="${groupName}"] .selection-btn.active`);
+            const activeTab = document.querySelector('.tab-content-panel.active');
+            if (!activeTab) return 'N/A';
+            const activeBtn = activeTab.querySelector(`.selection-grid[data-group="${groupName}"] .selection-btn.active`);
             return activeBtn ? activeBtn.getAttribute('data-value') : 'N/A';
+        }
+
+        function getSelectValue(id) {
+            const selectElement = document.getElementById(id);
+            return selectElement ? selectElement.value : '';
+        }
+
+        function getInputValue(id) {
+            const inputElement = document.getElementById(id);
+            return inputElement ? inputElement.value : '';
         }
 
         function selectOption(selectedButton) {
@@ -491,20 +504,20 @@
             const buttons = parent.querySelectorAll('.selection-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
             selectedButton.classList.add('active');
-            
             checkCompleteness();
         }
         
         function resetUploadStatus() {
-            isPhotoUploaded = false;
-            const dropzones = document.querySelectorAll('.dropzone');
-            dropzones.forEach(dz => {
-                dz.querySelector('.upload-text').textContent = "Klik atau seret foto";
-                dz.style.borderColor = 'var(--neon-cyan)';
-                dz.style.background = 'var(--surface-dark)';
-                dz.querySelector('.upload-icon svg').style.color = 'var(--neon-cyan)';
+            selectedFile = null;
+            document.getElementById('photo-upload').value = '';
+            document.querySelectorAll('.upload-text').forEach(el => {
+                if (!el.parentElement.id.includes('Opt')) { // Hanya reset zona utama
+                    el.textContent = "Klik atau seret foto";
+                    el.parentElement.style.borderColor = 'var(--neon-cyan)';
+                    el.parentElement.style.background = 'var(--surface-dark)';
+                    el.parentElement.querySelector('.upload-icon svg').style.color = 'var(--neon-cyan)';
+                }
             });
-             document.getElementById('photo-upload').value = ''; 
         }
 
         function openTab(evt, tabName) {
@@ -524,143 +537,132 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const fileInput = document.getElementById('photo-upload');
-            
-            document.querySelectorAll('.dropzone').forEach(dz => {
-                dz.addEventListener('click', () => {
-                    // Hanya dropzone utama yang memicu file input ini
-                    if (!dz.id.includes('-Opt')) { 
-                        fileInput.click();
-                    } 
-                });
-            });
-
-            fileInput.addEventListener('change', function() {
-                if (this.files && this.files[0]) {
-                    const fileName = this.files[0].name;
-                    
-                    const activeTabId = document.querySelector('.tab-content-panel.active').id;
-                    const activeDropzone = document.querySelector(`#dropzone-${activeTabId.replace(/\s/g, '').replace(/\//g, '')}`); 
-                    
-                    if (activeDropzone) {
-                        activeDropzone.querySelector('.upload-text').textContent = `File Terpilih: ${fileName}`;
-                        activeDropzone.style.borderColor = 'var(--neon-accent)';
-                        activeDropzone.style.background = 'rgba(168, 85, 247, 0.1)';
-                        activeDropzone.querySelector('.upload-icon svg').style.color = 'var(--neon-accent)';
-                        isPhotoUploaded = true;
-                    }
-                    
-                    checkCompleteness();
-                }
-            });
-
-            // Set tab default
             document.querySelector('.tab-button').click(); 
         });
 
+        fileInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                selectedFile = this.files[0];
+                const fileName = selectedFile.name;
+                
+                if (selectedFile.size > 5 * 1024 * 1024) { 
+                     alert('Peringatan: Ukuran file lebih dari 5MB. Proses Base64 mungkin gagal atau lambat. Gunakan file yang lebih kecil.');
+                }
+                
+                const activeTabId = document.querySelector('.tab-content-panel.active').id;
+                const activeDropzoneId = `#dropzone-${activeTabId.replace(/\s/g, '').replace(/\//g, '')}`;
+
+                document.querySelector(activeDropzoneId).querySelector('.upload-text').textContent = `File Terpilih: ${fileName}`;
+                document.querySelector(activeDropzoneId).style.borderColor = 'var(--neon-accent)';
+                document.querySelector(activeDropzoneId).style.background = 'rgba(168, 85, 247, 0.1)';
+                document.querySelector(activeDropzoneId).querySelector('.upload-icon svg').style.color = 'var(--neon-accent)';
+                
+                checkCompleteness();
+            }
+        });
+
         function checkCompleteness() {
-            const btnProcess = document.getElementById('btn-process');
-            
-            // Logika sederhana: Order hanya bisa dilakukan jika ada foto utama
-            if (isPhotoUploaded) {
+            if (selectedFile) {
                 btnProcess.disabled = false;
             } else {
                 btnProcess.disabled = true;
             }
         }
         
-        // --- 2. LOGIKA PENYIMPANAN DATA ORDER ---
-        btnProcess.addEventListener('click', () => {
-             if (!btnProcess.disabled) {
-                const activeTabId = document.querySelector('.tab-content-panel.active').id;
-                const activeTabSheetName = 'Fotografer'; // Nama sheet Fotografer
-                let details = {};
+        // --- FUNGSI BASE64 DAN ORDER BARU ---
+        function processFileAndOrder() {
+            if (!selectedFile) return;
 
-                // A. LOGIKA UNTUK PAS FOTO
-                if (activeTabId === 'Pas Foto') {
-                    details = {
-                        kategori: 'Pas Foto',
-                        background: getActiveData('bg-pasfoto'),
-                        pakaian: getActiveData('pakaian-pasfoto'),
-                        ukuran: getActiveData('ukuran-pasfoto'),
-                        ratio: 'N/A', // Pas Foto tidak ada rasio bebas
-                    };
-                } 
-                // B. LOGIKA UNTUK BAYI BARU LAHIR
-                else if (activeTabId === 'Bayi Baru Lahir') {
-                    details = {
-                        kategori: 'Bayi Baru Lahir',
-                        jenis_kelamin: getActiveData('jenis-kelamin-bayi'),
-                        tema: getActiveData('tema-bayi'),
-                        nama_bayi: document.getElementById('nama-bayi').value,
-                        tgl_lahir: document.getElementById('tgl-lahir-bayi').value,
-                        dekorasi: document.getElementById('dekorasi-bayi').value,
-                        ratio: getActiveData('ratio-bayi'),
-                    };
-                }
-                // C. LOGIKA UNTUK ANAK-ANAK
-                else if (activeTabId === 'Anak-anak') {
-                    details = {
-                        kategori: 'Anak-anak',
-                        jenis_kelamin: getActiveData('jenis-kelamin-anak'),
-                        gaya_foto: getActiveData('gaya-anak'),
-                        ekspresi: getActiveData('ekspresi-anak'),
-                        ratio: getActiveData('ratio-anak'),
-                    };
-                }
-                // D. LOGIKA UNTUK HAJI/UMROH
-                else if (activeTabId === 'Haji/Umroh') {
-                    details = {
-                        kategori: 'Haji/Umroh',
-                        jenis_kelamin: getActiveData('jenis-kelamin-haji'),
-                        pakaian: getActiveData('pakaian-haji'),
-                        lokasi: getActiveData('lokasi-haji'),
-                        ratio: getActiveData('ratio-haji'),
-                    };
-                }
-                // E. LOGIKA UNTUK IBU HAMIL
-                else if (activeTabId === 'Ibu Hamil') {
-                    details = {
-                        kategori: 'Ibu Hamil',
-                        pose: document.getElementById('pose-hamil').value,
-                        pakaian: document.getElementById('pakaian-hamil').value,
-                        tema_studio: getActiveData('tema-hamil'),
-                        instruksi: document.getElementById('instruksi-hamil').value,
-                        ratio: getActiveData('ratio-hamil'),
-                    };
-                }
+            const reader = new FileReader();
 
-                // Tambahkan nama layanan ke objek rincian
-                details.layanan = activeTabSheetName;
+            reader.onloadstart = () => {
+                btnProcess.textContent = "Processing File...";
+                btnProcess.disabled = true;
+            };
 
-                // Menyimpan rincian ke Local Storage
-                localStorage.setItem('pendingOrderDetails', JSON.stringify(details));
+            reader.onload = function(event) {
+                const base64String = event.target.result;
                 
-                // Redirect ke Disclaimer
+                // Ambil data rincian dari tab aktif
+                const activeTabId = document.querySelector('.tab-content-panel.active').id;
+                let details = { kategori: activeTabId };
+
+                // Logika ekstraksi data berdasarkan KATEGORI
+                if (activeTabId === 'Pas Foto') {
+                    details.background = getActiveData('bg-pasfoto');
+                    details.pakaian = getActiveData('pakaian-pasfoto');
+                    details.ukuran = getActiveData('ukuran-pasfoto');
+                } else if (activeTabId === 'Bayi Baru Lahir') {
+                    details.jenis_kelamin = getActiveData('jenis-kelamin-bayi');
+                    details.tema = getActiveData('tema-bayi');
+                    details.nama_bayi = getInputValue('nama-bayi');
+                    details.tgl_lahir = getInputValue('tgl-lahir-bayi');
+                    details.dekorasi = getInputValue('dekorasi-bayi');
+                    details.ratio = getActiveData('ratio-bayi');
+                } else if (activeTabId === 'Anak-anak') {
+                    details.jenis_kelamin = getActiveData('jenis-kelamin-anak');
+                    details.gaya_foto = getActiveData('gaya-anak');
+                    details.ekspresi = getActiveData('ekspresi-anak');
+                    details.ratio = getActiveData('ratio-anak');
+                } else if (activeTabId === 'Haji/Umroh') {
+                    details.jenis_kelamin = getActiveData('jenis-kelamin-haji');
+                    details.pakaian = getActiveData('pakaian-haji');
+                    details.lokasi = getActiveData('lokasi-haji');
+                    details.ratio = getActiveData('ratio-haji');
+                } else if (activeTabId === 'Ibu Hamil') {
+                    details.pose = getSelectValue('pose-hamil');
+                    details.pakaian = getSelectValue('pakaian-hamil');
+                    details.tema_studio = getActiveData('tema-hamil');
+                    details.instruksi = getInputValue('instruksi-hamil');
+                    details.ratio = getActiveData('ratio-hamil');
+                }
+
+                const orderData = {
+                    layanan: 'Fotografer',
+                    ...details,
+                    file_base64: base64String,
+                    file_name: selectedFile.name,
+                    file_type: selectedFile.type
+                };
+                
+                localStorage.setItem('pendingOrderDetails', JSON.stringify(orderData));
                 window.location.href = 'DISCLAIMER edit.html';
-             }
-        });
-        // --- AKHIR LOGIKA PENYIMPANAN DATA ORDER ---
+            };
+
+            reader.onerror = (error) => {
+                alert('Gagal membaca file. Ukuran file mungkin terlalu besar atau format tidak didukung. Coba gambar lain.');
+                btnProcess.textContent = "Order Fotografer";
+                btnProcess.disabled = false;
+            };
+
+            reader.readAsDataURL(selectedFile);
+        }
+
+        btnProcess.addEventListener('click', processFileAndOrder);
+        // --- AKHIR FUNGSI BASE64 DAN ORDER BARU ---
         
-        // ... (Drag and drop logic remains the same)
-        document.querySelectorAll('.dropzone').forEach(dropzone => {
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropzone.addEventListener(eventName, e => {e.preventDefault(); e.stopPropagation();}, false);
-            });
-            dropzone.addEventListener('drop', handleDrop, false);
-        });
+        // Drag and drop listeners
+        function preventDefaults (e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
 
         function handleDrop(e) {
             const fileInput = document.getElementById('photo-upload');
             if (fileInput) {
-                // Hanya main dropzone yang dipicu
-                if (!e.currentTarget.id.includes('-Opt')) {
-                    fileInput.files = e.dataTransfer.files;
-                    fileInput.dispatchEvent(new Event('change')); 
-                }
+                fileInput.files = e.dataTransfer.files;
+                fileInput.dispatchEvent(new Event('change')); 
             }
         }
-
+        
+        document.querySelectorAll('.dropzone').forEach(dropzone => {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, preventDefaults, false);
+            });
+            dropzone.addEventListener('drop', handleDrop, false);
+            dropzone.addEventListener('click', () => fileInput.click()); // Tambahkan klik
+        });
+        
     </script>
 </body>
 </html>

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Fusion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 1. SETUP VARIABEL & DASAR (Sama dengan tema sebelumnya) */
+        :root {
+            --bg-dark: #09090b;
+            --surface-dark: #18181b;
+            --surface-light: #27272a;
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+            --glow: 0 0 20px rgba(168, 85, 247, 0.3);
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --border: rgba(255, 255, 255, 0.1);
+            --neon-accent: #a855f7; /* Ditambahkan untuk konsistensi */
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 40%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-main);
+            padding: 20px;
+        }
+
+        /* CSS KHUSUS TOMBOL KEMBALI */
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 12px;
+            margin-bottom: 20px;
+            background: var(--surface-light);
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-size: 14px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .back-button:hover {
+            background: rgba(168, 85, 247, 0.1);
+            border-color: var(--neon-accent);
+            color: var(--neon-accent);
+        }
+
+        /* 2. KARTU UTAMA (GLASSMORPHISM) */
+        .fusion-card {
+            background: rgba(24, 24, 27, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            width: 100%;
+            max-width: 520px;
+            padding: 32px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+            max-height: 95vh;
+            overflow-y: auto;
+        }
+        /* ... (CSS lanjutan) ... */
+
+        /* Garis neon di bagian atas */
+        .fusion-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary-gradient);
+        }
+
+        /* 3. HEADER */
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        p.subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            max-width: 90%;
+            margin: 0 auto;
+        }
+        
+        /* 4. BAGIAN UPLOAD (GRID MODERN) */
+        .label-section {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .upload-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-bottom: 32px;
+        }
+
+        .upload-slot {
+            aspect-ratio: 1/1;
+            background: var(--surface-light);
+            border: 1px dashed var(--border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        /* Style untuk slot kosong/belum aktif */
+        .upload-slot.empty {
+            opacity: 0.3; 
+            border-style: dotted;
+            background: var(--surface-dark);
+        }
+
+        /* Style untuk slot sudah terisi */
+        .upload-slot.filled {
+            opacity: 1;
+            border: 1px solid var(--neon-accent);
+            background-color: rgba(168, 85, 247, 0.1);
+            color: var(--neon-accent);
+        }
+
+        /* Style untuk slot klik/hover */
+        .upload-slot:hover {
+            border-color: #a855f7;
+            background: rgba(168, 85, 247, 0.1);
+            transform: translateY(-2px);
+            box-shadow: var(--glow);
+        }
+
+        .upload-slot svg {
+            color: currentColor;
+            width: 20px;
+            height: 20px;
+            transition: color 0.3s;
+        }
+        
+        .upload-slot span {
+            font-size: 12px;
+            position: absolute;
+            bottom: 4px;
+            color: var(--text-muted);
+        }
+
+        /* 5. BAGIAN INPUT TEXT (Dark & Clean) */
+        .prompt-wrapper {
+            position: relative;
+            margin-bottom: 32px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            background: var(--surface-dark);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 16px;
+            color: white;
+            font-size: 15px;
+            resize: none;
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        textarea:focus {
+            border-color: #a855f7;
+            box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2), inset 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        textarea::placeholder {
+            color: #52525b;
+        }
+
+        .ai-badge {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            background: var(--surface-light);
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            pointer-events: none;
+        }
+
+        .ai-sparkle {
+            color: #fbbf24;
+        }
+
+        /* 6. PILIHAN RASIO (Futuristic Buttons) */
+        .ratio-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .ratio-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ratio-btn span {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .ratio-icon {
+            width: 20px;
+            height: 20px;
+            border: 2px solid currentColor;
+            border-radius: 4px;
+            opacity: 0.7;
+        }
+
+        /* Bentuk icon rasio manual dengan CSS */
+        .icon-1-1 { width: 18px; height: 18px; }
+        .icon-16-9 { width: 22px; height: 14px; }
+        .icon-9-16 { width: 14px; height: 22px; }
+
+        /* State Active */
+        .ratio-btn.active {
+            background: rgba(168, 85, 247, 0.1);
+            border-color: #a855f7;
+            color: white;
+            box-shadow: var(--glow);
+        }
+
+        .ratio-btn.active .ratio-icon {
+            opacity: 1;
+            border-color: #a855f7;
+        }
+
+        /* 7. GENERATE BUTTON (CTA) */
+        .generate-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 12px;
+            background: var(--primary-gradient);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .generate-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
+        }
+        
+        /* State Disabled */
+        .generate-btn:disabled {
+            background: #3f3f46;
+            cursor: not-allowed;
+            opacity: 0.5;
+            box-shadow: none;
+            transform: none;
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div class="fusion-card">
+        
+        <a href="MENU LAYANAN.HTML" class="back-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            Kembali ke Menu Utama
+        </a>
+
+        <header>
+            <h1>Image Fusion</h1>
+            <p class="subtitle">Pilih 2 hingga 5 gambar, tambahkan panduan teks, dan kami akan meraciknya menjadi visual baru.</p>
+        </header>
+
+        <input type="file" id="image-upload" accept="image/*" multiple max="5" style="display: none;">
+
+        <div class="label-section">
+            <span>Source Images</span>
+            <span id="image-count-status">0 / 5</span>
+        </div>
+        
+        <div class="upload-container" id="upload-zone">
+            <div class="upload-slot empty">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                <span>Min 2</span>
+            </div>
+            <div class="upload-slot empty">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                <span>Min 2</span>
+            </div>
+            <div class="upload-slot empty">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </div>
+            <div class="upload-slot empty">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </div>
+            <div class="upload-slot empty">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </div>
+        </div>
+
+        <div class="label-section">
+            <span>AI Instructions</span>
+        </div>
+        <div class="prompt-wrapper">
+            <textarea id="prompt-input" placeholder="Deskripsikan hasil akhir yang diinginkan... (Cth: Cyberpunk city style, neon lights, highly detailed)"></textarea>
+            <div class="ai-badge">
+                <svg class="ai-sparkle" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"></path></svg>
+                AI Enhanced
+            </div>
+        </div>
+
+        <div class="label-section">
+            <span>Output Dimension</span>
+        </div>
+        <div class="ratio-grid">
+            <button class="ratio-btn active" data-ratio="1:1" onclick="selectRatio(this)">
+                <div class="ratio-icon icon-1-1"></div>
+                <span>Square (1:1)</span>
+            </button>
+            <button class="ratio-btn" data-ratio="16:9" onclick="selectRatio(this)">
+                <div class="ratio-icon icon-16-9"></div>
+                <span>Landscape (16:9)</span>
+            </button>
+            <button class="ratio-btn" data-ratio="9:16" onclick="selectRatio(this)">
+                <div class="ratio-icon icon-9-16"></div>
+                <span>Portrait (9:16)</span>
+            </button>
+        </div>
+
+        <button class="generate-btn" id="btn-order" disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg>
+            Order Image Fusion
+        </button>
+
+    </div>
+
+    <script>
+        const imageUpload = document.getElementById('image-upload');
+        const uploadZone = document.getElementById('upload-zone');
+        const imageSlots = document.querySelectorAll('.upload-slot');
+        const promptInput = document.getElementById('prompt-input');
+        const btnOrder = document.getElementById('btn-order');
+        const imageCountStatus = document.getElementById('image-count-status');
+        const MAX_IMAGES = 5;
+
+        function selectRatio(selectedButton) {
+            const buttons = document.querySelectorAll('.ratio-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            selectedButton.classList.add('active');
+            checkCompleteness();
+        }
+
+        const handleClick = (e) => {
+            e.preventDefault();
+            imageUpload.click();
+        };
+        
+        uploadZone.addEventListener('click', handleClick);
+
+        imageUpload.addEventListener('change', function() {
+            const files = this.files;
+            let fileCount = files ? files.length : 0;
+            
+            if (fileCount > MAX_IMAGES) {
+                alert(`Maksimum ${MAX_IMAGES} foto diizinkan.`);
+                fileCount = MAX_IMAGES;
+            }
+            
+            imageSlots.forEach((slot, index) => {
+                slot.classList.remove('filled', 'empty');
+                slot.innerHTML = '';
+                
+                if (index < fileCount) {
+                    slot.classList.add('filled');
+                    slot.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path fill-rule="evenodd" d="M19.921 11.758a.625.625 0 0 0-.256-.47L14.12 6.545a.625.625 0 0 0-.845.918l4.471 4.128a.625.625 0 0 1 0 .937l-4.471 4.128a.625.625 0 0 0 .845.918l5.545-4.743a.625.625 0 0 0 .256-.469Z" clip-rule="evenodd"></path></svg>`; 
+                } else {
+                    slot.classList.add('empty');
+                    slot.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>`;
+                    if (index < 2) {
+                         slot.innerHTML += `<span>Min 2</span>`;
+                    }
+                }
+            });
+            
+            imageCountStatus.textContent = `${fileCount} / ${MAX_IMAGES}`;
+            checkCompleteness(fileCount);
+        });
+        
+        promptInput.addEventListener('input', checkCompleteness);
+
+        function checkCompleteness(uploadedCount = null) {
+            const currentCount = uploadedCount !== null ? uploadedCount : (imageUpload.files ? imageUpload.files.length : 0);
+            const isImageCountValid = currentCount >= 2 && currentCount <= 5;
+            const isPromptFilled = promptInput.value.trim().length > 0;
+            const isRatioSelected = document.querySelector('.ratio-btn.active') !== null;
+            
+            if (isImageCountValid && isPromptFilled && isRatioSelected) {
+                btnOrder.disabled = false;
+            } else {
+                btnOrder.disabled = true;
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', checkCompleteness);
+
+        btnOrder.addEventListener('click', () => {
+             if (!btnOrder.disabled) {
+                 const selectedRatio = document.querySelector('.ratio-btn.active').getAttribute('data-ratio');
+                 alert(`Order Image Fusion diterima! (${imageUpload.files.length} Foto, Rasio: ${selectedRatio}).`);
+             }
+        });
+    </script>
+</body>
+</html>

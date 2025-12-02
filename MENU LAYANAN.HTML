@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pilih Layanan - AW Design Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. SETUP CSS VARIABLE (Konsisten dengan tema sebelumnya) --- */
+        :root {
+            --bg-dark: #09090b;
+            --surface-dark: #18181b;
+            --surface-light: #27272a;
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+            --glow: 0 0 20px rgba(168, 85, 247, 0.3);
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --border: rgba(255, 255, 255, 0.1);
+            --neon-accent: #a855f7;
+        }
+
+        * { box-sizing: border-box; font-family: 'Outfit', sans-serif; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 10% 90%, rgba(236, 72, 153, 0.1) 0%, transparent 40%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-main);
+            padding: 20px;
+        }
+
+        /* --- 2. CONTAINER UTAMA (MENU CARD) --- */
+        .menu-card {
+            background: rgba(24, 24, 27, 0.8);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            width: 100%;
+            max-width: 800px; /* Lebih lebar untuk grid */
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+            padding: 32px;
+        }
+
+        /* Header */
+        .card-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        /* --- 3. GRID LAYOUT UNTUK LAYANAN --- */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 Kolom */
+            gap: 20px;
+        }
+
+        /* Kartu Layanan */
+        .service-card {
+            background: var(--surface-dark);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Efek Neon Hover/Active */
+        .service-card:hover, .service-card.active {
+            border-color: var(--neon-accent);
+            background: rgba(168, 85, 247, 0.1);
+            transform: translateY(-5px);
+            box-shadow: var(--glow);
+        }
+
+        .service-card:hover .service-title, .service-card.active .service-title {
+            color: var(--neon-accent);
+        }
+
+        /* Badge Nomor (Floating Neon) */
+        .service-number {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--neon-accent);
+            opacity: 0.2;
+            transition: opacity 0.3s;
+        }
+
+        .service-card:hover .service-number {
+            opacity: 0.6;
+        }
+
+        /* Detail Teks */
+        .service-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-main);
+            transition: color 0.3s;
+        }
+
+        .service-description {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Media Query untuk Mobile */
+        @media (max-width: 600px) {
+            .service-grid {
+                grid-template-columns: 1fr; /* Menjadi 1 kolom di layar kecil */
+            }
+            .menu-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu-card">
+        <div class="card-header">
+            <h1>AW Design Studio</h1>
+            <p class="subtitle">Silakan pilih jenis jasa edit yang diinginkan untuk melanjutkan proses.
+Tarif flat Rp. 5.000/foto.</p>
+        </div>
+
+        <div class="service-grid">
+            
+            <div class="service-card" onclick="selectService(this, 'ImageFusion')">
+                <span class="service-number">1</span>
+                <div class="service-details">
+                    <h3 class="service-title">Image Fusion</h3>
+                    <p class="service-description">untuk menggabungkan 2-5 foto ke dalam 1 gambar, menciptakan visual baru yang unik.</p>
+                </div>
+            </div>
+
+            <div class="service-card" onclick="selectService(this, 'TrueVision')">
+                <span class="service-number">2</span>
+                <div class="service-details">
+                    <h3 class="service-title">TrueVision</h3>
+                    <p class="service-description">untuk meningkatkan kualitas foto dengan memperbaiki pencahayaan, ketajaman, dan warna (bisa untuk foto jadul).</p>
+                </div>
+            </div>
+
+            <div class="service-card" onclick="selectService(this, 'InstantProPhotoshoot')">
+                <span class="service-number">3</span>
+                <div class="service-details">
+                    <h3 class="service-title">Instant Pro Photoshoot</h3>
+                    <p class="service-description">untuk membuat berbagai skenario photoshoot produk profesional secara instan.</p>
+                </div>
+            </div>
+
+            <div class="service-card" onclick="selectService(this, 'Fotografer')">
+                <span class="service-number">4</span>
+                <div class="service-details">
+                    <h3 class="service-title">Fotografer</h3>
+                    <p class="service-description">untuk membuat foto bayi baru lahir, anak-anak, adegan haji/umroh, pas foto dan foto ibu hamil.</p>
+                </div>
+            </div >
+
+            <div class="service-card" onclick="selectService(this, 'SmartSketch')">
+                <span class="service-number">5</span>
+                <div class="service-details">
+                    <h3 class="service-title">Smart Sketch</h3>
+                    <p class="service-description">untuk mengubah gambar sketsa anda menjadi sebuah gambar digital yang keren dan terperinci.</p>
+                </div>
+            </div>
+
+            <div class="service-card" onclick="selectService(this, 'InstantArtify')">
+                <span class="service-number">6</span>
+                <div class="service-details">
+                    <h3 class="service-title">Instant Artify</h3>
+                    <p class="service-description">untuk mengubah foto anda menjadi karya seni atau karikatur yang keren dengan berbagai gaya artistik.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function selectService(selectedCard, serviceId) {
+            // Mapping serviceId ke nama file yang benar (termasuk kapitalisasi)
+            const fileMap = {
+                'ImageFusion': 'IMAGE FUSION.html',
+                'TrueVision': 'TRUEVISION.HTML',
+                'InstantProPhotoshoot': 'PRODUCTPHOTOSHOOT.HTML',
+                'Fotografer': 'PHOTOGRAPHER.HTML',
+                'SmartSketch': 'SKETSA.HTML',
+                'InstantArtify': 'ARTIFY.HTML'
+            };
+            
+            // 1. Hapus kelas 'active' dari semua kartu
+            const cards = document.querySelectorAll('.service-card');
+            cards.forEach(card => card.classList.remove('active'));
+
+            // 2. Tambahkan kelas 'active' ke kartu yang diklik
+            selectedCard.classList.add('active');
+            
+            // 3. Navigasi
+            const targetFile = fileMap[serviceId];
+            if (targetFile) {
+                // Memberikan delay singkat untuk visual feedback
+                setTimeout(() => {
+                    window.location.href = targetFile;
+                }, 200); 
+            } else {
+                 console.error(`File target tidak ditemukan untuk ID: ${serviceId}`);
+            }
+        }
+    </script>
+</body>
+</html>

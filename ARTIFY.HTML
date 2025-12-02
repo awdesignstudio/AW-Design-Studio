@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* [SALIN DAN TIMPA SEMUA CSS ANDA DI SINI] */
+        /* --- 1. SETUP CSS VARIABLE (Konsisten dengan tema AW Design Studio) --- */
         :root {
             --bg-dark: #09090b;
             --surface-dark: #18181b;
@@ -317,7 +317,7 @@
                 </button>
                 
                 <button class="selection-btn" data-value="3:4" onclick="selectOption(this, 'ratio')">
-                    <svg viewBox="0 0 24 24" stroke-width="2"><rect x="7" y="3" width="10" height="18" rx="2" /></svg>
+                    <svg viewBox="0 0 0 24 24" stroke-width="2"><rect x="7" y="3" width="10" height="18" rx="2" /></svg>
                     3:4
                 </button>
 
@@ -377,7 +377,6 @@
                 selectedFile = this.files[0];
                 const fileName = selectedFile.name;
                 
-                // Peringatan ukuran file
                 if (selectedFile.size > 5 * 1024 * 1024) { // 5MB limit
                      alert('Peringatan: Ukuran file lebih dari 5MB. Proses Base64 mungkin gagal atau lambat. Gunakan file yang lebih kecil.');
                 }

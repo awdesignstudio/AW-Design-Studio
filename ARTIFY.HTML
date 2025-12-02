@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 1. SETUP CSS VARIABLE (Konsisten dengan tema AW Design Studio) --- */
+        /* [SALIN DAN TIMPA SEMUA CSS ANDA DI SINI] */
         :root {
             --bg-dark: #09090b;
             --surface-dark: #18181b;
@@ -346,7 +346,8 @@
         const uploadTextStatus = document.getElementById('upload-text-status');
         const btnProcess = document.getElementById('btn-process');
         const promptInput = document.getElementById('prompt-input');
-        let isPhotoUploaded = false; 
+        
+        let selectedFile = null; 
 
         function getActiveData(group) {
             const activeBtn = document.querySelector(`.selection-grid[data-group="${group}"] .selection-btn.active`);
@@ -373,13 +374,19 @@
 
         fileInput.addEventListener('change', function() {
             if (this.files && this.files[0]) {
-                const fileName = this.files[0].name;
+                selectedFile = this.files[0];
+                const fileName = selectedFile.name;
+                
+                // Peringatan ukuran file
+                if (selectedFile.size > 5 * 1024 * 1024) { // 5MB limit
+                     alert('Peringatan: Ukuran file lebih dari 5MB. Proses Base64 mungkin gagal atau lambat. Gunakan file yang lebih kecil.');
+                }
+                
                 uploadTextStatus.textContent = `File Terpilih: ${fileName}`;
                 dropzone.style.borderColor = 'var(--neon-accent)';
                 dropzone.style.background = 'rgba(168, 85, 247, 0.1)';
                 dropzone.querySelector('.upload-icon svg').style.color = 'var(--neon-accent)';
                 
-                isPhotoUploaded = true;
                 checkCompleteness();
             }
         });
@@ -388,41 +395,67 @@
             const isTypeSelected = getActiveData('type') !== 'N/A';
             const isStyleSelected = getActiveData('style') !== 'N/A';
             
-            if (isPhotoUploaded && isTypeSelected && isStyleSelected) {
+            if (selectedFile && isTypeSelected && isStyleSelected) {
                 btnProcess.disabled = false;
             } else {
                 btnProcess.disabled = true;
             }
         }
-        
-        // --- LOGIKA PENYIMPANAN DATA ORDER ---
-        btnProcess.addEventListener('click', () => {
-             if (!btnProcess.disabled) {
-                // Ambil semua data rincian
+
+        // --- FUNGSI BASE64 DAN ORDER BARU ---
+        function processFileAndOrder() {
+            if (!selectedFile) return;
+
+            const reader = new FileReader();
+
+            reader.onloadstart = () => {
+                btnProcess.textContent = "Processing File...";
+                btnProcess.disabled = true;
+            };
+
+            reader.onload = function(event) {
+                const base64String = event.target.result;
+                
+                // Ambil data rincian
                 const jenis = getActiveData('type');
                 const gaya = getActiveData('style');
                 const ratio = getActiveData('ratio');
                 const prompt = promptInput.value;
-                
-                const orderDetails = {
-                    layanan: 'Artify', // WAJIB SAMA DENGAN NAMA SHEET
+
+                const orderData = {
+                    layanan: 'Artify',
                     jenis: jenis,
                     gaya: gaya,
                     ratio: ratio,
                     prompt: prompt,
+                    // Tambahkan data file untuk diolah di halaman DATA PEMESAN.html
+                    file_base64: base64String,
+                    file_name: selectedFile.name,
+                    file_type: selectedFile.type
                 };
                 
-                // Menyimpan rincian ke Local Storage
-                localStorage.setItem('pendingOrderDetails', JSON.stringify(orderDetails));
-
+                // Menyimpan data ke Local Storage
+                localStorage.setItem('pendingOrderDetails', JSON.stringify(orderData));
+                
                 // Redirect ke Disclaimer
-                window.location.href = 'DISCLAIMER edit.html'; 
-             }
-        });
-        // --- AKHIR LOGIKA PENYIMPANAN DATA ORDER ---
+                window.location.href = 'DISCLAIMER edit.html';
+            };
 
+            reader.onerror = (error) => {
+                alert('Gagal membaca file. Ukuran file mungkin terlalu besar atau format tidak didukung. Coba gambar lain.');
+                btnProcess.textContent = "Order Instant Artify";
+                btnProcess.disabled = false;
+            };
+
+            reader.readAsDataURL(selectedFile);
+        }
+
+        btnProcess.addEventListener('click', processFileAndOrder);
+        // --- AKHIR FUNGSI BASE64 DAN ORDER BARU ---
+        
         document.addEventListener('DOMContentLoaded', checkCompleteness);
         
+        // Drag and drop listeners
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
             dropzone.addEventListener(eventName, preventDefaults, false);
         });

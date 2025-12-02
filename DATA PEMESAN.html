@@ -227,6 +227,9 @@
         const groupNama = document.getElementById('group-nama');
         const groupWa = document.getElementById('group-wa');
         const groupEmail = document.getElementById('group-email');
+        
+        // --- 🔴 URL API GOOGLE APPS SCRIPT ANDA 🔴 ---
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzql1gAwLZkS8rQaAz7r4lAHO4he8S2bBeZbpGR9Ff6aR_QJtYhe3xCLWTTOMuqaY/exec'; 
 
         function validateForm() {
             let isValid = true;
@@ -243,6 +246,7 @@
             }
 
             // 2. Validasi Nomor WA (minimal 10 digit angka)
+            // Regex ini mengizinkan format 08... atau +628...
             const waRegex = /^(?:08|\+628)\d{8,12}$/;
             if (!waRegex.test(inputWa.value.trim())) {
                 errorWa.textContent = 'Masukkan Nomor WhatsApp yang valid (contoh: 0812...).';
@@ -276,15 +280,51 @@
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             if (validateForm()) {
-                console.log('Data Pelanggan Valid dan Siap Diproses! Mengarahkan ke Menu Layanan...');
                 
-                // SIMULASI PROSES DATA (Di sini Anda bisa menambahkan AJAX/Fetch untuk mengirim data ke server)
-                // Setelah data berhasil diproses/disimpan, lakukan redirect:
+                btnSubmit.disabled = true;
+                btnSubmit.innerHTML = 'Mengirim Data... <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 22v-4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg>';
+
+                const formData = new FormData(form);
                 
-                alert('Data Anda berhasil disimpan. Anda akan diarahkan ke Menu Layanan AW Design Studio.');
+                // --- PENGAMBILAN RINCIAN PESANAN DARI LOCAL STORAGE ---
+                const storedDetails = localStorage.getItem('pendingOrderDetails');
                 
-                // --- REDIRECT KE HALAMAN MENU LAYANAN ---
-                window.location.href = 'MENU LAYANAN.HTML'; 
+                if (storedDetails) {
+                    try {
+                        const orderDetails = JSON.parse(storedDetails);
+                        
+                        // Tambahkan semua properti rincian ke FormData (termasuk 'layanan')
+                        for (const key in orderDetails) {
+                            formData.append(key, orderDetails[key]);
+                        }
+                    } catch (error) {
+                        console.error("Error parsing stored details:", error);
+                    }
+                } else {
+                    // Fallback jika tidak ada Local Storage
+                    formData.append('layanan', 'Unknown Service');
+                }
+                
+                localStorage.removeItem('pendingOrderDetails'); // Bersihkan setelah pengiriman
+
+                // --- PROSES PENGIRIMAN DENGAN FETCH API ---
+                fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    body: new URLSearchParams(formData),
+                    mode: 'no-cors' 
+                })
+                .then(response => {
+                    // Karena mode 'no-cors', kita asumsikan keberhasilan
+                    console.log('Data Pelanggan Dikirim. Mengarahkan ke Menu Layanan...');
+                    alert('Data Anda berhasil disimpan. Anda akan diarahkan ke Menu Layanan AW Design Studio.');
+                    window.location.href = 'MENU LAYANAN.HTML';
+                })
+                .catch(error => {
+                    console.error('Error saat mengirim data:', error);
+                    alert('Terjadi kesalahan saat menyimpan data. Cek koneksi Anda atau hubungi Admin.');
+                    btnSubmit.disabled = false;
+                    btnSubmit.innerHTML = 'Masuk ke AW Design Studio <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7 7 7-7"/></svg>';
+                });
             }
         });
 

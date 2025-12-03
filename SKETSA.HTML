@@ -18,7 +18,8 @@
             --text-muted: #a1a1aa;
             --border: rgba(255, 255, 255, 0.1);
             --neon-accent: #a855f7;
-            --neon-cyan: #00bcd4; /* Aksen untuk upload */
+            --neon-cyan: #00bcd4;
+            --error-red: #ef4444; /* Warna merah untuk error */
         }
 
         * { box-sizing: border-box; font-family: 'Outfit', sans-serif; margin: 0; padding: 0; }
@@ -72,11 +73,12 @@
             max-height: 95vh; 
             overflow-y: auto;
         }
-        /* ... (CSS lanjutan) ... */
-
+        
         /* Header */
         .card-header {
             margin-bottom: 15px;
+            /* TAMBAHAN UNTUK MEMBUAT JUDUL DAN DESKRIPSI RATA TENGAH */
+            text-align: center; 
         }
 
         h2.title {
@@ -101,40 +103,8 @@
             color: var(--text-main);
             margin-bottom: 12px;
             margin-top: 25px;
-        }
-
-        /* --- 3. UPLOAD SECTION --- */
-        .upload-dropzone {
-            height: 160px;
-            border: 2px dashed var(--neon-cyan);
-            border-radius: 16px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            text-align: center;
-            background: var(--surface-dark);
-            transition: all 0.3s;
-        }
-        
-        .upload-dropzone:hover {
-            border-color: var(--neon-accent);
-            background: rgba(168, 85, 247, 0.1);
-        }
-
-        .upload-icon svg {
-            width: 48px;
-            height: 48px;
-            color: var(--neon-cyan);
-            margin-bottom: 10px;
-            stroke-width: 1.5;
-        }
-
-        .upload-text {
-            color: var(--text-muted);
-            font-size: 14px;
-            font-weight: 500;
+            /* PASTIKAN STEP TITLE TIDAK RATA TENGAH */
+            text-align: left; 
         }
         
         /* --- 4. SELECTION BUTTONS (TUJUAN & RASIO) --- */
@@ -156,6 +126,7 @@
             /* Membuat tombol Kustom mengambil 3 kolom di baris kedua */
             grid-column: span 3;
         }
+        
         /* Grid untuk rasio (3 kolom) */
         .ratio-grid {
              display: grid;
@@ -174,13 +145,61 @@
             color: var(--text-muted);
             transition: all 0.2s;
             text-align: center;
+            /* Penyesuaian untuk Rasio (Konten Vertikal) */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: auto; /* Biarkan tinggi menyesuaikan konten */
         }
         
+        /* Gaya Khusus untuk Konten Rasio */
+        .selection-grid.ratio-grid .selection-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor; 
+            fill: none;
+            margin-bottom: 4px;
+        }
+
+        .selection-grid.ratio-grid .selection-btn strong { /* Nama Rasio */
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-top: 2px;
+            margin-bottom: 4px; /* SPASI VERTICAL DI SINI */
+            line-height: 1.2;
+        }
+        
+        .selection-grid.ratio-grid .selection-btn small { /* Penjelasan Rasio */
+            font-size: 9px;
+            color: var(--text-muted);
+            line-height: 1.2;
+            height: 30px; /* Tinggi tetap agar tampilan konsisten */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 2px;
+            font-weight: 400;
+        }
+        
+        /* Penyesuaian untuk tombol non-rasio (Tujuan Gambar) agar tetap rapi */
+        .selection-grid:not(.ratio-grid) .selection-btn {
+             flex-direction: row; 
+             font-size: 14px;
+             height: 44px;
+        }
+        /* Akhir Gaya Khusus Rasio */
+
+
         .selection-btn.active {
             border-color: var(--neon-accent); 
             background: rgba(168, 85, 247, 0.1); 
             color: var(--text-main); 
             box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+        }
+        .selection-btn.active strong, .selection-btn.active small {
+             color: var(--text-main);
         }
 
         .selection-btn svg {
@@ -190,17 +209,15 @@
             fill: none;
         }
 
-        /* --- 5. TEXTAREA & MAGIC BUTTON --- */
-        .prompt-wrapper {
+        /* --- 5. TEXTAREA & MAGIC BUTTON & INPUT TEKS BARU (Ditambahkan) --- */
+        .prompt-wrapper, .input-group {
             position: relative;
-            margin-bottom: 25px;
+            margin-bottom: 15px;
         }
-
-        textarea {
+        
+        textarea, input[type="text"], input[type="tel"] {
             width: 100%;
-            height: 100px;
             padding: 12px;
-            padding-right: 40px; /* Ruang untuk ikon */
             border: 1px solid var(--border);
             border-radius: 10px;
             resize: none; 
@@ -208,11 +225,38 @@
             outline: none;
             color: var(--text-main);
             background: var(--surface-dark);
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        
+        textarea {
+            height: 100px;
+            padding-right: 40px; /* Ruang untuk ikon */
+        }
+        
+        input[type="text"], input[type="tel"] {
+            height: 44px;
         }
 
-        textarea:focus { border-color: var(--neon-accent); }
-        textarea::placeholder { color: #71717a; }
+        textarea:focus, input[type="text"]:focus, input[type="tel"]:focus { border-color: var(--neon-accent); }
+        textarea::placeholder, input[type="text"]::placeholder, input[type="tel"]::placeholder { color: #71717a; }
+
+        /* Style untuk input yang tidak valid (Kotak Merah) */
+        .input-group input.input-invalid {
+            border-color: var(--error-red) !important;
+            box-shadow: 0 0 5px rgba(239, 68, 68, 0.5);
+        }
+
+        /* Style untuk pesan kesalahan */
+        .error-message {
+            color: var(--error-red);
+            font-size: 12px;
+            margin-top: 4px;
+            display: none; /* Default hidden */
+        }
+        
+        .error-message.visible {
+            display: block;
+        }
 
         .magic-icon {
             position: absolute;
@@ -263,22 +307,11 @@
 
         <div class="card-header">
             <h2 class="title">Smart Sketch</h2>
-            <p class="description">Ubah gambar sketsa Anda menjadi visual digital yang keren dengan bantuan AI.</p>
-        </div>
-
-        <div class="input-section upload-section">
-            <h3 class="step-title">1. Unggah Gambar Sketsa</h3>
-            <div class="upload-dropzone" id="dropzone">
-                <div class="upload-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15.232 5.232l3.536 3.536M12 21l-3.536-3.536L17.464 5.536l3.536 3.536L12 21zM9 12l-7 7l1.5 1.5l7-7"></path></svg>
-                </div>
-                <div class="upload-text" id="upload-text-status">Klik atau seret sketsa</div>
-            </div>
-            <input type="file" id="photo-upload" accept="image/*" style="display: none;">
+            <p class="description">Ubah gambar sketsa Anda menjadi visual digital yang keren dengan bantuan AI. Silahkan upload sketsa via Whatsapp setelah klik tombol Order.</p>
         </div>
         
         <div class="input-section goal-section">
-            <h3 class="step-title">2. Tujuan Gambar</h3>
+            <h3 class="step-title">1. Tujuan Gambar</h3>
             <div class="selection-grid goal-grid" data-group="goal">
                 
                 <button class="selection-btn active" data-value="Logo" onclick="selectOption(this, 'goal')">Logo</button>
@@ -294,9 +327,9 @@
         </div>
 
         <div class="input-section instruction-section">
-            <h3 class="step-title">3. Instruksi</h3>
+            <h3 class="step-title">2. Instruksi</h3>
             <div class="prompt-wrapper">
-                <textarea id="prompt-input" placeholder="Klik tombol magic untuk mengisi otomatis..."></textarea>
+                <textarea id="prompt-input" placeholder="Contoh: Ubah sketsa menjadi model 3D di pantai saat matahari terbenam..."></textarea>
                 <div class="magic-icon" onclick="autoFillPrompt()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"></path></svg>
                 </div>
@@ -304,47 +337,63 @@
         </div>
 
         <div class="input-section ratio-section">
-            <h3 class="step-title">4. Pilih Rasio</h3>
+            <h3 class="step-title">3. Pilih Rasio</h3>
             <div class="selection-grid ratio-grid" data-group="ratio">
                 
                 <button class="selection-btn active" data-value="1:1" onclick="selectOption(this, 'ratio')">
                     <svg viewBox="0 0 24 24" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" /></svg>
-                    1:1
+                    <strong>1:1</strong>
+                    <small>Cocok untuk Logo, Feed Instagram/Facebook, atau Foto Profil.</small>
                 </button>
 
                 <button class="selection-btn" data-value="16:9" onclick="selectOption(this, 'ratio')">
                     <svg viewBox="0 0 24 24" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2" /></svg>
-                    16:9
+                    <strong>16:9</strong>
+                    <small>Ideal untuk Banner Website, Gambar Produk Landscape, atau Thumbnail YouTube.</small>
                 </button>
 
                 <button class="selection-btn" data-value="9:16" onclick="selectOption(this, 'ratio')">
                     <svg viewBox="0 0 24 24" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" /></svg>
-                    9:16
+                    <strong>9:16</strong>
+                    <small>Sempurna untuk Stories/Reels Instagram/TikTok, atau Mobile Wallpaper.</small>
                 </button>
 
             </div>
         </div>
 
+        <div class="input-section contact-section">
+            <h3 class="step-title">4. Data Pemesan</h3>
+            
+            <div class="input-group">
+                <input type="text" id="nama-lengkap" placeholder="Nama Lengkap Anda (Min. 3 Karakter)" minlength="3" required>
+                <span class="error-message" id="error-nama">Nama harus diisi minimal 3 karakter.</span>
+            </div>
+            
+            <div class="input-group">
+                <input type="tel" id="nomor-whatsapp" placeholder="Nomor WhatsApp (Diawali 08, Min. 10 Digit)" pattern="08[0-9]{8,}" required>
+                <span class="error-message" id="error-wa">Nomor WA harus diawali '08' dan minimal 10 digit.</span>
+            </div>
+        </div>
+        
         <button class="btn-process" id="btn-process" disabled>
-            Order Smart Sketch
+            Klik untuk Order
         </button>
 
     </div>
 
     <script>
-        const dropzone = document.getElementById('dropzone');
-        const fileInput = document.getElementById('photo-upload');
-        const uploadTextStatus = document.getElementById('upload-text-status');
         const btnProcess = document.getElementById('btn-process');
         const promptInput = document.getElementById('prompt-input');
+        const namaInput = document.getElementById('nama-lengkap');
+        const waInput = document.getElementById('nomor-whatsapp');
         
-        let selectedFile = null; 
-
-        function getActiveData(group) {
-            const activeBtn = document.querySelector(`.selection-grid[data-group="${group}"] .selection-btn.active`);
-            return activeBtn ? activeBtn.getAttribute('data-value') : 'N/A';
-        }
-
+        // Element pesan error
+        const errorNama = document.getElementById('error-nama');
+        const errorWA = document.getElementById('error-wa');
+        
+        // Nomor WhatsApp tujuan
+        const targetWA = "6285133748005"; 
+        
         function selectOption(selectedButton, groupName) {
             const parent = selectedButton.closest('.selection-grid');
             const buttons = parent.querySelectorAll('.selection-btn');
@@ -355,107 +404,125 @@
         }
 
         function autoFillPrompt() {
-            promptInput.value = "Ubah sketsa ini menjadi logo minimalis 3D dengan warna neon biru dan latar belakang gelap.";
+            promptInput.value = "Ubah sketsa ini menjadi model 3D di pantai saat matahari terbenam dengan warna-warna cerah dan tekstur pasir realistis.";
             promptInput.dispatchEvent(new Event('input'));
         }
 
-        dropzone.addEventListener('click', () => {
-            fileInput.click();
-        });
+        // Fungsi validasi kustom
+        function validateInputs() {
+            const nama = namaInput.value.trim();
+            const wa = waInput.value.trim();
+            
+            // 1. Validasi Nama: Minimal 3 karakter
+            const isNameValid = nama.length >= 3;
+            
+            // 2. Validasi WA: Harus match pattern (diawali 08, minimal 10 digit total)
+            const waPattern = /^08[0-9]{8,}$/; 
+            const isWAValid = waPattern.test(wa);
+            
+            // Tampilkan/sembunyikan feedback visual
+            toggleValidationFeedback(namaInput, errorNama, isNameValid, "Nama harus diisi minimal 3 karakter.");
+            toggleValidationFeedback(waInput, errorWA, isWAValid, "Nomor WA harus diawali '08' dan minimal 10 digit.");
 
-        fileInput.addEventListener('change', function() {
-            if (this.files && this.files[0]) {
-                selectedFile = this.files[0];
-                const fileName = selectedFile.name;
-                
-                if (selectedFile.size > 5 * 1024 * 1024) { // 5MB limit
-                     alert('Peringatan: Ukuran file lebih dari 5MB. Proses Base64 mungkin gagal atau lambat. Gunakan file yang lebih kecil.');
-                }
-                
-                uploadTextStatus.textContent = `File Terpilih: ${fileName}`;
-                dropzone.style.borderColor = 'var(--neon-accent)';
-                dropzone.style.background = 'rgba(168, 85, 247, 0.1)';
-                dropzone.querySelector('.upload-icon svg').style.color = 'var(--neon-accent)';
-                
-                checkCompleteness();
+            return { isNameValid, isWAValid };
+        }
+
+        function toggleValidationFeedback(inputElement, errorElement, isValid, errorMessage) {
+            if (inputElement.value.trim() === '') {
+                // Jangan tampilkan error jika input kosong, cukup hapus kelas invalid
+                inputElement.classList.remove('input-invalid');
+                errorElement.classList.remove('visible');
+                return;
             }
-        });
+
+            if (isValid) {
+                inputElement.classList.remove('input-invalid');
+                errorElement.classList.remove('visible');
+            } else {
+                inputElement.classList.add('input-invalid');
+                errorElement.textContent = errorMessage;
+                errorElement.classList.add('visible');
+            }
+        }
         
         function checkCompleteness() {
-            const isGoalSelected = getActiveData('goal') !== 'N/A';
-            const isRatioSelected = getActiveData('ratio') !== 'N/A';
+            // Syarat minimal: Tujuan Gambar dipilih, Nama valid, dan WA valid
+            const isGoalSelected = document.querySelector('.selection-grid[data-group="goal"] .selection-btn.active') !== null;
             
-            if (selectedFile && isGoalSelected && isRatioSelected) {
+            const { isNameValid, isWAValid } = validateInputs();
+            
+            // Tombol hanya aktif jika Tujuan, Nama valid, dan WA valid
+            if (isGoalSelected && isNameValid && isWAValid) {
                 btnProcess.disabled = false;
             } else {
                 btnProcess.disabled = true;
             }
         }
+        
+        // --- LOGIKA TOMBOL "KLIK UNTUK ORDER" ---
+        btnProcess.addEventListener('click', function(event) {
+            
+            // Lakukan validasi terakhir
+            const { isNameValid, isWAValid } = validateInputs();
 
-        // --- FUNGSI BASE64 DAN ORDER BARU ---
-        function processFileAndOrder() {
-            if (!selectedFile) return;
+            if (!isNameValid || !isWAValid) {
+                // Scroll ke bagian contact section
+                document.querySelector('.contact-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                alert("Mohon lengkapi atau perbaiki data pemesan yang ditandai.");
+                return;
+            }
 
-            const reader = new FileReader();
-
-            reader.onloadstart = () => {
-                btnProcess.textContent = "Processing File...";
-                btnProcess.disabled = true;
-            };
-
-            reader.onload = function(event) {
-                const base64String = event.target.result;
+            // Jika tombol tidak disabled (berarti semua sudah divalidasi dan valid)
+            if (!btnProcess.disabled) {
+                const namaLengkap = namaInput.value.trim();
+                const nomorWA = waInput.value.trim();
                 
-                // Ambil data rincian
-                const goal = getActiveData('goal');
-                const ratio = getActiveData('ratio');
-                const prompt = promptInput.value;
-
+                // Ambil nilai teks dari tombol yang aktif
+                const selectedGoal = document.querySelector('.selection-grid[data-group="goal"] .selection-btn.active').textContent.trim();
+                
+                // Ambil teks dari strong (untuk Rasio)
+                const selectedRatioElement = document.querySelector('.selection-grid[data-group="ratio"] .selection-btn.active strong');
+                const selectedRatio = selectedRatioElement ? selectedRatioElement.textContent.trim() : 'N/A';
+                
+                // Ambil instruksi, jika kosong beri label T/A
+                const instruksi = promptInput.value.trim();
+                const instruksiTampil = instruksi || "T/A";
+                
+                // Format data untuk disimpan/dicatat (Contoh log di console)
                 const orderData = {
-                    layanan: 'Smart Sketch',
-                    goal: goal,
-                    ratio: ratio,
-                    prompt: prompt,
-                    file_base64: base64String,
-                    file_name: selectedFile.name,
-                    file_type: selectedFile.type
+                    nama: namaLengkap,
+                    whatsapp: nomorWA,
+                    tujuan: selectedGoal,
+                    rasio: selectedRatio,
+                    instruksi: instruksi,
+                    timestamp: new Date().toISOString()
                 };
                 
-                localStorage.setItem('pendingOrderDetails', JSON.stringify(orderData));
-                window.location.href = 'DISCLAIMER edit.html';
-            };
-
-            reader.onerror = (error) => {
-                alert('Gagal membaca file. Ukuran file mungkin terlalu besar atau format tidak didukung. Coba gambar lain.');
-                btnProcess.textContent = "Order Smart Sketch";
-                btnProcess.disabled = false;
-            };
-
-            reader.readAsDataURL(selectedFile);
-        }
-
-        btnProcess.addEventListener('click', processFileAndOrder);
-        // --- AKHIR FUNGSI BASE64 DAN ORDER BARU ---
+                console.log("--- ORDER TERSIMPAN (simulasi database) ---");
+                console.log(orderData);
+                
+                // FORMAT PESAN WHATSAPP DENGAN BARIS BARU
+                let waMessage = `Halo saya ${namaLengkap}, baru saja order *Smart Sketch*.\n\n*Detail Order:*\n*Tujuan Gambar:* ${selectedGoal}\n*Rasio:* ${selectedRatio}\n*Instruksi:* ${instruksiTampil}\n\nFile sketsa akan segera saya kirim ke sini. Mohon segera diproses ya, Terima kasih!`;
+                
+                // Encode pesan untuk URL
+                const encodedMessage = encodeURIComponent(waMessage);
+                
+                // Buka link WhatsApp (akan membuka tab/aplikasi baru)
+                window.open(`https://wa.me/${targetWA}?text=${encodedMessage}`, '_blank');
+                
+                // Opsional: Beri feedback ke user
+                alert("Order Anda telah tercatat. Silakan lanjutkan di WhatsApp untuk mengirimkan sketsa!");
+                
+                // KEMBALI KE MENU LAYANAN.HTML setelah order selesai
+                window.location.href = "MENU LAYANAN.HTML";
+            }
+        });
         
         document.addEventListener('DOMContentLoaded', checkCompleteness);
         
-        // Drag and drop listeners
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropzone.addEventListener(eventName, preventDefaults, false);
-        });
-
-        function preventDefaults (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-
-        function handleDrop(e) {
-            let dt = e.dataTransfer;
-            fileInput.files = dt.files;
-            fileInput.dispatchEvent(new Event('change')); 
-        }
-        dropzone.addEventListener('drop', handleDrop, false);
-
+        // Tambahkan event listener untuk input teks agar tombol terupdate dan feedback ditampilkan secara realtime
+        namaInput.addEventListener('input', checkCompleteness);
+        waInput.addEventListener('input', checkCompleteness);
         promptInput.addEventListener('input', checkCompleteness);
 
     </script>

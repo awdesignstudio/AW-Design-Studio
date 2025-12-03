@@ -19,7 +19,7 @@
             --border: rgba(255, 255, 255, 0.1);
             --neon-accent: #a855f7;
             --neon-cyan: #00bcd4;
-            --error-red: #ef4444; /* Ditambahkan untuk konsistensi error */
+            --error-red: #ef4444;
         }
 
         * { box-sizing: border-box; font-family: 'Outfit', sans-serif; margin: 0; padding: 0; }
@@ -188,28 +188,17 @@
             box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
         }
         
-        /* STYLE UNTUK RASIO (STRONG & SMALL) */
-        .selection-btn strong { /* Nama Rasio */
+        /* STYLE UNTUK RASIO (STRONG - simplified since small is removed) */
+        .selection-btn strong { 
             font-size: 12px;
             font-weight: 700;
             color: var(--text-main);
-            margin-top: 2px;
-            margin-bottom: 4px; /* SPASI VERTICAL DI SINI */
+            margin-top: 0;
+            margin-bottom: 0; 
             line-height: 1.2;
         }
         
-        .selection-btn small { /* Penjelasan Rasio */
-            font-size: 9px;
-            color: var(--text-muted);
-            line-height: 1.2;
-            height: 30px; /* Tinggi tetap agar tampilan konsisten */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 2px;
-            font-weight: 400;
-        }
-        /* Akhir Style Rasio */
+        /* REMOVE STYLING FOR <small> */
         
         /* DROPDOWN & TEXT INPUT */
         .input-text, select, .input-small-grid input {
@@ -235,6 +224,30 @@
         .input-group input {
             height: 48px;
         }
+        
+        /* --- NEW: INFO BOX UNTUK RASIO --- */
+        .ratio-info-box {
+            margin-top: -10px; 
+            margin-bottom: 25px; 
+            padding: 12px 15px;
+            background: rgba(168, 85, 247, 0.05);
+            border: 1px dashed var(--border);
+            border-radius: 10px;
+            font-size: 13px;
+            color: var(--text-muted);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        .ratio-info-box.highlight {
+            border-color: var(--neon-accent);
+            color: var(--text-main);
+            background: rgba(168, 85, 247, 0.1);
+        }
+
         
         /* VALIDASI ERROR STYLING */
         .input-group input.input-invalid {
@@ -368,24 +381,23 @@
 
                 <h3 class="step-title">4. Pilih Rasio</h3>
                 <div class="selection-grid grid-4" data-group="ratio-bayi">
-                    <button class="selection-btn active" data-value="1:1" onclick="selectOption(this)">
+                    <button class="selection-btn active" data-value="1:1" data-desc="Cocok untuk Feed IG/FB atau Foto Profil." onclick="selectOption(this)">
                         <strong>1:1</strong>
-                        <small>Cocok untuk Feed IG/FB atau Foto Profil.</small>
                     </button>
-                    <button class="selection-btn" data-value="16:9" onclick="selectOption(this)">
+                    <button class="selection-btn" data-value="16:9" data-desc="Sempurna untuk Postingan Landscape atau Wallpaper Desktop." onclick="selectOption(this)">
                         <strong>16:9</strong>
-                        <small>Sempurna untuk Postingan Landscape atau Wallpaper Desktop.</small>
                     </button>
-                    <button class="selection-btn" data-value="3:4" onclick="selectOption(this)">
+                    <button class="selection-btn" data-value="3:4" data-desc="Ideal untuk cetak foto bingkai standar (Frame Photo)." onclick="selectOption(this)">
                         <strong>3:4</strong>
-                        <small>Ideal untuk cetak foto bingkai standar (Frame Photo).</small>
                     </button>
-                    <button class="selection-btn" data-value="9:16" onclick="selectOption(this)">
+                    <button class="selection-btn" data-value="9:16" data-desc="Cocok untuk Stories/Reels IG, TikTok, atau Mobile Wallpaper." onclick="selectOption(this)">
                         <strong>9:16</strong>
-                        <small>Cocok untuk Stories/Reels IG, TikTok, atau Mobile Wallpaper.</small>
                     </button>
                 </div>
-
+                <div class="ratio-info-box">
+                    <span style="font-size: 14px; margin-right: 5px;">💡</span>
+                    <span class="ratio-desc-text">Cocok untuk Feed IG/FB atau Foto Profil.</span>
+                </div>
             </div>
 
             <div id="Anak" class="tab-content-panel">
@@ -415,22 +427,22 @@
 
                 <h3 class="step-title">4. Pilih Rasio</h3>
                 <div class="selection-grid grid-4" data-group="ratio-anak">
-                    <button class="selection-btn active" data-value="1:1" onclick="selectOption(this)">
+                    <button class="selection-btn active" data-value="1:1" data-desc="Cocok untuk Feed IG/FB atau Foto Profil." onclick="selectOption(this)">
                         <strong>1:1</strong>
-                        <small>Cocok untuk Feed IG/FB atau Foto Profil.</small>
                     </button>
-                    <button class="selection-btn" data-value="16:9" onclick="selectOption(this)">
+                    <button class="selection-btn" data-value="16:9" data-desc="Sempurna untuk Postingan Landscape atau Wallpaper Desktop." onclick="selectOption(this)">
                         <strong>16:9</strong>
-                        <small>Sempurna untuk Postingan Landscape atau Wallpaper Desktop.</small>
                     </button>
-                    <button class="selection-btn" data-value="3:4" onclick="selectOption(this)">
+                    <button class="selection-btn" data-value="3:4" data-desc="Ideal untuk cetak foto bingkai standar (Frame Photo)." onclick="selectOption(this)">
                         <strong>3:4</strong>
-                        <small>Ideal untuk cetak foto bingkai standar (Frame Photo).</small>
                     </button>
-                    <button class="selection-btn" data-value="9:16" onclick="selectOption(this)">
+                    <button class="selection-btn" data-value="9:16" data-desc="Cocok untuk Stories/Reels IG, TikTok, atau Mobile Wallpaper." onclick="selectOption(this)">
                         <strong>9:16</strong>
-                        <small>Cocok untuk Stories/Reels IG, TikTok, atau Mobile Wallpaper.</small>
                     </button>
+                </div>
+                 <div class="ratio-info-box">
+                    <span style="font-size: 14px; margin-right: 5px;">💡</span>
+                    <span class="ratio-desc-text">Cocok untuk Feed IG/FB atau Foto Profil.</span>
                 </div>
                 
             </div>
@@ -464,22 +476,22 @@
 
                 <h3 class="step-title">4. Pilih Rasio</h3>
                 <div class="selection-grid grid-4" data-group="ratio-haji">
-                    <button class="selection-btn active" data-value="1:1" onclick="selectOption(this)">
+                    <button class="selection-btn active" data-value="1:1" data-desc="Cocok untuk Feed IG/FB atau Foto Profil." onclick="selectOption(this)">
                         <strong>1:1</strong>
-                        <small>Cocok untuk Feed IG/FB atau Foto Profil.</small>
                     </button>
-                    <button class="selection-btn" data-value="16:9" onclick="selectOption(this)">
+                    <button class="selection-btn" data-value="16:9" data-desc="Sempurna untuk Postingan Landscape atau Wallpaper Desktop." onclick="selectOption(this)">
                         <strong>16:9</strong>
-                        <small>Sempurna untuk Postingan Landscape atau Wallpaper Desktop.</small>
                     </button>
-                    <button class="selection-btn" data-value="3:4" onclick="selectOption(this)">
+                    <button class="selection-btn" data-value="3:4" data-desc="Ideal untuk cetak foto bingkai standar (Frame Photo)." onclick="selectOption(this)">
                         <strong>3:4</strong>
-                        <small>Ideal untuk cetak foto bingkai standar (Frame Photo).</small>
                     </button>
-                    <button class="selection-btn" data-value="9:16" onclick="selectOption(this)">
+                    <button class="selection-btn" data-value="9:16" data-desc="Cocok untuk Stories/Reels IG, TikTok, atau Mobile Wallpaper." onclick="selectOption(this)">
                         <strong>9:16</strong>
-                        <small>Cocok untuk Stories/Reels IG, TikTok, atau Mobile Wallpaper.</small>
                     </button>
+                </div>
+                 <div class="ratio-info-box">
+                    <span style="font-size: 14px; margin-right: 5px;">💡</span>
+                    <span class="ratio-desc-text">Cocok untuk Feed IG/FB atau Foto Profil.</span>
                 </div>
             </div>
 
@@ -503,24 +515,23 @@
 
                 <h3 class="step-title">3. Pilih Rasio</h3>
                 <div class="selection-grid grid-4" data-group="ratio-hamil">
-                    <button class="selection-btn active" data-value="1:1" onclick="selectOption(this)">
+                    <button class="selection-btn active" data-value="1:1" data-desc="Cocok untuk Feed IG/FB atau Foto Profil." onclick="selectOption(this)">
                         <strong>1:1</strong>
-                        <small>Cocok untuk Feed IG/FB atau Foto Profil.</small>
                     </button>
-                    <button class="selection-btn" data-value="16:9" onclick="selectOption(this)">
+                    <button class="selection-btn" data-value="16:9" data-desc="Sempurna untuk Postingan Landscape atau Wallpaper Desktop." onclick="selectOption(this)">
                         <strong>16:9</strong>
-                        <small>Sempurna untuk Postingan Landscape atau Wallpaper Desktop.</small>
                     </button>
-                    <button class="selection-btn" data-value="3:4" onclick="selectOption(this)">
+                    <button class="selection-btn" data-value="3:4" data-desc="Ideal untuk cetak foto bingkai standar (Frame Photo)." onclick="selectOption(this)">
                         <strong>3:4</strong>
-                        <small>Ideal untuk cetak foto bingkai standar (Frame Photo).</small>
                     </button>
-                    <button class="selection-btn" data-value="9:16" onclick="selectOption(this)">
+                    <button class="selection-btn" data-value="9:16" data-desc="Cocok untuk Stories/Reels IG, TikTok, atau Mobile Wallpaper." onclick="selectOption(this)">
                         <strong>9:16</strong>
-                        <small>Cocok untuk Stories/Reels IG, TikTok, atau Mobile Wallpaper.</small>
                     </button>
                 </div>
-
+                 <div class="ratio-info-box">
+                    <span style="font-size: 14px; margin-right: 5px;">💡</span>
+                    <span class="ratio-desc-text">Cocok untuk Feed IG/FB atau Foto Profil.</span>
+                </div>
             </div>
 
         </div>
@@ -547,7 +558,6 @@
         const namaInput = document.getElementById('nama-lengkap');
         const waInput = document.getElementById('nomor-whatsapp');
         
-        // Element pesan error
         const errorNama = document.getElementById('error-nama');
         const errorWA = document.getElementById('error-wa');
         
@@ -567,20 +577,53 @@
             evt.currentTarget.classList.add('active');
             
             checkCompleteness();
+            
+            // Logika untuk reset deskripsi rasio saat tab berganti
+            if (tabName !== 'PasFoto') {
+                const activeTabPanel = document.getElementById(tabName);
+                const defaultActiveRatioButton = activeTabPanel.querySelector('.selection-grid[data-group^="ratio-"] .selection-btn.active');
+                if (defaultActiveRatioButton) {
+                    // Panggil selectOption untuk memastikan deskripsi rasio muncul saat tab dibuka
+                    selectOption(defaultActiveRatioButton, true); 
+                }
+            }
         }
 
         // --- 2. LOGIKA PILIHAN DAN VALIDASI ---
 
-        function selectOption(selectedButton) {
+        function selectOption(selectedButton, isTabSwitch = false) {
             const parent = selectedButton.closest('.selection-grid');
             const buttons = parent.querySelectorAll('.selection-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            selectedButton.classList.add('active');
+            
+            if (!isTabSwitch) {
+                buttons.forEach(btn => btn.classList.remove('active'));
+                selectedButton.classList.add('active');
+            }
+            
+            // --- LOGIKA UPDATE TEKS DESKRIPSI RASIO ---
+            const group = parent.getAttribute('data-group');
+            
+            if (group && group.startsWith('ratio-')) {
+                const descText = selectedButton.getAttribute('data-desc');
+                const infoBox = parent.nextElementSibling; // Get the .ratio-info-box immediately following the grid
+                
+                if (infoBox) {
+                    const descElement = infoBox.querySelector('.ratio-desc-text');
+                    
+                    if (!isTabSwitch) { // Hanya highlight jika diklik, bukan saat ganti tab
+                        infoBox.classList.add('highlight');
+                        setTimeout(() => infoBox.classList.remove('highlight'), 300);
+                    }
+
+                    if (descElement) {
+                         descElement.textContent = descText;
+                    }
+                }
+            }
             
             checkCompleteness();
         }
         
-        // Fungsi validasi kustom
         function validateInputs() {
             const nama = namaInput.value.trim();
             const wa = waInput.value.trim();
@@ -612,7 +655,6 @@
             }
         }
         
-        // Cek kelengkapan form
         function checkCompleteness() {
             const { isNameValid, isWAValid } = validateInputs();
             
@@ -624,7 +666,13 @@
         }
         
         document.addEventListener('DOMContentLoaded', () => {
-             document.getElementById('PasFoto').classList.add('active');
+             // Pastikan tab PasFoto aktif dan cek kelengkapan
+             const defaultTabButton = document.querySelector('.tab-button.active');
+             if (!defaultTabButton) {
+                 document.querySelector('.tab-button').classList.add('active');
+                 document.getElementById('PasFoto').classList.add('active');
+             }
+             
              namaInput.addEventListener('input', checkCompleteness);
              waInput.addEventListener('input', checkCompleteness);
              
@@ -650,7 +698,6 @@
             const data = { category: category };
             let dataWA = [];
             
-            // Map label untuk teks yang lebih deskriptif
             const labelMap = {
                 'PasFoto': 'Pas Foto', 'Bayi': 'Bayi Baru Lahir', 'Anak': 'Anak-anak',
                 'HajiUmroh': 'Haji/Umroh', 'Hamil': 'Ibu Hamil',
@@ -675,14 +722,13 @@
                     
                     let label;
                     const strongElement = activeBtn.querySelector('strong');
-                    // Ambil teks dari strong jika ada (untuk Rasio), jika tidak ambil teks biasa (untuk pilihan kategori lain)
                     if (strongElement) {
                          label = strongElement.textContent.trim();
                     } else {
                          label = activeBtn.textContent.trim();
                     }
                     
-                    if (label.length > 20) label = activeBtn.getAttribute('data-value'); // Fallback jika teks terlalu panjang
+                    if (label.length > 20) label = activeBtn.getAttribute('data-value'); 
                     dataWA.push(`*${labelMap[group] || group}:* ${label}`);
                 }
             });
@@ -698,14 +744,12 @@
                 }
             });
             
-            // Format Rincian untuk WA, dipisahkan dengan BARIS BARU
             data.rincianWA = dataWA.join('\n');
             
             return data;
         }
 
         btnProcess.addEventListener('click', function() {
-            // Lakukan validasi terakhir
             const { isNameValid, isWAValid } = validateInputs();
 
             if (!isNameValid || !isWAValid) {
@@ -724,7 +768,6 @@
                  return;
              }
 
-             // Format data untuk dikirim/disimpan (Simulasi database)
              const finalOrderData = {
                  nama: namaLengkap,
                  whatsapp: waInput.value.trim(),
@@ -735,16 +778,12 @@
              console.log("--- ORDER PHOTOGRAPHER TERSIMPAN (simulasi database) ---");
              console.log(finalOrderData);
              
-             // Format pesan WhatsApp dengan baris baru (\n)
              let waMessage = `Halo saya ${namaLengkap}, baru saja order *PHOTOGRAPHER*\n*Kategori:* ${orderDetails.category}\n\n*Detail Order:*\n${orderDetails.rincianWA}\n\nFile foto akan segera saya kirim ke sini. Mohon segera diproses ya, Terima kasih!`;
              
-             // Encode pesan untuk URL (Newlines: %0A)
              const encodedMessage = encodeURIComponent(waMessage);
              
-             // Buka link WhatsApp
              window.open(`https://wa.me/${targetWA}?text=${encodedMessage}`, '_blank');
              
-             // Redirect ke menu layanan setelah Order diproses
              alert("Order Anda telah tercatat. Silakan lanjutkan di WhatsApp untuk mengirimkan foto!");
              window.location.href = 'MENU LAYANAN.HTML';
         });

@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 1. SETUP CSS VARIABLE (Konsisten dengan tema AW Design Studio) --- */
+        /* 1. SETUP VARIABEL & DASAR (Sama dengan tema sebelumnya) */
         :root {
             --bg-dark: #09090b;
             --surface-dark: #18181b;
@@ -17,8 +17,8 @@
             --text-main: #ffffff;
             --text-muted: #a1a1aa;
             --border: rgba(255, 255, 255, 0.1);
-            --neon-accent: #a855f7; 
-            --neon-cyan: #00bcd4;
+            --neon-accent: #a855f7;
+            --error-red: #ef4444; /* Ditambahkan untuk konsistensi error */
         }
 
         * {
@@ -31,8 +31,8 @@
         body {
             background-color: var(--bg-dark);
             background-image: 
-                radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 10% 90%, rgba(236, 72, 153, 0.1) 0%, transparent 40%);
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 40%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -40,7 +40,8 @@
             color: var(--text-main);
             padding: 20px;
         }
-        
+
+        /* CSS KHUSUS TOMBOL KEMBALI */
         .back-button {
             display: inline-flex;
             align-items: center;
@@ -62,10 +63,11 @@
             color: var(--neon-accent);
         }
 
+        /* 2. KARTU UTAMA (GLASSMORPHISM) */
         .fusion-card {
-            background: rgba(24, 24, 27, 0.8);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+            background: rgba(24, 24, 27, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             width: 100%;
             max-width: 520px;
             padding: 32px;
@@ -78,6 +80,7 @@
             overflow-y: auto;
         }
 
+        /* Garis neon di bagian atas */
         .fusion-card::before {
             content: '';
             position: absolute;
@@ -112,7 +115,7 @@
             margin: 0 auto;
         }
         
-        /* 4. BAGIAN UPLOAD (SINGLE ZONE) */
+        /* 4. BAGIAN UPLOAD (DIHAPUS, TAPI DIPERLUAS UNTUK INPUT BARU) */
         .label-section {
             font-size: 12px;
             text-transform: uppercase;
@@ -123,65 +126,14 @@
             justify-content: space-between;
         }
         
-        .alert-info {
-            color: orange; 
-            font-size: 13px;
-            margin-top: 15px;
-            line-height: 1.4;
-            border-top: 1px solid var(--border);
-            padding-top: 15px;
-        }
-
-        .upload-dropzone {
-            min-height: 160px;
-            border: 2px dashed var(--neon-cyan);
-            border-radius: 16px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            text-align: center;
-            background: var(--surface-dark);
-            transition: all 0.3s;
+        /* 5. BAGIAN INPUT TEXT & BARU */
+        .prompt-wrapper, .input-group {
             position: relative;
+            margin-bottom: 20px;
         }
         
-        .upload-dropzone:hover {
-            border-color: var(--neon-accent);
-            background: rgba(168, 85, 247, 0.1);
-        }
-
-        .upload-icon svg {
-            width: 48px;
-            height: 48px;
-            color: var(--neon-cyan);
-            margin-bottom: 10px;
-            stroke-width: 1.5;
-        }
-
-        .upload-text {
-            color: var(--text-muted);
-            font-size: 14px;
-            font-weight: 500;
-        }
-        
-        .upload-count-status {
-            font-size: 12px;
-            color: var(--text-main);
-            margin-top: 5px;
-            font-weight: 700;
-        }
-
-        /* 5. BAGIAN INPUT TEXT (Dark & Clean) */
-        .prompt-wrapper {
-            position: relative;
-            margin-bottom: 32px;
-        }
-
-        textarea {
+        textarea, input[type="text"], input[type="tel"] {
             width: 100%;
-            height: 120px;
             background: var(--surface-dark);
             border: 1px solid var(--border);
             border-radius: 16px;
@@ -194,13 +146,39 @@
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
         }
 
-        textarea:focus {
+        textarea {
+            height: 120px;
+        }
+        
+        input[type="text"], input[type="tel"] {
+            height: 48px;
+        }
+
+        textarea:focus, input[type="text"]:focus, input[type="tel"]:focus {
             border-color: #a855f7;
             box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2), inset 0 2px 4px rgba(0,0,0,0.3);
         }
 
-        textarea::placeholder {
+        textarea::placeholder, input[type="text"]::placeholder, input[type="tel"]::placeholder {
             color: #52525b;
+        }
+        
+        /* Style untuk input yang tidak valid (Kotak Merah) */
+        .input-group input.input-invalid {
+            border-color: var(--error-red) !important;
+            box-shadow: 0 0 5px rgba(239, 68, 68, 0.5) !important;
+        }
+
+        /* Style untuk pesan kesalahan */
+        .error-message {
+            color: var(--error-red);
+            font-size: 12px;
+            margin-top: 4px;
+            display: none; /* Default hidden */
+        }
+        
+        .error-message.visible {
+            display: block;
         }
 
         .ai-badge {
@@ -235,7 +213,7 @@
             background: transparent;
             border: 1px solid var(--border);
             color: var(--text-muted);
-            padding: 12px;
+            padding: 12px 8px; /* Padding disesuaikan */
             border-radius: 12px;
             cursor: pointer;
             display: flex;
@@ -245,11 +223,28 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            text-align: center; 
         }
 
-        .ratio-btn span {
-            font-size: 12px;
+        .ratio-btn strong { /* Untuk nama rasio */
+            font-size: 13px;
             font-weight: 600;
+            color: var(--text-main);
+            /* --- MODIFIKASI: Menambah margin-bottom untuk spasi di atas teks kecil --- */
+            margin-top: 4px; 
+            margin-bottom: 4px; 
+            /* --------------------------------------------------------------------- */
+        }
+        
+        .ratio-btn small { /* Untuk contoh penggunaan */
+            font-size: 10px;
+            color: var(--text-muted);
+            line-height: 1.3;
+            height: 30px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 2px;
         }
 
         .ratio-icon {
@@ -277,9 +272,13 @@
             opacity: 1;
             border-color: #a855f7;
         }
+        
+        .ratio-btn.active strong, .ratio-btn.active small {
+            color: white;
+        }
 
         /* 7. GENERATE BUTTON (CTA) */
-        .btn-order {
+        .generate-btn {
             width: 100%;
             padding: 16px;
             border: none;
@@ -296,13 +295,13 @@
             gap: 10px;
         }
 
-        .btn-order:hover:not(:disabled) {
+        .generate-btn:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
         }
         
         /* State Disabled */
-        .btn-order:disabled {
+        .generate-btn:disabled {
             background: #3f3f46;
             cursor: not-allowed;
             opacity: 0.5;
@@ -323,35 +322,14 @@
 
         <header>
             <h1>Image Fusion</h1>
-            <p class="subtitle">Pilih minimal 2 gambar sumber, tambahkan panduan teks, dan kami akan meraciknya menjadi visual baru.</p>
+            <p class="subtitle">Tentukan ADEGAN YANG DIINGINKAN dari dua atau lebih foto yang akan digabungkan. Silahkan kirim File foto yang ingin diedit via WhatsApp setelah Anda menekan tombol Order.</p>
         </header>
 
-        <input type="file" id="image-upload" accept="image/jpeg, image/png, application/zip, application/x-rar-compressed, .zip, .rar" style="display: none;">
-
         <div class="label-section">
-            <span>Source Image (Primary)</span>
-            <span id="image-count-status">0 / Min. 2</span>
-        </div>
-        
-        <div class="upload-container" id="upload-zone">
-            
-            <div class="upload-dropzone" id="primary-slot">
-                <div class="upload-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>
-                </div>
-                <div class="upload-text">Klik atau seret file</div>
-            </div>
-            
-            <p class="alert-info">
-                ⚠️ **Image Fusion** memerlukan minimal 2 foto sumber. Silakan unggah **satu file ZIP/RAR** berisi semua foto, atau unggah **satu foto utama** lalu akan diarahkan untuk konfirmasi file pendukung ke WA Admin (085133748005) setelah Order.
-            </p>
-        </div>
-
-        <div class="label-section">
-            <span>AI Instructions (Wajib)</span>
+            <span>1. Deskripsi Adegan (Wajib)</span>
         </div>
         <div class="prompt-wrapper">
-            <textarea id="prompt-input" placeholder="Deskripsikan hasil akhir yang diinginkan, termasuk file pendukung yang akan Anda kirim terpisah..."></textarea>
+            <textarea id="prompt-input" placeholder="Contoh: Gabungkan latar belakang foto A dengan objek utama (wajah) dari foto B, buat dalam gaya lukisan cat minyak yang dramatis."></textarea>
             <div class="ai-badge">
                 <svg class="ai-sparkle" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L14.4 9.6L22 12L14.4 14.4L12 22L9.6 14.4L2 12L9.6 9.6L12 2Z"></path></svg>
                 AI Enhanced
@@ -359,202 +337,175 @@
         </div>
 
         <div class="label-section">
-            <span>Output Dimension</span>
+            <span>2. Output Dimension (Wajib)</span>
         </div>
         <div class="ratio-grid">
             <button class="ratio-btn active" data-ratio="1:1" onclick="selectRatio(this)">
                 <div class="ratio-icon icon-1-1"></div>
-                <span>Square (1:1)</span>
+                <strong>Square (1:1)</strong>
+                <small>Cocok untuk Feed Instagram/Facebook atau Foto Profil.</small>
             </button>
             <button class="ratio-btn" data-ratio="16:9" onclick="selectRatio(this)">
                 <div class="ratio-icon icon-16-9"></div>
-                <span>Landscape (16:9)</span>
+                <strong>Landscape (16:9)</strong>
+                <small>Ideal untuk Banner Website, Thumbnail YouTube, atau Desktop Wallpaper.</small>
             </button>
             <button class="ratio-btn" data-ratio="9:16" onclick="selectRatio(this)">
                 <div class="ratio-icon icon-9-16"></div>
-                <span>Portrait (9:16)</span>
+                <strong>Portrait (9:16)</strong>
+                <small>Sempurna untuk Stories/Reels Instagram, TikTok, atau Mobile Wallpaper.</small>
             </button>
         </div>
 
-        <button class="btn-order" id="btn-order" disabled>
-            Order Image Fusion
+        <div class="label-section">
+            <span>3. Data Pemesan (Wajib)</span>
+        </div>
+        <div class="input-group">
+            <input type="text" id="nama-lengkap" placeholder="Nama Lengkap Anda (Min. 3 Karakter)" minlength="3" required>
+            <span class="error-message" id="error-nama">Nama harus diisi minimal 3 karakter.</span>
+        </div>
+        <div class="input-group">
+            <input type="tel" id="nomor-whatsapp" placeholder="Nomor WhatsApp (Diawali 08, Min. 10 Digit)" pattern="08[0-9]{8,}" required>
+            <span class="error-message" id="error-wa">Nomor WA harus diawali '08' dan minimal 10 digit.</span>
+        </div>
+        
+        <button class="generate-btn" id="btn-order" disabled>
+            Klik untuk Order
         </button>
 
     </div>
 
     <script>
-        const primarySlot = document.getElementById('primary-slot');
-        const imageUpload = document.getElementById('image-upload');
-        const imageCountStatus = document.getElementById('image-count-status');
         const promptInput = document.getElementById('prompt-input');
         const btnOrder = document.getElementById('btn-order');
-
-        let selectedFile = null;
-        const ADMIN_WA = '6285133748005'; // Nomor WA Admin
-
-        function getActiveRatio() {
-            const activeBtn = document.querySelector('.ratio-btn.active');
-            return activeBtn ? activeBtn.getAttribute('data-ratio') : 'N/A';
-        }
+        const namaInput = document.getElementById('nama-lengkap');
+        const waInput = document.getElementById('nomor-whatsapp');
+        
+        // Element pesan error
+        const errorNama = document.getElementById('error-nama');
+        const errorWA = document.getElementById('error-wa');
+        
+        // Nomor WhatsApp tujuan
+        const targetWA = "6285133748005"; // Menggunakan kode negara untuk format WA link
 
         function selectRatio(selectedButton) {
-            document.querySelectorAll('.ratio-btn').forEach(btn => btn.classList.remove('active'));
+            const buttons = document.querySelectorAll('.ratio-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
             selectedButton.classList.add('active');
             checkCompleteness();
         }
-
-        primarySlot.addEventListener('click', () => {
-            imageUpload.click();
-        });
-
-        imageUpload.addEventListener('change', function() {
-            if (this.files && this.files.length > 0) {
-                // Hanya memproses file pertama (Primary)
-                selectedFile = this.files[0];
-                const fileName = selectedFile.name;
-                
-                if (this.files.length > 1) {
-                     alert('Peringatan: Anda memilih lebih dari 1 file. Hanya file pertama yang akan diunggah. Jika Anda ingin mengirim banyak foto sekaligus, silakan kompresi (ZIP/RAR) semua file menjadi SATU file.');
-                }
-                
-                if (selectedFile.size > 10 * 1024 * 1024) { // 10MB limit
-                     alert('Peringatan: Ukuran file lebih dari 10MB. Proses Base64 mungkin gagal atau sangat lambat. Gunakan file yang lebih kecil.');
-                }
-                
-                // Cek apakah file adalah ZIP/RAR
-                const isArchive = fileName.toLowerCase().endsWith('.zip') || fileName.toLowerCase().endsWith('.rar');
-                
-                let iconHtml = '';
-                if (isArchive) {
-                    iconHtml = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>`;
-                } else {
-                     iconHtml = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>`;
-                }
-                
-                primarySlot.innerHTML = `<div class="upload-icon">${iconHtml}</div><div class="upload-text">${fileName}</div>`;
-                primarySlot.style.borderColor = 'var(--neon-accent)';
-                primarySlot.style.background = 'rgba(168, 85, 247, 0.1)';
-                primarySlot.querySelector('.upload-icon svg').style.color = 'var(--neon-accent)';
-                
-                imageCountStatus.textContent = `1 File (${fileName})`;
-                
-                checkCompleteness();
-            } else {
-                 selectedFile = null;
-                 primarySlot.innerHTML = `<div class="upload-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M12 12v9"></path><path d="m8 17 4 4 4-4"></path></svg></div><div class="upload-text">Klik atau seret file</div>`;
-                 imageCountStatus.textContent = `0 / Min. 2`;
-                 checkCompleteness();
-            }
-        });
-
-        function checkCompleteness() {
-            const isImageUploaded = selectedFile !== null;
-            const isPromptFilled = promptInput.value.trim().length > 0;
-            const isRatioSelected = getActiveRatio() !== 'N/A';
+        
+        // Fungsi validasi kustom
+        function validateInputs() {
+            const nama = namaInput.value.trim();
+            const wa = waInput.value.trim();
             
-            if (isImageUploaded && isPromptFilled && isRatioSelected) {
+            // 1. Validasi Nama: Minimal 3 karakter
+            const isNameValid = nama.length >= 3;
+            
+            // 2. Validasi WA: Harus match pattern (diawali 08, minimal 10 digit total)
+            const waPattern = /^08[0-9]{8,}$/; 
+            const isWAValid = waPattern.test(wa);
+            
+            // Tampilkan/sembunyikan feedback visual
+            toggleValidationFeedback(namaInput, errorNama, isNameValid, "Nama harus diisi minimal 3 karakter.");
+            toggleValidationFeedback(waInput, errorWA, isWAValid, "Nomor WA harus diawali '08' dan minimal 10 digit.");
+
+            return { isNameValid, isWAValid };
+        }
+
+        function toggleValidationFeedback(inputElement, errorElement, isValid, errorMessage) {
+            if (inputElement.value.trim() === '') {
+                // Jangan tampilkan error jika input kosong, cukup hapus kelas invalid
+                inputElement.classList.remove('input-invalid');
+                errorElement.classList.remove('visible');
+                return;
+            }
+
+            if (isValid) {
+                inputElement.classList.remove('input-invalid');
+                errorElement.classList.remove('visible');
+            } else {
+                inputElement.classList.add('input-invalid');
+                errorElement.textContent = errorMessage;
+                errorElement.classList.add('visible');
+            }
+        }
+
+        // Cek kelengkapan form
+        function checkCompleteness() {
+            const isPromptFilled = promptInput.value.trim().length > 0;
+            const isRatioSelected = document.querySelector('.ratio-btn.active') !== null;
+            
+            // Panggil validateInputs() untuk mendapatkan status validasi terbaru
+            const { isNameValid, isWAValid } = validateInputs();
+            
+            // Syarat valid: Prompt, Rasio dipilih, Nama valid, dan WA valid
+            if (isPromptFilled && isRatioSelected && isNameValid && isWAValid) {
                 btnOrder.disabled = false;
             } else {
                 btnOrder.disabled = true;
             }
         }
         
-        // --- FUNGSI BASE64 DAN ORDER BARU ---
-        function processFileAndOrder() {
-            if (!selectedFile) return;
+        // Event listeners untuk input teks dan tombol rasio
+        promptInput.addEventListener('input', checkCompleteness);
+        namaInput.addEventListener('input', checkCompleteness);
+        waInput.addEventListener('input', checkCompleteness);
+        
+        // --- LOGIKA UNTUK TOMBOL "KLIK UNTUK ORDER" ---
+        btnOrder.addEventListener('click', () => {
+             
+             // Lakukan validasi terakhir
+            const { isNameValid, isWAValid } = validateInputs();
 
-            const fileName = selectedFile.name.toLowerCase();
-            const isArchiveFile = fileName.endsWith('.zip') || fileName.endsWith('.rar');
-            const isSingleImage = selectedFile.type.startsWith('image/');
-            
-            btnOrder.textContent = "Processing...";
-            btnOrder.disabled = true;
-            
-            if (isSingleImage && !isArchiveFile) {
-                // --- KASUS 1: Hanya upload 1 foto (bukan ZIP) ---
-                
-                // Simpan data order ke localStorage (tanpa file base64)
-                const orderData = {
-                    layanan: 'Image Fusion',
-                    ratio: getActiveRatio(),
-                    prompt: promptInput.value,
-                    file_name: selectedFile.name,
-                    status_file: 'Pending - Konfirmasi WA diperlukan' 
-                };
-                localStorage.setItem('pendingOrderDetails', JSON.stringify(orderData));
-                
-                // Buat pesan WA
-                const message = `Halo Admin AW Design Studio. Saya sudah mengisi form Image Fusion, tetapi baru mengunggah 1 foto utama (${selectedFile.name}).\n\nSaya perlu konfirmasi untuk mengirimkan foto pendukung lainnya (minimal 2 foto sumber total).\n\nNama Order (contoh): ${promptInput.value.substring(0, 30)}...`;
-                
-                const waLink = `https://wa.me/${ADMIN_WA}?text=${encodeURIComponent(message)}`;
-
-                if (confirm(`Anda hanya mengunggah SATU file foto (${selectedFile.name}).\n\nLayanan Image Fusion membutuhkan minimal 2 foto sumber.\n\nKlik OK untuk *melanjutkan order* dan membuka WhatsApp untuk konfirmasi ke Admin (085133748005) serta mengirimkan file pendukung lainnya.`)) {
-                     window.open(waLink, '_blank'); 
-                     window.location.href = 'DISCLAIMER edit.html'; 
-                } else {
-                     btnOrder.textContent = "Order Image Fusion";
-                     btnOrder.disabled = false;
-                }
+            if (!isNameValid || !isWAValid) {
+                // Scroll ke bagian contact section
+                document.querySelector('.input-group').closest('.fusion-card').querySelector('.label-section:nth-of-type(3)').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                alert("Mohon lengkapi atau perbaiki data pemesan yang ditandai.");
                 return;
             }
-            
-            // --- KASUS 2: Upload ZIP/RAR atau Gambar Utama (Lanjut Base64) ---
-            
-            const reader = new FileReader();
 
-            reader.onloadstart = () => {
-                btnOrder.textContent = "Encoding File...";
-            };
-
-            reader.onload = function(event) {
-                const base64String = event.target.result;
+             if (!btnOrder.disabled) {
+                const namaLengkap = namaInput.value.trim();
+                const nomorWA = waInput.value.trim();
+                const selectedRatio = document.querySelector('.ratio-btn.active').getAttribute('data-ratio');
+                const instruksi = promptInput.value.trim();
                 
+                // Ambil instruksi, jika kosong beri label T/A
+                const instruksiTampil = instruksi || "T/A";
+                
+                // Format data untuk disimpan/dicatat (Simulasi database)
                 const orderData = {
-                    layanan: 'Image Fusion',
-                    ratio: getActiveRatio(),
-                    prompt: promptInput.value,
-                    file_base64: base64String,
-                    file_name: selectedFile.name,
-                    file_type: selectedFile.type,
-                    status_file: isArchiveFile ? 'Lengkap - Arsip ZIP/RAR' : 'Lengkap - Primary Image'
+                    nama: namaLengkap,
+                    whatsapp: nomorWA,
+                    layanan: "Image Fusion",
+                    rasio: selectedRatio,
+                    instruksi: instruksi,
+                    timestamp: new Date().toISOString()
                 };
                 
-                localStorage.setItem('pendingOrderDetails', JSON.stringify(orderData));
-                window.location.href = 'DISCLAIMER edit.html';
-            };
-
-            reader.onerror = (error) => {
-                alert('Gagal membaca file. Ukuran file mungkin terlalu besar atau format tidak didukung.');
-                btnOrder.textContent = "Order Image Fusion";
-                btnOrder.disabled = false;
-            };
-
-            reader.readAsDataURL(selectedFile);
-        }
-
-        btnOrder.addEventListener('click', processFileAndOrder);
-        // --- AKHIR FUNGSI BASE64 DAN ORDER BARU ---
-
-        document.addEventListener('DOMContentLoaded', checkCompleteness);
-        promptInput.addEventListener('input', checkCompleteness);
-
-        // Drag and drop listeners (dipertahankan)
-        const uploadZone = document.getElementById('upload-zone');
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            uploadZone.addEventListener(eventName, preventDefaults, false);
+                console.log("--- ORDER IMAGE FUSION TERSIMPAN (simulasi database) ---");
+                console.log(orderData);
+                
+                // FORMAT PESAN WHATSAPP DENGAN BARIS BARU
+                let waMessage = `Halo saya ${namaLengkap}, baru saja order IMAGE FUSION.\n\nDetail Order:\nRasio Output: ${selectedRatio}\nDeskripsi Adegan: ${instruksiTampil}\n\nFile foto akan segera saya kirim ke sini (minimal 2 foto). Mohon segera diproses ya, Terima kasih!`;
+                
+                // Encode pesan untuk URL
+                const encodedMessage = encodeURIComponent(waMessage);
+                
+                // Buka link WhatsApp
+                window.open(`https://wa.me/${targetWA}?text=${encodedMessage}`, '_blank');
+                
+                // Opsional: Beri feedback ke user
+                alert("Order Anda telah tercatat. Silakan lanjutkan di WhatsApp untuk mengirimkan file foto yang akan difusi!");
+                
+                // KEMBALI KE MENU LAYANAN.HTML setelah order selesai
+                window.location.href = "MENU LAYANAN.HTML";
+             }
         });
-
-        function preventDefaults (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-
-        function handleDrop(e) {
-            let dt = e.dataTransfer;
-            imageUpload.files = dt.files;
-            imageUpload.dispatchEvent(new Event('change')); 
-        }
-        uploadZone.addEventListener('drop', handleDrop, false);
+        
+        document.addEventListener('DOMContentLoaded', checkCompleteness);
     </script>
 </body>
 </html>

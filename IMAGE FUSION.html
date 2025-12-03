@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* 1. SETUP VARIABEL & DASAR (Sama dengan tema sebelumnya) */
+        /* 1. SETUP VARIABEL & DASAR */
         :root {
             --bg-dark: #09090b;
             --surface-dark: #18181b;
@@ -18,7 +18,7 @@
             --text-muted: #a1a1aa;
             --border: rgba(255, 255, 255, 0.1);
             --neon-accent: #a855f7;
-            --error-red: #ef4444; /* Ditambahkan untuk konsistensi error */
+            --error-red: #ef4444; 
         }
 
         * {
@@ -41,7 +41,7 @@
             padding: 20px;
         }
 
-        /* CSS KHUSUS TOMBOL KEMBALI */
+        /* TOMBOL KEMBALI */
         .back-button {
             display: inline-flex;
             align-items: center;
@@ -63,7 +63,7 @@
             color: var(--neon-accent);
         }
 
-        /* 2. KARTU UTAMA (GLASSMORPHISM) */
+        /* 2. KARTU UTAMA */
         .fusion-card {
             background: rgba(24, 24, 27, 0.7);
             backdrop-filter: blur(20px);
@@ -115,7 +115,7 @@
             margin: 0 auto;
         }
         
-        /* 4. BAGIAN UPLOAD (DIHAPUS, TAPI DIPERLUAS UNTUK INPUT BARU) */
+        /* 4. LABEL SECTIONS */
         .label-section {
             font-size: 12px;
             text-transform: uppercase;
@@ -126,7 +126,7 @@
             justify-content: space-between;
         }
         
-        /* 5. BAGIAN INPUT TEXT & BARU */
+        /* 5. INPUT TEXT & DATA */
         .prompt-wrapper, .input-group {
             position: relative;
             margin-bottom: 20px;
@@ -146,13 +146,8 @@
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
         }
 
-        textarea {
-            height: 120px;
-        }
-        
-        input[type="text"], input[type="tel"] {
-            height: 48px;
-        }
+        textarea { height: 120px; }
+        input[type="text"], input[type="tel"] { height: 48px; }
 
         textarea:focus, input[type="text"]:focus, input[type="tel"]:focus {
             border-color: #a855f7;
@@ -163,23 +158,19 @@
             color: #52525b;
         }
         
-        /* Style untuk input yang tidak valid (Kotak Merah) */
+        /* Error Styles */
         .input-group input.input-invalid {
             border-color: var(--error-red) !important;
             box-shadow: 0 0 5px rgba(239, 68, 68, 0.5) !important;
         }
 
-        /* Style untuk pesan kesalahan */
         .error-message {
             color: var(--error-red);
             font-size: 12px;
             margin-top: 4px;
-            display: none; /* Default hidden */
+            display: none;
         }
-        
-        .error-message.visible {
-            display: block;
-        }
+        .error-message.visible { display: block; }
 
         .ai-badge {
             position: absolute;
@@ -197,23 +188,21 @@
             pointer-events: none;
         }
 
-        .ai-sparkle {
-            color: #fbbf24;
-        }
+        .ai-sparkle { color: #fbbf24; }
 
-        /* 6. PILIHAN RASIO (Futuristic Buttons) */
+        /* 6. PILIHAN RASIO */
         .ratio-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
-            margin-bottom: 32px;
+            margin-bottom: 15px; /* Kurangi margin untuk memberi ruang info box */
         }
 
         .ratio-btn {
             background: transparent;
             border: 1px solid var(--border);
             color: var(--text-muted);
-            padding: 12px 8px; /* Padding disesuaikan */
+            padding: 12px 8px; 
             border-radius: 12px;
             cursor: pointer;
             display: flex;
@@ -224,29 +213,18 @@
             position: relative;
             overflow: hidden;
             text-align: center; 
+            height: auto; /* Pastikan tinggi fleksibel tanpa teks kecil */
         }
 
-        .ratio-btn strong { /* Untuk nama rasio */
+        .ratio-btn strong {
             font-size: 13px;
             font-weight: 600;
             color: var(--text-main);
-            /* --- MODIFIKASI: Menambah margin-bottom untuk spasi di atas teks kecil --- */
-            margin-top: 4px; 
-            margin-bottom: 4px; 
-            /* --------------------------------------------------------------------- */
+            margin: 0;
         }
         
-        .ratio-btn small { /* Untuk contoh penggunaan */
-            font-size: 10px;
-            color: var(--text-muted);
-            line-height: 1.3;
-            height: 30px; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0 2px;
-        }
-
+        /* Hapus style untuk small karena elemennya sudah dihapus dari button */
+        
         .ratio-icon {
             width: 20px;
             height: 20px;
@@ -254,8 +232,6 @@
             border-radius: 4px;
             opacity: 0.7;
         }
-
-        /* Bentuk icon rasio manual dengan CSS */
         .icon-1-1 { width: 18px; height: 18px; }
         .icon-16-9 { width: 22px; height: 14px; }
         .icon-9-16 { width: 14px; height: 22px; }
@@ -273,10 +249,33 @@
             border-color: #a855f7;
         }
         
-        .ratio-btn.active strong, .ratio-btn.active small {
+        .ratio-btn.active strong {
             color: white;
         }
 
+        /* --- NEW: INFO BOX UNTUK RASIO --- */
+        .ratio-info-box {
+            margin-bottom: 32px;
+            padding: 12px 15px;
+            background: rgba(168, 85, 247, 0.05);
+            border: 1px dashed var(--border);
+            border-radius: 10px;
+            font-size: 13px;
+            color: var(--text-muted);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .ratio-info-box.highlight {
+            border-color: var(--neon-accent);
+            color: var(--text-main);
+            background: rgba(168, 85, 247, 0.1);
+        }
+        
         /* 7. GENERATE BUTTON (CTA) */
         .generate-btn {
             width: 100%;
@@ -300,7 +299,6 @@
             box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
         }
         
-        /* State Disabled */
         .generate-btn:disabled {
             background: #3f3f46;
             cursor: not-allowed;
@@ -322,7 +320,7 @@
 
         <header>
             <h1>Image Fusion</h1>
-            <p class="subtitle">Tentukan ADEGAN YANG DIINGINKAN dari dua atau lebih foto yang akan digabungkan. Silahkan kirim File foto yang ingin diedit via WhatsApp setelah Anda menekan tombol Order.</p>
+            <p class="subtitle">Tentukan **ADEEGAN YANG DIINGINKAN** dari dua atau lebih foto yang akan digabungkan. Silahkan kirim File foto yang ingin diedit via WhatsApp setelah Anda menekan tombol Order.</p>
         </header>
 
         <div class="label-section">
@@ -340,21 +338,23 @@
             <span>2. Output Dimension (Wajib)</span>
         </div>
         <div class="ratio-grid">
-            <button class="ratio-btn active" data-ratio="1:1" onclick="selectRatio(this)">
+            <button class="ratio-btn active" data-ratio="1:1" data-desc="Cocok untuk Feed Instagram/Facebook atau Foto Profil." onclick="selectRatio(this)">
                 <div class="ratio-icon icon-1-1"></div>
                 <strong>Square (1:1)</strong>
-                <small>Cocok untuk Feed Instagram/Facebook atau Foto Profil.</small>
             </button>
-            <button class="ratio-btn" data-ratio="16:9" onclick="selectRatio(this)">
+            <button class="ratio-btn" data-ratio="16:9" data-desc="Ideal untuk Banner Website, Thumbnail YouTube, atau Desktop Wallpaper." onclick="selectRatio(this)">
                 <div class="ratio-icon icon-16-9"></div>
                 <strong>Landscape (16:9)</strong>
-                <small>Ideal untuk Banner Website, Thumbnail YouTube, atau Desktop Wallpaper.</small>
             </button>
-            <button class="ratio-btn" data-ratio="9:16" onclick="selectRatio(this)">
+            <button class="ratio-btn" data-ratio="9:16" data-desc="Sempurna untuk Stories/Reels Instagram, TikTok, atau Mobile Wallpaper." onclick="selectRatio(this)">
                 <div class="ratio-icon icon-9-16"></div>
                 <strong>Portrait (9:16)</strong>
-                <small>Sempurna untuk Stories/Reels Instagram, TikTok, atau Mobile Wallpaper.</small>
             </button>
+        </div>
+        
+        <div class="ratio-info-box">
+             <span style="font-size: 14px; margin-right: 5px;">💡</span>
+             <span id="ratio-description">Cocok untuk Feed Instagram/Facebook atau Foto Profil.</span>
         </div>
 
         <div class="label-section">
@@ -386,28 +386,36 @@
         const errorWA = document.getElementById('error-wa');
         
         // Nomor WhatsApp tujuan
-        const targetWA = "6285133748005"; // Menggunakan kode negara untuk format WA link
+        const targetWA = "6285133748005"; 
 
         function selectRatio(selectedButton) {
             const buttons = document.querySelectorAll('.ratio-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
             selectedButton.classList.add('active');
+            
+            // --- LOGIKA UPDATE TEKS DESKRIPSI RASIO (BARU) ---
+            const descText = selectedButton.getAttribute('data-desc');
+            const descElement = document.getElementById('ratio-description');
+            const infoBox = document.querySelector('.ratio-info-box');
+            
+            // Efek visual sederhana (highlight box)
+            infoBox.classList.add('highlight');
+            setTimeout(() => infoBox.classList.remove('highlight'), 300);
+
+            // Ganti teks
+            descElement.textContent = descText;
+
             checkCompleteness();
         }
         
-        // Fungsi validasi kustom
         function validateInputs() {
             const nama = namaInput.value.trim();
             const wa = waInput.value.trim();
             
-            // 1. Validasi Nama: Minimal 3 karakter
             const isNameValid = nama.length >= 3;
-            
-            // 2. Validasi WA: Harus match pattern (diawali 08, minimal 10 digit total)
             const waPattern = /^08[0-9]{8,}$/; 
             const isWAValid = waPattern.test(wa);
             
-            // Tampilkan/sembunyikan feedback visual
             toggleValidationFeedback(namaInput, errorNama, isNameValid, "Nama harus diisi minimal 3 karakter.");
             toggleValidationFeedback(waInput, errorWA, isWAValid, "Nomor WA harus diawali '08' dan minimal 10 digit.");
 
@@ -416,7 +424,6 @@
 
         function toggleValidationFeedback(inputElement, errorElement, isValid, errorMessage) {
             if (inputElement.value.trim() === '') {
-                // Jangan tampilkan error jika input kosong, cukup hapus kelas invalid
                 inputElement.classList.remove('input-invalid');
                 errorElement.classList.remove('visible');
                 return;
@@ -432,15 +439,12 @@
             }
         }
 
-        // Cek kelengkapan form
         function checkCompleteness() {
             const isPromptFilled = promptInput.value.trim().length > 0;
             const isRatioSelected = document.querySelector('.ratio-btn.active') !== null;
             
-            // Panggil validateInputs() untuk mendapatkan status validasi terbaru
             const { isNameValid, isWAValid } = validateInputs();
             
-            // Syarat valid: Prompt, Rasio dipilih, Nama valid, dan WA valid
             if (isPromptFilled && isRatioSelected && isNameValid && isWAValid) {
                 btnOrder.disabled = false;
             } else {
@@ -448,15 +452,8 @@
             }
         }
         
-        // Event listeners untuk input teks dan tombol rasio
-        promptInput.addEventListener('input', checkCompleteness);
-        namaInput.addEventListener('input', checkCompleteness);
-        waInput.addEventListener('input', checkCompleteness);
-        
-        // --- LOGIKA UNTUK TOMBOL "KLIK UNTUK ORDER" ---
         btnOrder.addEventListener('click', () => {
              
-             // Lakukan validasi terakhir
             const { isNameValid, isWAValid } = validateInputs();
 
             if (!isNameValid || !isWAValid) {
@@ -472,10 +469,8 @@
                 const selectedRatio = document.querySelector('.ratio-btn.active').getAttribute('data-ratio');
                 const instruksi = promptInput.value.trim();
                 
-                // Ambil instruksi, jika kosong beri label T/A
                 const instruksiTampil = instruksi || "T/A";
                 
-                // Format data untuk disimpan/dicatat (Simulasi database)
                 const orderData = {
                     nama: namaLengkap,
                     whatsapp: nomorWA,
@@ -488,24 +483,22 @@
                 console.log("--- ORDER IMAGE FUSION TERSIMPAN (simulasi database) ---");
                 console.log(orderData);
                 
-                // FORMAT PESAN WHATSAPP DENGAN BARIS BARU
                 let waMessage = `Halo saya ${namaLengkap}, baru saja order IMAGE FUSION.\n\nDetail Order:\nRasio Output: ${selectedRatio}\nDeskripsi Adegan: ${instruksiTampil}\n\nFile foto akan segera saya kirim ke sini (minimal 2 foto). Mohon segera diproses ya, Terima kasih!`;
                 
-                // Encode pesan untuk URL
                 const encodedMessage = encodeURIComponent(waMessage);
                 
-                // Buka link WhatsApp
                 window.open(`https://wa.me/${targetWA}?text=${encodedMessage}`, '_blank');
                 
-                // Opsional: Beri feedback ke user
                 alert("Order Anda telah tercatat. Silakan lanjutkan di WhatsApp untuk mengirimkan file foto yang akan difusi!");
                 
-                // KEMBALI KE MENU LAYANAN.HTML setelah order selesai
                 window.location.href = "MENU LAYANAN.HTML";
              }
         });
         
         document.addEventListener('DOMContentLoaded', checkCompleteness);
+        promptInput.addEventListener('input', checkCompleteness);
+        namaInput.addEventListener('input', checkCompleteness);
+        waInput.addEventListener('input', checkCompleteness);
     </script>
 </body>
 </html>

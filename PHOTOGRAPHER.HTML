@@ -19,6 +19,7 @@
             --border: rgba(255, 255, 255, 0.1);
             --neon-accent: #a855f7;
             --neon-cyan: #00bcd4;
+            --error-red: #ef4444; /* Ditambahkan untuk konsistensi error */
         }
 
         * { box-sizing: border-box; font-family: 'Outfit', sans-serif; margin: 0; padding: 0; }
@@ -144,22 +145,6 @@
 
         /* --- 5. INPUT ELEMENTS STYLING --- */
         
-        /* UPLOAD ZONE */
-        .upload-dropzone {
-            height: 180px;
-            border: 2px dashed var(--neon-cyan);
-            border-radius: 16px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            text-align: center;
-            background: var(--surface-dark);
-        }
-        .upload-icon svg { width: 48px; height: 48px; color: var(--neon-cyan); margin-bottom: 10px; stroke-width: 1.5;}
-        .upload-text { color: var(--text-muted); font-size: 14px; font-weight: 500; }
-        
         /* GENERAL SELECTION BUTTONS (3-5 items in a row) */
         .selection-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;}
         
@@ -189,6 +174,12 @@
             color: var(--text-muted);
             transition: all 0.2s;
             text-align: center;
+            
+            /* Penyesuaian untuk Rasio (Konten Vertikal) */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         .selection-btn.active {
             border-color: var(--neon-accent); 
@@ -196,6 +187,29 @@
             color: var(--text-main); 
             box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
         }
+        
+        /* STYLE UNTUK RASIO (STRONG & SMALL) */
+        .selection-btn strong { /* Nama Rasio */
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-top: 2px;
+            margin-bottom: 4px; /* SPASI VERTICAL DI SINI */
+            line-height: 1.2;
+        }
+        
+        .selection-btn small { /* Penjelasan Rasio */
+            font-size: 9px;
+            color: var(--text-muted);
+            line-height: 1.2;
+            height: 30px; /* Tinggi tetap agar tampilan konsisten */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 2px;
+            font-weight: 400;
+        }
+        /* Akhir Style Rasio */
         
         /* DROPDOWN & TEXT INPUT */
         .input-text, select, .input-small-grid input {
@@ -207,11 +221,45 @@
             background: var(--surface-dark);
             font-size: 14px;
             outline: none;
-            transition: border-color 0.2s;
-            appearance: none; /* Hilangkan styling default select */
+            transition: border-color 0.2s, box-shadow 0.2s;
+            appearance: none; 
         }
         .input-text:focus, select:focus, .input-small-grid input:focus { border-color: var(--neon-accent); }
         .input-text::placeholder { color: #71717a; }
+        
+        /* Input Data Pemesan */
+         .input-group {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        .input-group input {
+            height: 48px;
+        }
+        
+        /* VALIDASI ERROR STYLING */
+        .input-group input.input-invalid {
+            border-color: var(--error-red) !important;
+            box-shadow: 0 0 5px rgba(239, 68, 68, 0.5) !important;
+        }
+
+        .error-message {
+            color: var(--error-red);
+            font-size: 12px;
+            margin-top: 4px;
+            display: none; 
+        }
+        
+        .error-message.visible {
+            display: block;
+        }
+        
+        .label-section {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            margin-top: 35px;
+        }
 
         /* --- 6. ACTION BUTTON --- */
         .btn-process {
@@ -226,6 +274,10 @@
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+        }
+        .btn-process:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.5);
         }
 
         .btn-process:disabled {
@@ -247,118 +299,104 @@
         </a>
 
         <div class="card-header">
-            <h2 class="title">Fotografer AI</h2>
-            <p class="description">Pilih kategori fotografi untuk melihat *form* dan input yang spesifik.</p>
+            <h2 class="title">Fotografer (AI Re-touch)</h2>
+            <p class="description">Pilih kategori, tentukan spesifikasi foto yang diinginkan, dan kirimkan file foto Anda via WhatsApp setelah Order.</p>
         </div>
 
         <div class="tab-nav">
-            <button class="tab-button active" onclick="openTab(event, 'Pas Foto')">Pas Foto</button>
-            <button class="tab-button" onclick="openTab(event, 'Bayi Baru Lahir')">Bayi Baru Lahir</button>
-            <button class="tab-button" onclick="openTab(event, 'Anak-anak')">Anak-anak</button>
-            <button class="tab-button" onclick="openTab(event, 'Haji/Umroh')">Haji/Umroh</button>
-            <button class="tab-button" onclick="openTab(event, 'Ibu Hamil')">Ibu Hamil</button>
+            <button class="tab-button active" onclick="openTab(event, 'PasFoto')">Pas Foto</button>
+            <button class="tab-button" onclick="openTab(event, 'Bayi')">Bayi Baru Lahir</button>
+            <button class="tab-button" onclick="openTab(event, 'Anak')">Anak-anak</button>
+            <button class="tab-button" onclick="openTab(event, 'HajiUmroh')">Haji/Umroh</button>
+            <button class="tab-button" onclick="openTab(event, 'Hamil')">Ibu Hamil</button>
         </div>
-
-        <input type="file" id="photo-upload" accept="image/*" style="display: none;">
         
         <div class="tab-content">
 
-            <div id="Pas Foto" class="tab-content-panel active">
+            <div id="PasFoto" class="tab-content-panel active">
                 
-                <h3 class="step-title">1. Unggah Foto Wajah</h3>
-                <div class="upload-dropzone dropzone" id="dropzone-PasFoto">
-                    <div class="upload-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"></circle><path d="M12 22s8-4 8-10c0-4.42-3.58-8-8-8s-8 3.58-8 8c0 6 8 10 8 10z"></path></svg>
-                    </div>
-                    <div class="upload-text">Klik atau seret foto close-up</div>
-                </div>
-
-                <h3 class="step-title">2. Pilih Warna Background</h3>
+                <h3 class="step-title">1. Warna Background</h3>
                 <div class="selection-grid grid-4" data-group="bg-pasfoto">
                     <button class="selection-btn active" data-value="Merah" onclick="selectOption(this)">Merah</button>
                     <button class="selection-btn" data-value="Biru" onclick="selectOption(this)">Biru</button>
                     <button class="selection-btn" data-value="Putih" onclick="selectOption(this)">Putih</button>
-                    <button class="selection-btn" data-value="Abu-abu" onclick="selectOption(this)">Abu-abu</button>
+                    <button class="selection-btn" data-value="AbuAbu" onclick="selectOption(this)">Abu-abu</button>
                 </div>
                 
-                <h3 class="step-title">3. Mode Pakaian Otomatis</h3>
+                <h3 class="step-title">2. Mode Pakaian Otomatis</h3>
                 <div class="selection-grid" data-group="pakaian-pasfoto">
-                    <button class="selection-btn active" data-value="Jas + Dasi" onclick="selectOption(this)">Jas + Dasi</button>
+                    <button class="selection-btn active" data-value="JasDasi" onclick="selectOption(this)">Jas + Dasi</button>
                     <button class="selection-btn" data-value="Blazer" onclick="selectOption(this)">Blazer</button>
                     <button class="selection-btn" data-value="Kemeja" onclick="selectOption(this)">Kemeja</button>
                     <button class="selection-btn" data-value="Sekolah" onclick="selectOption(this)">Sekolah</button>
                     <button class="selection-btn" data-value="Kustom" onclick="selectOption(this)">Kustom</button>
                 </div>
 
-                <h3 class="step-title">4. Ukuran Output</h3>
+                <h3 class="step-title">3. Ukuran Output</h3>
                 <div class="selection-grid grid-4" data-group="ukuran-pasfoto">
                     <button class="selection-btn active" data-value="2x3" onclick="selectOption(this)">2x3</button>
                     <button class="selection-btn" data-value="3x4" onclick="selectOption(this)">3x4</button>
                     <button class="selection-btn" data-value="4x6" onclick="selectOption(this)">4x6</button>
                     <button class="selection-btn" data-value="Custom" onclick="selectOption(this)">Custom</button>
                 </div>
-
+                 <input type="text" id="instruksi-pasfoto" class="input-text" data-group="instruksi-pasfoto" style="margin-top: 10px;" placeholder="Instruksi tambahan (opsional)...">
             </div>
 
-            <div id="Bayi Baru Lahir" class="tab-content-panel">
+            <div id="Bayi" class="tab-content-panel">
                 
-                <h3 class="step-title">1. Unggah Foto Bayi</h3>
-                <div class="upload-dropzone dropzone" id="dropzone-Bayi">
-                    <div class="upload-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10c0-4.42-3.58-8-8-8s-8 3.58-8 8c0 6 8 10 8 10z"></path><path d="M9 11l-2 3h4l-2 3"></path><path d="M15 11h-2l2 3h-4l2 3"></path></svg>
-                    </div>
-                    <div class="upload-text">Klik atau seret foto bayi</div>
-                </div>
-
-                <h3 class="step-title">2. Pilih Jenis Kelamin</h3>
+                <h3 class="step-title">1. Jenis Kelamin</h3>
                 <div class="selection-grid grid-2" data-group="jenis-kelamin-bayi">
-                    <button class="selection-btn active" data-value="Laki-laki" onclick="selectOption(this)">Laki-laki</button>
+                    <button class="selection-btn active" data-value="LakiLaki" onclick="selectOption(this)">Laki-laki</button>
                     <button class="selection-btn" data-value="Perempuan" onclick="selectOption(this)">Perempuan</button>
                 </div>
                 
-                <h3 class="step-title">3. Pilih Tema</h3>
+                <h3 class="step-title">2. Pilih Tema</h3>
                 <div class="selection-grid" data-group="tema-bayi">
-                    <button class="selection-btn active" data-value="Studio Putih" onclick="selectOption(this)">Studio Putih</button>
+                    <button class="selection-btn active" data-value="StudioPutih" onclick="selectOption(this)">Studio Putih</button>
                     <button class="selection-btn" data-value="Pastel" onclick="selectOption(this)">Pastel</button>
                     <button class="selection-btn" data-value="Keranjang" onclick="selectOption(this)">Keranjang</button>
-                    <button class="selection-btn" data-value="Muslim/Adat" onclick="selectOption(this)">Muslim/Adat</button>
+                    <button class="selection-btn" data-value="MuslimAdat" onclick="selectOption(this)">Muslim/Adat</button>
                     <button class="selection-btn" data-value="Kustom" onclick="selectOption(this)">Kustom</button>
                 </div>
 
-                <h3 class="step-title">4. Tambahan Elemen</h3>
+                <h3 class="step-title">3. Tambahan Elemen (Opsional)</h3>
                 <div class="input-small-grid grid-2">
-                    <input type="text" id="nama-bayi" class="input-text" placeholder="Nama Bayi (opsional)">
-                    <input type="text" id="tgl-lahir-bayi" class="input-text" placeholder="Tgl Lahir (opsional)">
+                    <input type="text" class="input-text" data-group="nama-bayi" placeholder="Nama Bayi (opsional)">
+                    <input type="text" class="input-text" data-group="tgl-lahir" placeholder="Tgl Lahir (opsional)">
                 </div>
-                 <input type="text" id="dekorasi-bayi" class="input-text" style="margin-top: 10px;" placeholder="Dekorasi (Contoh: Balon, Boneka Beruang)">
+                 <input type="text" id="dekorasi-bayi-input" class="input-text" data-group="dekorasi-bayi" style="margin-top: 10px;" placeholder="Dekorasi (Contoh: Balon, Boneka Beruang)">
 
-                <h3 class="step-title">5. Pilih Rasio</h3>
+                <h3 class="step-title">4. Pilih Rasio</h3>
                 <div class="selection-grid grid-4" data-group="ratio-bayi">
-                    <button class="selection-btn active" data-value="1:1" onclick="selectOption(this)">1:1</button>
-                    <button class="selection-btn" data-value="16:9" onclick="selectOption(this)">16:9</button>
-                    <button class="selection-btn" data-value="3:4" onclick="selectOption(this)">3:4</button>
-                    <button class="selection-btn" data-value="9:16" onclick="selectOption(this)">9:16</button>
+                    <button class="selection-btn active" data-value="1:1" onclick="selectOption(this)">
+                        <strong>1:1</strong>
+                        <small>Cocok untuk Feed IG/FB atau Foto Profil.</small>
+                    </button>
+                    <button class="selection-btn" data-value="16:9" onclick="selectOption(this)">
+                        <strong>16:9</strong>
+                        <small>Sempurna untuk Postingan Landscape atau Wallpaper Desktop.</small>
+                    </button>
+                    <button class="selection-btn" data-value="3:4" onclick="selectOption(this)">
+                        <strong>3:4</strong>
+                        <small>Ideal untuk cetak foto bingkai standar (Frame Photo).</small>
+                    </button>
+                    <button class="selection-btn" data-value="9:16" onclick="selectOption(this)">
+                        <strong>9:16</strong>
+                        <small>Cocok untuk Stories/Reels IG, TikTok, atau Mobile Wallpaper.</small>
+                    </button>
                 </div>
 
             </div>
 
-            <div id="Anak-anak" class="tab-content-panel">
+            <div id="Anak" class="tab-content-panel">
                 
-                <h3 class="step-title">1. Unggah Foto Anak</h3>
-                <div class="upload-dropzone dropzone" id="dropzone-Anak">
-                    <div class="upload-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V5H6.5A2.5 2.5 0 0 0 4 7.5v12zM12 11h4M12 15h4M8 11h-.01M8 15h-.01"></path></svg>
-                    </div>
-                    <div class="upload-text">Klik atau seret foto anak</div>
-                </div>
-
-                <h3 class="step-title">2. Pilih Jenis Kelamin</h3>
+                <h3 class="step-title">1. Jenis Kelamin</h3>
                 <div class="selection-grid grid-2" data-group="jenis-kelamin-anak">
-                    <button class="selection-btn active" data-value="Laki-laki" onclick="selectOption(this)">Laki-laki</button>
+                    <button class="selection-btn active" data-value="LakiLaki" onclick="selectOption(this)">Laki-laki</button>
                     <button class="selection-btn" data-value="Perempuan" onclick="selectOption(this)">Perempuan</button>
                 </div>
                 
-                <h3 class="step-title">3. Pilih Gaya Foto</h3>
+                <h3 class="step-title">2. Pilih Gaya Foto</h3>
                 <div class="selection-grid" data-group="gaya-anak">
                     <button class="selection-btn active" data-value="Sekolah" onclick="selectOption(this)">Sekolah</button>
                     <button class="selection-btn" data-value="Majalah" onclick="selectOption(this)">Majalah</button>
@@ -366,160 +404,156 @@
                     <button class="selection-btn" data-value="Ultah" onclick="selectOption(this)">Ultah</button>
                 </div>
                 
-                <h3 class="step-title">4. Ekspresi Otomatis</h3>
+                <h3 class="step-title">3. Ekspresi Otomatis</h3>
                 <div class="selection-grid" data-group="ekspresi-anak">
                     <button class="selection-btn active" data-value="Tersenyum" onclick="selectOption(this)">Tersenyum</button>
                     <button class="selection-btn" data-value="Melambai" onclick="selectOption(this)">Melambai</button>
                     <button class="selection-btn" data-value="Duduk" onclick="selectOption(this)">Duduk</button>
                     <button class="selection-btn" data-value="Custom" onclick="selectOption(this)">Custom</button>
                 </div>
+                <input type="text" id="instruksi-anak-input" class="input-text" data-group="instruksi-anak" style="margin-top: 10px;" placeholder="Instruksi tambahan (opsional)...">
 
-                <h3 class="step-title">5. Pilih Rasio</h3>
+                <h3 class="step-title">4. Pilih Rasio</h3>
                 <div class="selection-grid grid-4" data-group="ratio-anak">
-                    <button class="selection-btn active" data-value="1:1" onclick="selectOption(this)">1:1</button>
-                    <button class="selection-btn" data-value="16:9" onclick="selectOption(this)">16:9</button>
-                    <button class="selection-btn" data-value="3:4" onclick="selectOption(this)">3:4</button>
-                    <button class="selection-btn" data-value="9:16" onclick="selectOption(this)">9:16</button>
+                    <button class="selection-btn active" data-value="1:1" onclick="selectOption(this)">
+                        <strong>1:1</strong>
+                        <small>Cocok untuk Feed IG/FB atau Foto Profil.</small>
+                    </button>
+                    <button class="selection-btn" data-value="16:9" onclick="selectOption(this)">
+                        <strong>16:9</strong>
+                        <small>Sempurna untuk Postingan Landscape atau Wallpaper Desktop.</small>
+                    </button>
+                    <button class="selection-btn" data-value="3:4" onclick="selectOption(this)">
+                        <strong>3:4</strong>
+                        <small>Ideal untuk cetak foto bingkai standar (Frame Photo).</small>
+                    </button>
+                    <button class="selection-btn" data-value="9:16" onclick="selectOption(this)">
+                        <strong>9:16</strong>
+                        <small>Cocok untuk Stories/Reels IG, TikTok, atau Mobile Wallpaper.</small>
+                    </button>
                 </div>
                 
             </div>
             
-            <div id="Haji/Umroh" class="tab-content-panel">
+            <div id="HajiUmroh" class="tab-content-panel">
                 
-                <h3 class="step-title">1. Unggah Foto Diri</h3>
-                <div class="upload-dropzone dropzone" id="dropzone-HajiUmroh">
-                    <div class="upload-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10c0-4.42-3.58-8-8-8s-8 3.58-8 8c0 6 8 10 8 10z"></path><path d="M9 11l-2 3h4l-2 3"></path><path d="M15 11h-2l2 3h-4l2 3"></path></svg>
-                    </div>
-                    <div class="upload-text">Klik atau seret foto diri</div>
-                </div>
-
-                <h3 class="step-title">2. Pilih Jenis Kelamin</h3>
+                <h3 class="step-title">1. Jenis Kelamin</h3>
                 <div class="selection-grid grid-2" data-group="jenis-kelamin-haji">
-                    <button class="selection-btn active" data-value="Laki-laki" onclick="selectOption(this)">Laki-laki</button>
+                    <button class="selection-btn active" data-value="LakiLaki" onclick="selectOption(this)">Laki-laki</button>
                     <button class="selection-btn" data-value="Perempuan" onclick="selectOption(this)">Perempuan</button>
                 </div>
                 
-                <h3 class="step-title">3. Pilih Pakaian</h3>
+                <h3 class="step-title">2. Pilih Pakaian</h3>
                 <div class="selection-grid grid-2" data-group="pakaian-haji">
-                    <button class="selection-btn active" data-value="Pakaian Ihram" onclick="selectOption(this)">Pakaian Ihram</button>
-                    <button class="selection-btn" data-value="Bebas Sopan" onclick="selectOption(this)">Bebas Sopan</button>
+                    <button class="selection-btn active" data-value="Ihram" onclick="selectOption(this)">Pakaian Ihram</button>
+                    <button class="selection-btn" data-value="BebasSopan" onclick="selectOption(this)">Bebas Sopan</button>
                 </div>
 
-                <h3 class="step-title">4. Pilih Lokasi</h3>
+                <h3 class="step-title">3. Pilih Lokasi</h3>
                 <div class="selection-grid" data-group="lokasi-haji">
-                    <button class="selection-btn active" data-value="Gaya Modern" onclick="selectOption(this)">Gaya Modern</button>
-                    <button class="selection-btn" data-value="Depan Ka'bah" onclick="selectOption(this)">Depan Ka'bah</button>
-                    <button class="selection-btn" data-value="Masjid Nabawi" onclick="selectOption(this)">Masjid Nabawi</button>
-                    <button class="selection-btn" data-value="Jabal Khandamah" onclick="selectOption(this)">Jabal Khandamah</button>
+                    <button class="selection-btn active" data-value="GayaModern" onclick="selectOption(this)">Gaya Modern</button>
+                    <button class="selection-btn" data-value="DepanKa'bah" onclick="selectOption(this)">Depan Ka'bah</button>
+                    <button class="selection-btn" data-value="MasjidNabawi" onclick="selectOption(this)">Masjid Nabawi</button>
+                    <button class="selection-btn" data-value="JabalKhandamah" onclick="selectOption(this)">Jabal Khandamah</button>
                     <button class="selection-btn" data-value="Tawaf" onclick="selectOption(this)">Tawaf</button>
-                    <button class="selection-btn" data-value="Di Raudhah" onclick="selectOption(this)">Di Raudhah</button>
-                    <button class="selection-btn" data-value="Arafah/Mina" onclick="selectOption(this)">Arafah/Mina</button>
-                    <button class="selection-btn" data-value="Sunset Makkah" onclick="selectOption(this)">Sunset Makkah</button>
+                    <button class="selection-btn" data-value="DiRaudhah" onclick="selectOption(this)">Di Raudhah</button>
+                    <button class="selection-btn" data-value="ArafahMina" onclick="selectOption(this)">Arafah/Mina</button>
+                    <button class="selection-btn" data-value="SunsetMakkah" onclick="selectOption(this)">Sunset Makkah</button>
                 </div>
+                <input type="text" id="instruksi-haji-input" class="input-text" data-group="instruksi-haji" style="margin-top: 10px;" placeholder="Instruksi tambahan (opsional)...">
 
-                <h3 class="step-title">5. Pilih Rasio</h3>
+                <h3 class="step-title">4. Pilih Rasio</h3>
                 <div class="selection-grid grid-4" data-group="ratio-haji">
-                    <button class="selection-btn active" data-value="1:1" onclick="selectOption(this)">1:1</button>
-                    <button class="selection-btn" data-value="16:9" onclick="selectOption(this)">16:9</button>
-                    <button class="selection-btn" data-value="3:4" onclick="selectOption(this)">3:4</button>
-                    <button class="selection-btn" data-value="9:16" onclick="selectOption(this)">9:16</button>
+                    <button class="selection-btn active" data-value="1:1" onclick="selectOption(this)">
+                        <strong>1:1</strong>
+                        <small>Cocok untuk Feed IG/FB atau Foto Profil.</small>
+                    </button>
+                    <button class="selection-btn" data-value="16:9" onclick="selectOption(this)">
+                        <strong>16:9</strong>
+                        <small>Sempurna untuk Postingan Landscape atau Wallpaper Desktop.</small>
+                    </button>
+                    <button class="selection-btn" data-value="3:4" onclick="selectOption(this)">
+                        <strong>3:4</strong>
+                        <small>Ideal untuk cetak foto bingkai standar (Frame Photo).</small>
+                    </button>
+                    <button class="selection-btn" data-value="9:16" onclick="selectOption(this)">
+                        <strong>9:16</strong>
+                        <small>Cocok untuk Stories/Reels IG, TikTok, atau Mobile Wallpaper.</small>
+                    </button>
                 </div>
             </div>
 
-            <div id="Ibu Hamil" class="tab-content-panel">
+            <div id="Hamil" class="tab-content-panel">
                 
-                <h3 class="step-title">1. Unggah Foto Ibu Hamil</h3>
-                <div class="upload-dropzone dropzone" id="dropzone-Hamil">
-                    <div class="upload-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 18a6 6 0 0 0 0-12c-3.3 0-6 2.7-6 6s2.7 6 6 6z"></path><path d="M12 18v4"></path><path d="M12 2v2"></path><path d="M5.64 5.64l1.41 1.41"></path><path d="M18.36 18.36l-1.41-1.41"></path></svg>
-                    </div>
-                    <div class="upload-text">Klik atau seret foto</div>
-                </div>
-                
-                <h3 class="step-title">2. Foto Pasangan/Anak (Opsional)</h3>
-                 <div class="upload-dropzone dropzone" id="dropzone-Hamil-Opt" style="height: 100px;">
-                    <div class="upload-icon" style="width: 32px; height: 32px; margin-bottom: 0;">
-                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><path d="M20 8v6M23 11h-6"></path></svg>
-                    </div>
-                    <div class="upload-text" style="margin-top: 5px;">Tambah Suami/Anak</div>
-                </div>
-
-                <h3 class="step-title">3. Tema Studio</h3>
+                <h3 class="step-title">1. Tema Pose & Pakaian</h3>
                 <div class="selection-grid grid-2" style="margin-bottom: 15px;">
-                     <div style="flex: 1;"><label style="color: var(--text-muted); font-size: 13px; margin-bottom: 5px; display: block;">Pose</label><select id="pose-hamil"><option>Berdiri (Pamer Perut)</option><option>Duduk</option><option>Samping</option></select></div>
-                     <div style="flex: 1;"><label style="color: var(--text-muted); font-size: 13px; margin-bottom: 5px; display: block;">Pakaian</label><select id="pakaian-hamil"><option>Gaun Panjang</option><option>Casual</option><option>Adat</option></select></div>
+                     <div style="flex: 1;"><label style="color: var(--text-muted); font-size: 13px; margin-bottom: 5px; display: block;">Pose</label><select id="pose-hamil" data-group="pose-hamil" onchange="checkCompleteness()"><option selected>Berdiri (Pamer Perut)</option><option>Duduk</option><option>Samping</option></select></div>
+                     <div style="flex: 1;"><label style="color: var(--text-muted); font-size: 13px; margin-bottom: 5px; display: block;">Pakaian</label><select id="pakaian-hamil" data-group="pakaian-hamil" onchange="checkCompleteness()"><option selected>Gaun Panjang</option><option>Casual</option><option>Adat</option></select></div>
                 </div>
                 
+                <h3 class="step-title">2. Pilih Tema Studio</h3>
                 <div class="selection-grid" data-group="tema-hamil">
-                    <button class="selection-btn active" data-value="Studio Bunga" onclick="selectOption(this)">Studio Bunga</button>
-                    <button class="selection-btn" data-value="Elegan Gelap" onclick="selectOption(this)">Elegan Gelap</button>
+                    <button class="selection-btn active" data-value="StudioBunga" onclick="selectOption(this)">Studio Bunga</button>
+                    <button class="selection-btn" data-value="EleganGelap" onclick="selectOption(this)">Elegan Gelap</button>
                     <button class="selection-btn" data-value="Bohemian" onclick="selectOption(this)">Bohemian</button>
-                    <button class="selection-btn" data-value="Taman Sore" onclick="selectOption(this)">Taman Sore</button>
+                    <button class="selection-btn" data-value="TamanSore" onclick="selectOption(this)">Taman Sore</button>
                 </div>
-                <input type="text" id="instruksi-hamil" class="input-text" style="margin-top: 10px;" placeholder="Instruksi tambahan (opsional)...">
+                <input type="text" id="instruksi-hamil-input" class="input-text" data-group="instruksi-hamil" style="margin-top: 10px;" placeholder="Instruksi tambahan (opsional: sertakan pasangan/anak)">
 
 
-                <h3 class="step-title">4. Pilih Rasio</h3>
+                <h3 class="step-title">3. Pilih Rasio</h3>
                 <div class="selection-grid grid-4" data-group="ratio-hamil">
-                    <button class="selection-btn active" data-value="1:1" onclick="selectOption(this)">1:1</button>
-                    <button class="selection-btn" data-value="16:9" onclick="selectOption(this)">16:9</button>
-                    <button class="selection-btn" data-value="3:4" onclick="selectOption(this)">3:4</button>
-                    <button class="selection-btn" data-value="9:16" onclick="selectOption(this)">9:16</button>
+                    <button class="selection-btn active" data-value="1:1" onclick="selectOption(this)">
+                        <strong>1:1</strong>
+                        <small>Cocok untuk Feed IG/FB atau Foto Profil.</small>
+                    </button>
+                    <button class="selection-btn" data-value="16:9" onclick="selectOption(this)">
+                        <strong>16:9</strong>
+                        <small>Sempurna untuk Postingan Landscape atau Wallpaper Desktop.</small>
+                    </button>
+                    <button class="selection-btn" data-value="3:4" onclick="selectOption(this)">
+                        <strong>3:4</strong>
+                        <small>Ideal untuk cetak foto bingkai standar (Frame Photo).</small>
+                    </button>
+                    <button class="selection-btn" data-value="9:16" onclick="selectOption(this)">
+                        <strong>9:16</strong>
+                        <small>Cocok untuk Stories/Reels IG, TikTok, atau Mobile Wallpaper.</small>
+                    </button>
                 </div>
 
             </div>
 
         </div>
+        
+        <div class="label-section contact-section">Data Pemesan (Wajib)</div>
+        <div class="input-group">
+            <input type="text" id="nama-lengkap" class="input-text" placeholder="Nama Lengkap Anda (Min. 3 Karakter)" minlength="3" required>
+            <span class="error-message" id="error-nama">Nama harus diisi minimal 3 karakter.</span>
+        </div>
+        <div class="input-group">
+            <input type="tel" id="nomor-whatsapp" class="input-text" placeholder="Nomor WhatsApp (Diawali 08, Min. 10 Digit)" pattern="08[0-9]{8,}" required>
+            <span class="error-message" id="error-wa">Nomor WA harus diawali '08' dan minimal 10 digit.</span>
+        </div>
+        
         <button class="btn-process" id="btn-process" disabled>
-            Order Fotografer
+            Klik untuk Order
         </button>
 
     </div>
 
     <script>
-        const fileInput = document.getElementById('photo-upload');
-        const btnProcess = document.getElementById('btn-process');
-        let selectedFile = null; 
-
-        function getActiveData(groupName) {
-            const activeTab = document.querySelector('.tab-content-panel.active');
-            if (!activeTab) return 'N/A';
-            const activeBtn = activeTab.querySelector(`.selection-grid[data-group="${groupName}"] .selection-btn.active`);
-            return activeBtn ? activeBtn.getAttribute('data-value') : 'N/A';
-        }
-
-        function getSelectValue(id) {
-            const selectElement = document.getElementById(id);
-            return selectElement ? selectElement.value : '';
-        }
-
-        function getInputValue(id) {
-            const inputElement = document.getElementById(id);
-            return inputElement ? inputElement.value : '';
-        }
-
-        function selectOption(selectedButton) {
-            const parent = selectedButton.closest('.selection-grid');
-            const buttons = parent.querySelectorAll('.selection-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            selectedButton.classList.add('active');
-            checkCompleteness();
-        }
         
-        function resetUploadStatus() {
-            selectedFile = null;
-            document.getElementById('photo-upload').value = '';
-            document.querySelectorAll('.upload-text').forEach(el => {
-                if (!el.parentElement.id.includes('Opt')) { // Hanya reset zona utama
-                    el.textContent = "Klik atau seret foto";
-                    el.parentElement.style.borderColor = 'var(--neon-cyan)';
-                    el.parentElement.style.background = 'var(--surface-dark)';
-                    el.parentElement.querySelector('.upload-icon svg').style.color = 'var(--neon-cyan)';
-                }
-            });
-        }
+        const btnProcess = document.getElementById('btn-process');
+        const namaInput = document.getElementById('nama-lengkap');
+        const waInput = document.getElementById('nomor-whatsapp');
+        
+        // Element pesan error
+        const errorNama = document.getElementById('error-nama');
+        const errorWA = document.getElementById('error-wa');
+        
+        const targetWA = "6285133748005"; 
 
+        // --- 1. LOGIKA TAB NAVIGATION ---
         function openTab(evt, tabName) {
             let tabcontent, tablinks;
             
@@ -532,137 +566,188 @@
             document.getElementById(tabName).classList.add('active');
             evt.currentTarget.classList.add('active');
             
-            resetUploadStatus();
             checkCompleteness();
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelector('.tab-button').click(); 
-        });
+        // --- 2. LOGIKA PILIHAN DAN VALIDASI ---
 
-        fileInput.addEventListener('change', function() {
-            if (this.files && this.files[0]) {
-                selectedFile = this.files[0];
-                const fileName = selectedFile.name;
-                
-                if (selectedFile.size > 5 * 1024 * 1024) { 
-                     alert('Peringatan: Ukuran file lebih dari 5MB. Proses Base64 mungkin gagal atau lambat. Gunakan file yang lebih kecil.');
-                }
-                
-                const activeTabId = document.querySelector('.tab-content-panel.active').id;
-                const activeDropzoneId = `#dropzone-${activeTabId.replace(/\s/g, '').replace(/\//g, '')}`;
+        function selectOption(selectedButton) {
+            const parent = selectedButton.closest('.selection-grid');
+            const buttons = parent.querySelectorAll('.selection-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            selectedButton.classList.add('active');
+            
+            checkCompleteness();
+        }
+        
+        // Fungsi validasi kustom
+        function validateInputs() {
+            const nama = namaInput.value.trim();
+            const wa = waInput.value.trim();
+            
+            const isNameValid = nama.length >= 3;
+            const waPattern = /^08[0-9]{8,}$/; 
+            const isWAValid = waPattern.test(wa);
+            
+            toggleValidationFeedback(namaInput, errorNama, isNameValid, "Nama harus diisi minimal 3 karakter.");
+            toggleValidationFeedback(waInput, errorWA, isWAValid, "Nomor WA harus diawali '08' dan minimal 10 digit.");
 
-                document.querySelector(activeDropzoneId).querySelector('.upload-text').textContent = `File Terpilih: ${fileName}`;
-                document.querySelector(activeDropzoneId).style.borderColor = 'var(--neon-accent)';
-                document.querySelector(activeDropzoneId).style.background = 'rgba(168, 85, 247, 0.1)';
-                document.querySelector(activeDropzoneId).querySelector('.upload-icon svg').style.color = 'var(--neon-accent)';
-                
-                checkCompleteness();
+            return { isNameValid, isWAValid };
+        }
+
+        function toggleValidationFeedback(inputElement, errorElement, isValid, errorMessage) {
+            if (inputElement.value.trim() === '') {
+                inputElement.classList.remove('input-invalid');
+                errorElement.classList.remove('visible');
+                return;
             }
-        });
 
+            if (isValid) {
+                inputElement.classList.remove('input-invalid');
+                errorElement.classList.remove('visible');
+            } else {
+                inputElement.classList.add('input-invalid');
+                errorElement.textContent = errorMessage;
+                errorElement.classList.add('visible');
+            }
+        }
+        
+        // Cek kelengkapan form
         function checkCompleteness() {
-            if (selectedFile) {
+            const { isNameValid, isWAValid } = validateInputs();
+            
+            if (isNameValid && isWAValid) {
                 btnProcess.disabled = false;
             } else {
                 btnProcess.disabled = true;
             }
         }
         
-        // --- FUNGSI BASE64 DAN ORDER BARU ---
-        function processFileAndOrder() {
-            if (!selectedFile) return;
+        document.addEventListener('DOMContentLoaded', () => {
+             document.getElementById('PasFoto').classList.add('active');
+             namaInput.addEventListener('input', checkCompleteness);
+             waInput.addEventListener('input', checkCompleteness);
+             
+             document.querySelectorAll('.tab-content-panel .input-text').forEach(input => {
+                 input.addEventListener('input', checkCompleteness);
+             });
+             
+             document.querySelectorAll('.tab-content-panel select').forEach(select => {
+                 select.addEventListener('change', checkCompleteness);
+             });
 
-            const reader = new FileReader();
-
-            reader.onloadstart = () => {
-                btnProcess.textContent = "Processing File...";
-                btnProcess.disabled = true;
-            };
-
-            reader.onload = function(event) {
-                const base64String = event.target.result;
-                
-                // Ambil data rincian dari tab aktif
-                const activeTabId = document.querySelector('.tab-content-panel.active').id;
-                let details = { kategori: activeTabId };
-
-                // Logika ekstraksi data berdasarkan KATEGORI
-                if (activeTabId === 'Pas Foto') {
-                    details.background = getActiveData('bg-pasfoto');
-                    details.pakaian = getActiveData('pakaian-pasfoto');
-                    details.ukuran = getActiveData('ukuran-pasfoto');
-                } else if (activeTabId === 'Bayi Baru Lahir') {
-                    details.jenis_kelamin = getActiveData('jenis-kelamin-bayi');
-                    details.tema = getActiveData('tema-bayi');
-                    details.nama_bayi = getInputValue('nama-bayi');
-                    details.tgl_lahir = getInputValue('tgl-lahir-bayi');
-                    details.dekorasi = getInputValue('dekorasi-bayi');
-                    details.ratio = getActiveData('ratio-bayi');
-                } else if (activeTabId === 'Anak-anak') {
-                    details.jenis_kelamin = getActiveData('jenis-kelamin-anak');
-                    details.gaya_foto = getActiveData('gaya-anak');
-                    details.ekspresi = getActiveData('ekspresi-anak');
-                    details.ratio = getActiveData('ratio-anak');
-                } else if (activeTabId === 'Haji/Umroh') {
-                    details.jenis_kelamin = getActiveData('jenis-kelamin-haji');
-                    details.pakaian = getActiveData('pakaian-haji');
-                    details.lokasi = getActiveData('lokasi-haji');
-                    details.ratio = getActiveData('ratio-haji');
-                } else if (activeTabId === 'Ibu Hamil') {
-                    details.pose = getSelectValue('pose-hamil');
-                    details.pakaian = getSelectValue('pakaian-hamil');
-                    details.tema_studio = getActiveData('tema-hamil');
-                    details.instruksi = getInputValue('instruksi-hamil');
-                    details.ratio = getActiveData('ratio-hamil');
-                }
-
-                const orderData = {
-                    layanan: 'Fotografer',
-                    ...details,
-                    file_base64: base64String,
-                    file_name: selectedFile.name,
-                    file_type: selectedFile.type
-                };
-                
-                localStorage.setItem('pendingOrderDetails', JSON.stringify(orderData));
-                window.location.href = 'DISCLAIMER edit.html';
-            };
-
-            reader.onerror = (error) => {
-                alert('Gagal membaca file. Ukuran file mungkin terlalu besar atau format tidak didukung. Coba gambar lain.');
-                btnProcess.textContent = "Order Fotografer";
-                btnProcess.disabled = false;
-            };
-
-            reader.readAsDataURL(selectedFile);
-        }
-
-        btnProcess.addEventListener('click', processFileAndOrder);
-        // --- AKHIR FUNGSI BASE64 DAN ORDER BARU ---
-        
-        // Drag and drop listeners
-        function preventDefaults (e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-
-        function handleDrop(e) {
-            const fileInput = document.getElementById('photo-upload');
-            if (fileInput) {
-                fileInput.files = e.dataTransfer.files;
-                fileInput.dispatchEvent(new Event('change')); 
-            }
-        }
-        
-        document.querySelectorAll('.dropzone').forEach(dropzone => {
-            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-                dropzone.addEventListener(eventName, preventDefaults, false);
-            });
-            dropzone.addEventListener('drop', handleDrop, false);
-            dropzone.addEventListener('click', () => fileInput.click()); // Tambahkan klik
+             checkCompleteness();
         });
-        
+
+
+        // --- 3. LOGIKA PENGUMPULAN DATA DAN ORDER ---
+
+        function getActiveTabData() {
+            const activeTab = document.querySelector('.tab-content-panel.active');
+            if (!activeTab) return null;
+            
+            const category = activeTab.id;
+            const data = { category: category };
+            let dataWA = [];
+            
+            // Map label untuk teks yang lebih deskriptif
+            const labelMap = {
+                'PasFoto': 'Pas Foto', 'Bayi': 'Bayi Baru Lahir', 'Anak': 'Anak-anak',
+                'HajiUmroh': 'Haji/Umroh', 'Hamil': 'Ibu Hamil',
+                'bg-pasfoto': 'Background', 'pakaian-pasfoto': 'Pakaian', 'ukuran-pasfoto': 'Ukuran', 
+                'instruksi-pasfoto': 'Instruksi', 'jenis-kelamin-bayi': 'Jenis Kelamin', 
+                'tema-bayi': 'Tema', 'nama-bayi': 'Nama Bayi', 'tgl-lahir': 'Tgl Lahir', 
+                'dekorasi-bayi': 'Dekorasi', 'ratio-bayi': 'Rasio', 'jenis-kelamin-anak': 'Jenis Kelamin', 
+                'gaya-anak': 'Gaya Foto', 'ekspresi-anak': 'Ekspresi', 'instruksi-anak': 'Instruksi', 
+                'ratio-anak': 'Rasio', 'jenis-kelamin-haji': 'Jenis Kelamin', 'pakaian-haji': 'Pakaian', 
+                'lokasi-haji': 'Lokasi', 'instruksi-haji': 'Instruksi', 'ratio-haji': 'Rasio', 
+                'pose-hamil': 'Pose', 'pakaian-hamil': 'Pakaian', 'tema-hamil': 'Tema', 
+                'instruksi-hamil': 'Instruksi', 'ratio-hamil': 'Rasio'
+            };
+
+
+            // Kumpulkan data dari tombol yang aktif
+            activeTab.querySelectorAll('.selection-grid').forEach(grid => {
+                const group = grid.getAttribute('data-group');
+                const activeBtn = grid.querySelector('.selection-btn.active');
+                if (activeBtn) {
+                    data[group] = activeBtn.getAttribute('data-value');
+                    
+                    let label;
+                    const strongElement = activeBtn.querySelector('strong');
+                    // Ambil teks dari strong jika ada (untuk Rasio), jika tidak ambil teks biasa (untuk pilihan kategori lain)
+                    if (strongElement) {
+                         label = strongElement.textContent.trim();
+                    } else {
+                         label = activeBtn.textContent.trim();
+                    }
+                    
+                    if (label.length > 20) label = activeBtn.getAttribute('data-value'); // Fallback jika teks terlalu panjang
+                    dataWA.push(`*${labelMap[group] || group}:* ${label}`);
+                }
+            });
+            
+            // Kumpulkan data dari dropdown/input teks
+            activeTab.querySelectorAll('select, .input-text').forEach(input => {
+                const group = input.getAttribute('data-group') || input.id;
+                if (group && input.value.trim() && group !== 'nama-lengkap' && group !== 'nomor-whatsapp') {
+                    data[group] = input.value.trim();
+                    let label = input.value.trim();
+                    if (label.length > 50) label = label.substring(0, 50) + '...';
+                    dataWA.push(`*${labelMap[group] || group}:* ${label}`);
+                }
+            });
+            
+            // Format Rincian untuk WA, dipisahkan dengan BARIS BARU
+            data.rincianWA = dataWA.join('\n');
+            
+            return data;
+        }
+
+        btnProcess.addEventListener('click', function() {
+            // Lakukan validasi terakhir
+            const { isNameValid, isWAValid } = validateInputs();
+
+            if (!isNameValid || !isWAValid) {
+                document.querySelector('.contact-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                alert("Mohon lengkapi atau perbaiki data pemesan yang ditandai.");
+                return;
+            }
+             
+             if (btnProcess.disabled) return;
+             
+             const namaLengkap = namaInput.value.trim();
+             const orderDetails = getActiveTabData();
+             
+             if (!orderDetails) {
+                 alert("Terjadi kesalahan: Kategori order tidak teridentifikasi.");
+                 return;
+             }
+
+             // Format data untuk dikirim/disimpan (Simulasi database)
+             const finalOrderData = {
+                 nama: namaLengkap,
+                 whatsapp: waInput.value.trim(),
+                 ...orderDetails,
+                 timestamp: new Date().toISOString()
+             };
+             
+             console.log("--- ORDER PHOTOGRAPHER TERSIMPAN (simulasi database) ---");
+             console.log(finalOrderData);
+             
+             // Format pesan WhatsApp dengan baris baru (\n)
+             let waMessage = `Halo saya ${namaLengkap}, baru saja order *PHOTOGRAPHER*\n*Kategori:* ${orderDetails.category}\n\n*Detail Order:*\n${orderDetails.rincianWA}\n\nFile foto akan segera saya kirim ke sini. Mohon segera diproses ya, Terima kasih!`;
+             
+             // Encode pesan untuk URL (Newlines: %0A)
+             const encodedMessage = encodeURIComponent(waMessage);
+             
+             // Buka link WhatsApp
+             window.open(`https://wa.me/${targetWA}?text=${encodedMessage}`, '_blank');
+             
+             // Redirect ke menu layanan setelah Order diproses
+             alert("Order Anda telah tercatat. Silakan lanjutkan di WhatsApp untuk mengirimkan foto!");
+             window.location.href = 'MENU LAYANAN.HTML';
+        });
     </script>
 </body>
 </html>

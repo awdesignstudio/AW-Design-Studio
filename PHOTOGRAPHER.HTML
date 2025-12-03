@@ -198,8 +198,6 @@
             line-height: 1.2;
         }
         
-        /* REMOVE STYLING FOR <small> */
-        
         /* DROPDOWN & TEXT INPUT */
         .input-text, select, .input-small-grid input {
             width: 100%;
@@ -242,6 +240,13 @@
             gap: 8px;
             transition: all 0.3s ease;
         }
+        /* Style untuk ikon lampu */
+        .ratio-info-box .lamp-icon {
+            font-size: 16px; 
+            color: #fbbf24; /* Warna kuning agar terlihat seperti lampu */
+            line-height: 1;
+        }
+        
         .ratio-info-box.highlight {
             border-color: var(--neon-accent);
             color: var(--text-main);
@@ -395,7 +400,7 @@
                     </button>
                 </div>
                 <div class="ratio-info-box">
-                    <span style="font-size: 14px; margin-right: 5px;">💡</span>
+                    <span class="lamp-icon">💡</span>
                     <span class="ratio-desc-text">Cocok untuk Feed IG/FB atau Foto Profil.</span>
                 </div>
             </div>
@@ -441,7 +446,7 @@
                     </button>
                 </div>
                  <div class="ratio-info-box">
-                    <span style="font-size: 14px; margin-right: 5px;">💡</span>
+                    <span class="lamp-icon">💡</span>
                     <span class="ratio-desc-text">Cocok untuk Feed IG/FB atau Foto Profil.</span>
                 </div>
                 
@@ -490,7 +495,7 @@
                     </button>
                 </div>
                  <div class="ratio-info-box">
-                    <span style="font-size: 14px; margin-right: 5px;">💡</span>
+                    <span class="lamp-icon">💡</span>
                     <span class="ratio-desc-text">Cocok untuk Feed IG/FB atau Foto Profil.</span>
                 </div>
             </div>
@@ -499,8 +504,22 @@
                 
                 <h3 class="step-title">1. Tema Pose & Pakaian</h3>
                 <div class="selection-grid grid-2" style="margin-bottom: 15px;">
-                     <div style="flex: 1;"><label style="color: var(--text-muted); font-size: 13px; margin-bottom: 5px; display: block;">Pose</label><select id="pose-hamil" data-group="pose-hamil" onchange="checkCompleteness()"><option selected>Berdiri (Pamer Perut)</option><option>Duduk</option><option>Samping</option></select></div>
-                     <div style="flex: 1;"><label style="color: var(--text-muted); font-size: 13px; margin-bottom: 5px; display: block;">Pakaian</label><select id="pakaian-hamil" data-group="pakaian-hamil" onchange="checkCompleteness()"><option selected>Gaun Panjang</option><option>Casual</option><option>Adat</option></select></div>
+                     <div style="flex: 1;"><label style="color: var(--text-muted); font-size: 13px; margin-bottom: 5px; display: block;">Pose</label>
+                        <select id="pose-hamil" data-group="pose-hamil" onchange="checkCompleteness()">
+                            <option selected>Berdiri (Pamer Perut)</option>
+                            <option>Duduk Elegan</option>
+                            <option>Tangan di Perut</option>
+                            <option>Melihat ke Perut</option>
+                        </select>
+                    </div>
+                     <div style="flex: 1;"><label style="color: var(--text-muted); font-size: 13px; margin-bottom: 5px; display: block;">Pakaian</label>
+                        <select id="pakaian-hamil" data-group="pakaian-hamil" onchange="checkCompleteness()">
+                            <option selected>Gaun Panjang</option>
+                            <option>Kasual (Jeans)</option>
+                            <option>Dress Ketat</option>
+                            <option>Kebaya</option>
+                        </select>
+                    </div>
                 </div>
                 
                 <h3 class="step-title">2. Pilih Tema Studio</h3>
@@ -529,7 +548,7 @@
                     </button>
                 </div>
                  <div class="ratio-info-box">
-                    <span style="font-size: 14px; margin-right: 5px;">💡</span>
+                    <span class="lamp-icon">💡</span>
                     <span class="ratio-desc-text">Cocok untuk Feed IG/FB atau Foto Profil.</span>
                 </div>
             </div>
@@ -740,7 +759,15 @@
                     data[group] = input.value.trim();
                     let label = input.value.trim();
                     if (label.length > 50) label = label.substring(0, 50) + '...';
-                    dataWA.push(`*${labelMap[group] || group}:* ${label}`);
+                    
+                    // Ambil label dari nama option jika itu dropdown
+                    const isSelect = input.tagName === 'SELECT';
+                    if (isSelect) {
+                        const selectedOption = input.options[input.selectedIndex].text;
+                        dataWA.push(`*${labelMap[group] || group}:* ${selectedOption}`);
+                    } else {
+                        dataWA.push(`*${labelMap[group] || group}:* ${label}`);
+                    }
                 }
             });
             
@@ -790,5 +817,3 @@
     </script>
 </body>
 </html>
-
-

@@ -560,10 +560,6 @@
             <input type="text" id="nama-lengkap" class="input-text" placeholder="Nama Lengkap Anda (Min. 3 Karakter)" minlength="3" required>
             <span class="error-message" id="error-nama">Nama harus diisi minimal 3 karakter.</span>
         </div>
-        <div class="input-group">
-            <input type="tel" id="nomor-whatsapp" class="input-text" placeholder="Nomor WhatsApp (Diawali 08, Min. 10 Digit)" pattern="08[0-9]{8,}" required>
-            <span class="error-message" id="error-wa">Nomor WA harus diawali '08' dan minimal 10 digit.</span>
-        </div>
         
         <button class="btn-process" id="btn-process" disabled>
             Klik untuk Order
@@ -575,10 +571,8 @@
         
         const btnProcess = document.getElementById('btn-process');
         const namaInput = document.getElementById('nama-lengkap');
-        const waInput = document.getElementById('nomor-whatsapp');
         
         const errorNama = document.getElementById('error-nama');
-        const errorWA = document.getElementById('error-wa');
         
         const targetWA = "6285133748005"; 
 
@@ -645,16 +639,12 @@
         
         function validateInputs() {
             const nama = namaInput.value.trim();
-            const wa = waInput.value.trim();
-            
             const isNameValid = nama.length >= 3;
-            const waPattern = /^08[0-9]{8,}$/; 
-            const isWAValid = waPattern.test(wa);
             
             toggleValidationFeedback(namaInput, errorNama, isNameValid, "Nama harus diisi minimal 3 karakter.");
-            toggleValidationFeedback(waInput, errorWA, isWAValid, "Nomor WA harus diawali '08' dan minimal 10 digit.");
-
-            return { isNameValid, isWAValid };
+            
+            // Validasi WA dihapus
+            return { isNameValid };
         }
 
         function toggleValidationFeedback(inputElement, errorElement, isValid, errorMessage) {
@@ -675,9 +665,10 @@
         }
         
         function checkCompleteness() {
-            const { isNameValid, isWAValid } = validateInputs();
+            const { isNameValid } = validateInputs();
             
-            if (isNameValid && isWAValid) {
+            // Cek kelengkapan (hanya nama)
+            if (isNameValid) {
                 btnProcess.disabled = false;
             } else {
                 btnProcess.disabled = true;
@@ -693,7 +684,6 @@
              }
              
              namaInput.addEventListener('input', checkCompleteness);
-             waInput.addEventListener('input', checkCompleteness);
              
              document.querySelectorAll('.tab-content-panel .input-text').forEach(input => {
                  input.addEventListener('input', checkCompleteness);
@@ -755,7 +745,7 @@
             // Kumpulkan data dari dropdown/input teks
             activeTab.querySelectorAll('select, .input-text').forEach(input => {
                 const group = input.getAttribute('data-group') || input.id;
-                if (group && input.value.trim() && group !== 'nama-lengkap' && group !== 'nomor-whatsapp') {
+                if (group && input.value.trim() && group !== 'nama-lengkap') {
                     data[group] = input.value.trim();
                     let label = input.value.trim();
                     if (label.length > 50) label = label.substring(0, 50) + '...';
@@ -777,9 +767,9 @@
         }
 
         btnProcess.addEventListener('click', function() {
-            const { isNameValid, isWAValid } = validateInputs();
+            const { isNameValid } = validateInputs();
 
-            if (!isNameValid || !isWAValid) {
+            if (!isNameValid) {
                 document.querySelector('.contact-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
                 alert("Mohon lengkapi atau perbaiki data pemesan yang ditandai.");
                 return;
@@ -795,9 +785,9 @@
                  return;
              }
 
+             // Simulasi database tanpa nomor WA pemesan
              const finalOrderData = {
                  nama: namaLengkap,
-                 whatsapp: waInput.value.trim(),
                  ...orderDetails,
                  timestamp: new Date().toISOString()
              };
@@ -811,7 +801,7 @@
              
              window.open(`https://wa.me/${targetWA}?text=${encodedMessage}`, '_blank');
              
-             alert("Order Anda telah tercatat. Silakan lanjutkan di WhatsApp untuk mengirimkan foto!");
+             // alert("Order Anda telah tercatat. Silakan lanjutkan di WhatsApp untuk mengirimkan foto!");
              window.location.href = 'MENU LAYANAN.HTML';
         });
     </script>

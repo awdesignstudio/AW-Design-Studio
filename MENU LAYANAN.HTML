@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 1. SETUP CSS VARIABLE (Konsisten dengan tema sebelumnya) --- */
+        /* --- 1. SETUP CSS VARIABLE --- */
         :root {
             --bg-dark: #09090b;
             --surface-dark: #18181b;
@@ -41,7 +41,7 @@
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             width: 100%;
-            max-width: 800px; /* Lebih lebar untuk grid */
+            max-width: 800px;
             border-radius: 24px;
             border: 1px solid var(--border);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
@@ -133,8 +133,9 @@
         }
         
         /* --- CSS KHUSUS INFOGRAFIS (SPAN ALL COLUMNS) --- */
+        /* Catatan: Class ini bisa dipakai jika jumlah item ganjil */
         .service-card.span-all {
-            grid-column: span 2; /* Membuat kartu Infografis mengambil 2 kolom */
+            grid-column: span 2; 
         }
 
         /* Media Query untuk Mobile */
@@ -145,7 +146,6 @@
             .menu-card {
                 padding: 20px;
             }
-            /* Di mobile, span-all tidak diperlukan karena sudah 1 kolom */
             .service-card.span-all {
                 grid-column: span 1;
             }
@@ -193,7 +193,7 @@ Tarif selain Infografis Rp. 5.000/foto, (Tarif Paket Rp. 10.000/3 foto, berlaku 
                     <h3 class="service-title">Fotografer</h3>
                     <p class="service-description">untuk membuat foto bayi baru lahir, anak-anak, adegan haji/umroh, pas foto dan foto ibu hamil.</p>
                 </div>
-            </div >
+            </div>
 
             <div class="service-card" onclick="selectService(this, 'SmartSketch')">
                 <span class="service-number">5</span>
@@ -211,14 +211,23 @@ Tarif selain Infografis Rp. 5.000/foto, (Tarif Paket Rp. 10.000/3 foto, berlaku 
                 </div>
             </div>
 
-            <div class="service-card span-all" onclick="selectService(this, 'Infografis')">
+            <div class="service-card" onclick="selectService(this, 'Infografis')">
                 <span class="service-number">7</span>
                 <div class="service-details">
                     <h3 class="service-title">Infografis</h3>
                     <p class="service-description">untuk mengubah informasi atau data yang rumit menjadi tampilan visual yang menarik, ringkas, dan mudah dipahami.</p>
                 </div>
             </div>
+
+            <div class="service-card" onclick="selectService(this, 'Poster')">
+                <span class="service-number">8</span>
+                <div class="service-details">
+                    <h3 class="service-title">Poster</h3>
+                    <p class="service-description">untuk membuat poster produk kamu jadi menarik dan berkualitas tinggi.</p>
+                </div>
             </div>
+
+        </div>
     </div>
 
     <script>
@@ -231,7 +240,8 @@ Tarif selain Infografis Rp. 5.000/foto, (Tarif Paket Rp. 10.000/3 foto, berlaku 
                 'Fotografer': 'PHOTOGRAPHER.HTML',
                 'SmartSketch': 'SKETSA.HTML',
                 'InstantArtify': 'ARTIFY.HTML',
-                'Infografis': 'INFOGRAFIS.HTML' // File infografis
+                'Infografis': 'INFOGRAFIS.HTML',
+                'Poster': 'POSTER.HTML' // Menambahkan file untuk Poster
             };
             
             // 1. Hapus kelas 'active' dari semua kartu

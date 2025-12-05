@@ -128,7 +128,7 @@
             color: var(--text-muted);
             transition: all 0.2s;
             text-align: center;
-            height: auto; /* Dibuat auto karena small dihapus */
+            height: auto; 
         }
         
         /* Gaya Khusus untuk Konten Rasio */
@@ -149,8 +149,6 @@
             line-height: 1.2;
         }
         
-        /* Hapus Styling untuk small */
-
         /* Style untuk tombol Aktif (Neon) */
         .ratio-btn.active {
             border-color: var(--neon-accent); 
@@ -304,11 +302,7 @@
                 <span class="error-message" id="error-nama">Nama harus diisi minimal 3 karakter.</span>
             </div>
             
-            <div class="input-group">
-                <input type="tel" id="nomor-whatsapp" placeholder="Nomor WhatsApp (Diawali 08, Min. 10 Digit)" pattern="08[0-9]{8,}" required>
-                <span class="error-message" id="error-wa">Nomor WA harus diawali '08' dan minimal 10 digit.</span>
             </div>
-        </div>
 
         <button class="btn-process" id="btn-process" disabled>
             Klik untuk Order
@@ -319,10 +313,8 @@
     <script>
         const btnProcess = document.getElementById('btn-process');
         const namaInput = document.getElementById('nama-lengkap');
-        const waInput = document.getElementById('nomor-whatsapp');
         
         const errorNama = document.getElementById('error-nama');
-        const errorWA = document.getElementById('error-wa');
 
         const targetWA = "6285133748005"; 
 
@@ -345,17 +337,12 @@
 
         function validateInputs() {
             const nama = namaInput.value.trim();
-            const wa = waInput.value.trim();
-            
             const isNameValid = nama.length >= 3;
             
-            const waPattern = /^08[0-9]{8,}$/; 
-            const isWAValid = waPattern.test(wa);
-            
             toggleValidationFeedback(namaInput, errorNama, isNameValid, "Nama harus diisi minimal 3 karakter.");
-            toggleValidationFeedback(waInput, errorWA, isWAValid, "Nomor WA harus diawali '08' dan minimal 10 digit.");
-
-            return { isNameValid, isWAValid };
+            
+            // Validasi WA dihapus
+            return { isNameValid };
         }
 
         function toggleValidationFeedback(inputElement, errorElement, isValid, errorMessage) {
@@ -378,9 +365,9 @@
         function checkCompleteness() {
             const isRatioSelected = document.querySelector('.ratio-grid .ratio-btn.active') !== null;
             
-            const { isNameValid, isWAValid } = validateInputs();
+            const { isNameValid } = validateInputs();
             
-            if (isRatioSelected && isNameValid && isWAValid) {
+            if (isRatioSelected && isNameValid) {
                 btnProcess.disabled = false;
             } else {
                 btnProcess.disabled = true;
@@ -390,9 +377,9 @@
         // --- LOGIKA TOMBOL "KLIK UNTUK ORDER" ---
         btnProcess.addEventListener('click', function(event) {
             
-            const { isNameValid, isWAValid } = validateInputs();
+            const { isNameValid } = validateInputs();
 
-            if (!isNameValid || !isWAValid) {
+            if (!isNameValid) {
                 document.querySelector('.contact-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
                 alert("Mohon lengkapi atau perbaiki data pemesan yang ditandai.");
                 return;
@@ -400,12 +387,11 @@
 
             if (!btnProcess.disabled) {
                 const namaLengkap = namaInput.value.trim();
-                const nomorWA = waInput.value.trim();
                 const selectedRatio = document.querySelector('.ratio-grid .ratio-btn.active').getAttribute('data-ratio');
                 
+                // Simulasi Database (tanpa nomor WA pemesan)
                 const orderData = {
                     nama: namaLengkap,
-                    whatsapp: nomorWA,
                     layanan: "TrueVision",
                     rasio: selectedRatio,
                     timestamp: new Date().toISOString()
@@ -420,7 +406,7 @@
                 
                 window.open(`https://wa.me/${targetWA}?text=${encodedMessage}`, '_blank');
                 
-                alert("Order Anda telah tercatat. Silakan lanjutkan di WhatsApp untuk mengirimkan foto!");
+                // alert("Order Anda telah tercatat. Silakan lanjutkan di WhatsApp untuk mengirimkan foto!");
                 
                 window.location.href = "MENU LAYANAN.HTML";
             }
@@ -429,7 +415,6 @@
         document.addEventListener('DOMContentLoaded', checkCompleteness);
         
         namaInput.addEventListener('input', checkCompleteness);
-        waInput.addEventListener('input', checkCompleteness);
 
     </script>
 </body>

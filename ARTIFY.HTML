@@ -335,11 +335,7 @@
                 <span class="error-message" id="error-nama">Nama harus diisi minimal 3 karakter.</span>
             </div>
             
-            <div class="input-group">
-                <input type="tel" id="nomor-whatsapp" placeholder="Nomor WhatsApp (Diawali 08, Min. 10 Digit)" pattern="08[0-9]{8,}" required>
-                <span class="error-message" id="error-wa">Nomor WA harus diawali '08' dan minimal 10 digit.</span>
             </div>
-        </div>
         
         <button class="btn-process" id="btn-process" disabled>
             Klik untuk Order
@@ -351,11 +347,9 @@
         const btnProcess = document.getElementById('btn-process');
         const promptInput = document.getElementById('prompt-input');
         const namaInput = document.getElementById('nama-lengkap');
-        const waInput = document.getElementById('nomor-whatsapp');
         
         // Element pesan error
         const errorNama = document.getElementById('error-nama');
-        const errorWA = document.getElementById('error-wa');
         
         // Nomor WhatsApp tujuan
         const targetWA = "6285133748005"; 
@@ -390,16 +384,12 @@
         
         function validateInputs() {
             const nama = namaInput.value.trim();
-            const wa = waInput.value.trim();
-            
             const isNameValid = nama.length >= 3;
-            const waPattern = /^08[0-9]{8,}$/; 
-            const isWAValid = waPattern.test(wa);
             
             toggleValidationFeedback(namaInput, errorNama, isNameValid, "Nama harus diisi minimal 3 karakter.");
-            toggleValidationFeedback(waInput, errorWA, isWAValid, "Nomor WA harus diawali '08' dan minimal 10 digit.");
-
-            return { isNameValid, isWAValid };
+            
+            // Hanya mengembalikan validasi nama, validasi WA dihapus
+            return { isNameValid };
         }
 
         function toggleValidationFeedback(inputElement, errorElement, isValid, errorMessage) {
@@ -421,9 +411,10 @@
         function checkCompleteness() {
             const isTypeSelected = document.querySelector('.selection-grid[data-group="type"] .selection-btn.active') !== null;
             const isStyleSelected = document.querySelector('.selection-grid[data-group="style"] .selection-btn.active') !== null;
-            const { isNameValid, isWAValid } = validateInputs();
+            const { isNameValid } = validateInputs();
             
-            if (isTypeSelected && isStyleSelected && isNameValid && isWAValid) {
+            // Syarat kelengkapan dikurangi (tidak perlu validasi WA)
+            if (isTypeSelected && isStyleSelected && isNameValid) {
                 btnProcess.disabled = false;
             } else {
                 btnProcess.disabled = true;
@@ -431,9 +422,9 @@
         }
         
         btnProcess.addEventListener('click', function(event) {
-            const { isNameValid, isWAValid } = validateInputs();
+            const { isNameValid } = validateInputs();
 
-            if (!isNameValid || !isWAValid) {
+            if (!isNameValid) {
                 document.querySelector('.contact-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
                 alert("Mohon lengkapi data pemesan yang valid.");
                 return;
@@ -441,7 +432,6 @@
 
             if (!btnProcess.disabled) {
                 const namaLengkap = namaInput.value.trim();
-                const nomorWA = waInput.value.trim();
                 const selectedType = document.querySelector('.selection-grid[data-group="type"] .selection-btn.active').textContent.trim();
                 const selectedStyle = document.querySelector('.selection-grid[data-group="style"] .selection-btn.active').textContent.trim();
                 
@@ -451,6 +441,7 @@
                 let instruksi = promptInput.value.trim();
                 const instruksiTampil = instruksi || "T/A";
                 
+                // Pesan WA disesuaikan tanpa mencantumkan nomor WA pemesan di body chat
                 let waMessage = `Halo saya ${namaLengkap}, baru saja order *ARTIFY*.\n\n*Detail Order:*\n*Jenis:* ${selectedType}\n*Gaya:* ${selectedStyle}\n*Rasio:* ${selectedRatio}\n*Instruksi:* ${instruksiTampil}\n\nFile foto akan segera saya kirim ke sini. Mohon diproses ya, Terima kasih!`;
                 
                 const encodedMessage = encodeURIComponent(waMessage);
@@ -462,7 +453,6 @@
         
         document.addEventListener('DOMContentLoaded', checkCompleteness);
         namaInput.addEventListener('input', checkCompleteness);
-        waInput.addEventListener('input', checkCompleteness);
         promptInput.addEventListener('input', checkCompleteness);
 
     </script>

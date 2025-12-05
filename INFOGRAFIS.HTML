@@ -503,7 +503,15 @@
         </div>
 
         <div class="input-section">
-            <h3 class="step-title">6. Materi / Data Infografis</h3>
+            <h3 class="step-title">6. Judul Infografis</h3>
+            <div class="input-group">
+                <input type="text" id="judul-infografis" placeholder="Contoh: 5 Tips Hidup Sehat, Sejarah Kemerdekaan RI..." required>
+                <span class="error-message" id="error-judul">Judul harus diisi.</span>
+            </div>
+        </div>
+
+        <div class="input-section">
+            <h3 class="step-title">7. Materi / Data Infografis</h3>
             
             <div class="visual-grid" style="grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px;" id="source-buttons">
                 <button class="visual-btn" onclick="selectSource(this, 'ai')">
@@ -550,10 +558,12 @@
         const tujuanInput = document.getElementById('tujuan-infografis');
         const audiensInput = document.getElementById('target-audiens');
         const rasioInput = document.getElementById('rasio-gambar');
+        const judulInput = document.getElementById('judul-infografis'); // NEW VARIABLE
         const materiInput = document.getElementById('materi-data'); 
         const namaInput = document.getElementById('nama-lengkap');
         
         const errorNama = document.getElementById('error-nama');
+        const errorJudul = document.getElementById('error-judul'); // NEW ERROR VARIABLE
         const errorMateri = document.getElementById('error-materi'); 
         
         const targetWA = "6285133748005"; 
@@ -606,12 +616,14 @@
             checkCompleteness();
         }
 
-        // Validasi Nama dan Materi
+        // Validasi Nama, Judul, dan Materi
         function validateInputs() {
             const nama = namaInput.value.trim();
+            const judul = judulInput.value.trim(); // NEW
             const materi = materiInput.value.trim();
             
             const isNameValid = nama.length >= 3;
+            const isJudulValid = judul.length > 0; // NEW VALIDATION
             
             // Validasi Materi (Hanya wajib jika Mode Manual)
             let isMateriFilled = true;
@@ -626,19 +638,19 @@
             }
 
             toggleValidationFeedback(namaInput, errorNama, isNameValid, "Nama harus diisi minimal 3 karakter.");
+            toggleValidationFeedback(judulInput, errorJudul, isJudulValid, "Judul infografis wajib diisi."); // NEW FEEDBACK
             
             // Logic Feedback Error Materi
             if (currentSource === 'manual') {
                 if (materiInput.value.trim() === '') {
                      // Jika kosong tapi tidak valid, kita handle saat tombol ditekan atau blur
-                     // Di sini kita hanya return status validitasnya
                 } else {
                     materiInput.classList.remove('input-invalid');
                     errorMateri.classList.remove('visible');
                 }
             }
 
-            return { isNameValid, isMateriFilled };
+            return { isNameValid, isMateriFilled, isJudulValid };
         }
 
         function toggleValidationFeedback(inputElement, errorElement, isValid, errorMessage) {
@@ -665,9 +677,9 @@
             const isRasioSelected = rasioInput.value !== "";
             const isStyleSelected = document.querySelector('.style-btn.active') !== null;
             
-            const { isNameValid, isMateriFilled } = validateInputs();
+            const { isNameValid, isMateriFilled, isJudulValid } = validateInputs(); // Add isJudulValid
 
-            if (isTujuanSelected && isAudiensSelected && isRasioSelected && isStyleSelected && isNameValid && isMateriFilled) {
+            if (isTujuanSelected && isAudiensSelected && isRasioSelected && isStyleSelected && isNameValid && isMateriFilled && isJudulValid) {
                 btnProcess.disabled = false;
             } else {
                 btnProcess.disabled = true;
@@ -677,17 +689,25 @@
         // Event Listeners
         document.addEventListener('DOMContentLoaded', checkCompleteness);
         namaInput.addEventListener('input', checkCompleteness);
+        judulInput.addEventListener('input', checkCompleteness); // NEW LISTENER
         materiInput.addEventListener('input', checkCompleteness); 
 
         // Logic Tombol Order
         btnProcess.addEventListener('click', function() {
-            const { isNameValid, isMateriFilled } = validateInputs();
+            const { isNameValid, isMateriFilled, isJudulValid } = validateInputs();
             
             // Validasi Akhir Saat Klik Tombol (Khusus Materi Manual yang kosong)
             if (currentSource === 'manual' && !isMateriFilled) {
                 materiInput.classList.add('input-invalid');
                 errorMateri.classList.add('visible');
                 materiInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            if (!isJudulValid) {
+                judulInput.classList.add('input-invalid');
+                errorJudul.classList.add('visible');
+                judulInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 return;
             }
 
@@ -702,6 +722,7 @@
                 const tujuan = tujuanInput.value;
                 const audiens = audiensInput.value;
                 const rasio = rasioInput.value;
+                const judul = judulInput.value.trim(); // NEW VALUE
                 
                 const activeStyleBtn = document.querySelector('.style-btn.active');
                 const selectedStyle = activeStyleBtn ? activeStyleBtn.getAttribute('data-value') : 'Auto';
@@ -725,6 +746,7 @@
                 waMessage += `• Rasio: ${rasio}\n`;
                 waMessage += `• Gaya Visual: ${selectedStyle}\n`;
                 waMessage += `• Karakter Visual: ${visualCharacter}\n\n`;
+                waMessage += `*Judul:*\n${judul}\n\n`; // NEW IN MESSAGE
                 waMessage += `*Materi/Data:*\n${finalMateri}\n\n`;
                 waMessage += `Mohon segera diproses ya, Terima kasih!`;
 

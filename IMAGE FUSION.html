@@ -115,21 +115,20 @@
             margin: 0 auto;
         }
         
-        /* 4. LABEL SECTIONS */
+        /* 4. LABEL SECTIONS (DIPERBAIKI: Bold & Title Case) */
         .label-section {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-muted);
+            font-size: 16px;        /* Ukuran font sedikit diperbesar */
+            font-weight: 700;       /* Tebal (Bold) */
+            color: var(--text-main); /* Warna Putih */
             margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
+            margin-top: 25px;       /* Jarak atas agar tidak terlalu dempet */
+            text-transform: none;   /* Mematikan Uppercase */
         }
         
         /* 5. INPUT TEXT & DATA */
         .prompt-wrapper, .input-group {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
         
         textarea, input[type="text"], input[type="tel"] {
@@ -195,7 +194,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
-            margin-bottom: 15px; /* Kurangi margin untuk memberi ruang info box */
+            margin-bottom: 15px;
         }
 
         .ratio-btn {
@@ -213,7 +212,7 @@
             position: relative;
             overflow: hidden;
             text-align: center; 
-            height: auto; /* Pastikan tinggi fleksibel tanpa teks kecil */
+            height: auto;
         }
 
         .ratio-btn strong {
@@ -251,7 +250,7 @@
             color: white;
         }
 
-        /* --- NEW: INFO BOX UNTUK RASIO --- */
+        /* INFO BOX UNTUK RASIO */
         .ratio-info-box {
             margin-bottom: 32px;
             padding: 12px 15px;
@@ -322,7 +321,7 @@
         </header>
 
         <div class="label-section">
-            <span>1. Deskripsi Adegan (wajib diisi)</span>
+            1. Deskripsi Adegan (Wajib Diisi)
         </div>
         <div class="prompt-wrapper">
             <textarea id="prompt-input" placeholder="Contoh: Gabungkan latar belakang foto A dengan objek utama (wajah) dari foto B, buat dalam gaya lukisan cat minyak yang dramatis."></textarea>
@@ -333,7 +332,7 @@
         </div>
 
         <div class="label-section">
-            <span>2. Output Dimension</span>
+            2. Output Dimension
         </div>
         <div class="ratio-grid">
             <button class="ratio-btn active" data-ratio="1:1" data-desc="Cocok untuk Feed Instagram/Facebook atau Foto Profil." onclick="selectRatio(this)">
@@ -356,7 +355,7 @@
         </div>
 
         <div class="label-section">
-            <span>3. Data Pemesan (wajib diisi)</span>
+            3. Data Pemesan (Wajib Diisi)
         </div>
         <div class="input-group">
             <input type="text" id="nama-lengkap" placeholder="Nama Lengkap Anda (Min. 3 Karakter)" minlength="3" required>
@@ -385,7 +384,7 @@
             buttons.forEach(btn => btn.classList.remove('active'));
             selectedButton.classList.add('active');
             
-            // --- LOGIKA UPDATE TEKS DESKRIPSI RASIO (BARU) ---
+            // --- LOGIKA UPDATE TEKS DESKRIPSI RASIO ---
             const descText = selectedButton.getAttribute('data-desc');
             const descElement = document.getElementById('ratio-description');
             const infoBox = document.querySelector('.ratio-info-box');
@@ -406,7 +405,6 @@
             
             toggleValidationFeedback(namaInput, errorNama, isNameValid, "Nama harus diisi minimal 3 karakter.");
             
-            // Validasi WA dihapus
             return { isNameValid };
         }
 
@@ -433,7 +431,6 @@
             
             const { isNameValid } = validateInputs();
             
-            // Cek kelengkapan tanpa WA
             if (isPromptFilled && isRatioSelected && isNameValid) {
                 btnOrder.disabled = false;
             } else {
@@ -441,14 +438,24 @@
             }
         }
         
+        document.addEventListener('DOMContentLoaded', () => {
+             checkCompleteness();
+             // Reset value saat refresh agar bersih
+             namaInput.value = '';
+             promptInput.value = '';
+        });
+
+        promptInput.addEventListener('input', checkCompleteness);
+        namaInput.addEventListener('input', checkCompleteness);
+
         btnOrder.addEventListener('click', () => {
              
             const { isNameValid } = validateInputs();
 
             if (!isNameValid) {
-                // Scroll ke bagian contact section
-                document.querySelector('.input-group').closest('.fusion-card').querySelector('.label-section:nth-of-type(3)').scrollIntoView({ behavior: 'smooth', block: 'center' });
-                alert("Mohon lengkapi atau perbaiki data pemesan yang ditandai.");
+                // Scroll ke bagian nama
+                document.querySelector('.input-group').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                alert("Mohon isi Nama Lengkap dengan benar (minimal 3 karakter).");
                 return;
             }
 
@@ -459,18 +466,6 @@
                 
                 const instruksiTampil = instruksi || "T/A";
                 
-                // Logging simulasi database (tanpa nomor WA pemesan)
-                const orderData = {
-                    nama: namaLengkap,
-                    layanan: "Image Fusion",
-                    rasio: selectedRatio,
-                    instruksi: instruksi,
-                    timestamp: new Date().toISOString()
-                };
-                
-                console.log("--- ORDER IMAGE FUSION TERSIMPAN (simulasi database) ---");
-                console.log(orderData);
-                
                 // Pesan WA yang dikirim ke admin
                 let waMessage = `Halo saya ${namaLengkap}, baru saja order IMAGE FUSION.\n\nDetail Order:\nRasio Output: ${selectedRatio}\nDeskripsi Adegan: ${instruksiTampil}\n\nFile foto akan segera saya kirim ke sini (minimal 2 foto). Mohon segera diproses ya, Terima kasih!`;
                 
@@ -478,17 +473,10 @@
                 
                 window.open(`https://wa.me/${targetWA}?text=${encodedMessage}`, '_blank');
                 
-                // alert("Order Anda telah tercatat. Silakan lanjutkan di WhatsApp untuk mengirimkan file foto yang akan difusi!");
-                
-                window.location.href = "MENU LAYANAN.HTML";
+                // window.location.href = "MENU LAYANAN.HTML";
              }
         });
-        
-        document.addEventListener('DOMContentLoaded', checkCompleteness);
-        promptInput.addEventListener('input', checkCompleteness);
-        namaInput.addEventListener('input', checkCompleteness);
         
     </script>
 </body>
 </html>
-

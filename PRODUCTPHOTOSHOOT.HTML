@@ -111,7 +111,7 @@
             box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
         }
 
-        /* Info Box Rasio */
+        /* Info Box Rasio (DIUPDATE: Tambah Flexbox agar icon rapi) */
         .ratio-info-box {
             margin-top: 10px;
             padding: 10px;
@@ -122,6 +122,11 @@
             color: var(--text-muted);
             text-align: center;
             transition: all 0.3s;
+            /* Flexbox untuk icon */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px; 
         }
         .ratio-info-box.highlight {
             background: rgba(168, 85, 247, 0.2);
@@ -250,7 +255,9 @@
                     <strong>9:16</strong>
                 </button>
             </div>
+            
             <div class="ratio-info-box">
+                <span style="font-size: 14px;">💡</span>
                 <span id="ratio-description">Ideal untuk Feed Instagram & Marketplace.</span>
             </div>
         </div>
@@ -392,7 +399,3 @@ _Mohon info selanjutnya untuk kirim file foto._`;
     </script>
 </body>
 </html>
-
-
-
-

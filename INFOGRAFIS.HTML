@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 1. SETUP CSS VARIABLE (SAMA DENGAN TEMA SEBELUMNYA) --- */
+        /* --- 1. SETUP CSS VARIABLE --- */
         :root {
             --bg-dark: #09090b;
             --surface-dark: #18181b;
@@ -37,7 +37,6 @@
             padding: 20px;
         }
         
-        /* CSS KHUSUS TOMBOL KEMBALI */
         .back-button {
             display: inline-flex;
             align-items: center;
@@ -65,7 +64,7 @@
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             width: 100%;
-            max-width: 550px; /* Lebar disesuaikan sedikit */
+            max-width: 550px;
             border-radius: 24px;
             border: 1px solid var(--border);
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
@@ -111,7 +110,6 @@
             margin-bottom: 15px;
         }
 
-        /* Styling Dropdown (Select) & Input */
         select, input[type="text"], input[type="tel"], textarea {
             width: 100%;
             padding: 12px 15px;
@@ -122,14 +120,13 @@
             font-size: 14px;
             outline: none;
             transition: all 0.3s;
-            appearance: none; /* Menghilangkan panah default browser */
+            appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
             background-position: right 1rem center;
             background-size: 1em;
         }
         
-        /* Hapus icon panah untuk input text/textarea */
         input[type="text"], input[type="tel"], textarea {
             background-image: none;
         }
@@ -144,7 +141,6 @@
             box-shadow: 0 0 0 2px rgba(168, 85, 247, 0.2);
         }
 
-        /* Styling Optgroup agar lebih rapi */
         optgroup {
             font-weight: 700;
             background: #27272a;
@@ -164,7 +160,6 @@
             margin-bottom: 20px;
         }
 
-        /* Responsiveness: Ubah ke 1 kolom di layar kecil (maks 480px) */
         @media (max-width: 480px) {
             .style-grid {
                 grid-template-columns: 1fr;
@@ -193,7 +188,6 @@
             box-shadow: 0 0 15px rgba(168, 85, 247, 0.15);
         }
         
-        /* Indikator Checklist untuk yang aktif */
         .style-btn.active::after {
             content: '✓';
             position: absolute;
@@ -217,31 +211,27 @@
             line-height: 1.3;
         }
         
-        /* Highlight khusus untuk AUTO */
         .style-btn[data-value="Auto"] strong {
              background: var(--primary-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: 16px; /* Dibuat sedikit lebih besar */
+            font-size: 16px;
         }
         .style-btn[data-value="Auto"] {
-            order: -1; /* Dipindahkan ke posisi paling atas */
+            order: -1;
         }
 
 
-        /* --- VISUAL CHARACTER BUTTONS (MASKOT - GRID KECIL) --- */
-        
-        /* Modifikasi untuk Visual Grid agar menjadi grid 3 kolom */
+        /* --- VISUAL BUTTONS (MASKOT & MATERI) --- */
         .visual-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr); 
             gap: 10px;
             margin-bottom: 20px;
             padding-bottom: 0; 
-            overflow-x: hidden; /* Menonaktifkan scroll horizontal */
+            overflow-x: hidden;
         }
 
-        /* Responsiveness: Ubah Karakter Visual ke 1 kolom di layar kecil */
         @media (max-width: 480px) {
             .visual-grid {
                 grid-template-columns: 1fr;
@@ -249,7 +239,6 @@
         }
         
         .visual-btn {
-            /* Menghapus flex-grow, biarkan grid yang mengatur */
             white-space: nowrap;
             padding: 10px 16px;
             background: var(--surface-dark);
@@ -262,20 +251,18 @@
             transition: all 0.2s;
             display: flex;
             align-items: center;
-            justify-content: center; /* Rata tengah konten */
+            justify-content: center;
             gap: 6px;
         }
         
-        /* Styling untuk tombol Auto agar mengambil semua kolom */
         .visual-grid .visual-btn[data-value="Auto"] {
              grid-column: span 3;
         }
         @media (max-width: 480px) {
              .visual-grid .visual-btn[data-value="Auto"] {
-                 grid-column: span 1; /* Di HP, kembali ke 1 kolom */
+                 grid-column: span 1;
              }
         }
-
 
         .visual-btn.active {
             border-color: var(--neon-accent);
@@ -358,21 +345,18 @@
             <h3 class="step-title">2. Target Audiens</h3>
             <select id="target-audiens" onchange="checkCompleteness()">
                 <option value="" disabled selected>Pilih Target Audiens...</option>
-                
                 <optgroup label="Umum">
                     <option value="Masyarakat Umum">Masyarakat Umum</option>
                     <option value="Anak-anak / TK-SD">Anak-anak / TK-SD</option>
                     <option value="Pelajar / Mahasiswa">Pelajar / Mahasiswa</option>
                     <option value="Orang Tua / Family">Orang Tua / Family</option>
                 </optgroup>
-
                 <optgroup label="Bisnis">
                     <option value="Profesional / Korporat">Profesional / Korporat</option>
                     <option value="Investor / Stakeholder">Investor / Stakeholder</option>
                     <option value="Startup / Tech Savvy">Startup / Tech Savvy</option>
                     <option value="Pelaku UMKM">Pelaku UMKM</option>
                 </optgroup>
-
                 <optgroup label="Niche">
                     <option value="Kesehatan">Kesehatan</option>
                     <option value="Gamers">Gamers</option>
@@ -391,13 +375,11 @@
             <h3 class="step-title">3. Rasio Gambar</h3>
             <select id="rasio-gambar" onchange="checkCompleteness()">
                 <option value="" disabled selected>Pilih Rasio...</option>
-                
                 <optgroup label="Sosmed">
                     <option value="1:1 (Square)">1:1 (Square)</option>
                     <option value="4:5 (Portrait)">4:5 (Portrait)</option>
                     <option value="9:16 (Story/Reels)">9:16 (Story/Reels)</option>
                 </optgroup>
-
                 <optgroup label="Cetak & Web">
                     <option value="16:9 (Wide)">16:9 (Wide)</option>
                     <option value="A4 (Print)">A4 (Print)</option>
@@ -414,97 +396,78 @@
                     <strong>✨ Auto ✨</strong>
                     <span>Otomatis memilih gaya & karakter terbaik</span>
                 </div>
-                
                 <div class="style-btn" onclick="selectStyle(this)" data-value="Disney Animation">
                     <strong>Disney Animation</strong>
                     <span>Magis, Ekspresif, Fantasi</span>
                 </div>
-
                 <div class="style-btn" onclick="selectStyle(this)" data-value="Pixar 3D">
                     <strong>Pixar 3D</strong>
                     <span>Detail, Emosional, Lighting Halus</span>
                 </div>
-
                 <div class="style-btn" onclick="selectStyle(this)" data-value="Marvel Comic">
                     <strong>Marvel Comic</strong>
                     <span>Aksi, Garis Tebal, Dramatis</span>
                 </div>
-
                 <div class="style-btn" onclick="selectStyle(this)" data-value="Ghibli Anime">
                     <strong>Ghibli Anime</strong>
                     <span>Cat Air, Tenang, Alam</span>
                 </div>
-
                 <div class="style-btn" onclick="selectStyle(this)" data-value="Lego Bricks">
                     <strong>Lego Bricks</strong>
                     <span>Balok, Mainan, Playful</span>
                 </div>
-
                 <div class="style-btn" onclick="selectStyle(this)" data-value="Paper Cutout">
                     <strong>Paper Cutout</strong>
                     <span>Kerajinan Kertas, Layered</span>
                 </div>
-
                 <div class="style-btn" onclick="selectStyle(this)" data-value="Medical Clean">
                     <strong>Medical Clean</strong>
                     <span>Higienis, Putih/Biru, Detail</span>
                 </div>
-
                 <div class="style-btn" onclick="selectStyle(this)" data-value="Luxury Editorial">
                     <strong>Luxury Editorial</strong>
                     <span>Elegan, Serif, Emas/Hitam</span>
                 </div>
-
                 <div class="style-btn" onclick="selectStyle(this)" data-value="Pop Art / Retro">
                     <strong>Pop Art / Retro</strong>
                     <span>Berani, Warna-warni, Komik</span>
                 </div>
-
                 <div class="style-btn" onclick="selectStyle(this)" data-value="Watercolor Art">
                     <strong>Watercolor Art</strong>
                     <span>Lembut, Artistik, Cat Air</span>
                 </div>
-
                 <div class="style-btn" onclick="selectStyle(this)" data-value="Cyberpunk Glitch">
                     <strong>Cyberpunk Glitch</strong>
                     <span>Distorsi Digital, High-Tech</span>
                 </div>
-
                 <div class="style-btn" onclick="selectStyle(this)" data-value="Swiss Minimalist">
                     <strong>Swiss Minimalist</strong>
                     <span>Bersih, Grid, Tipografi Tebal</span>
                 </div>
-
                 <div class="style-btn" onclick="selectStyle(this)" data-value="3D Clay Render">
                     <strong>3D Clay Render</strong>
                     <span>Modern, Playful, Tekstur Halus</span>
                 </div>
-
                 <div class="style-btn" onclick="selectStyle(this)" data-value="Corporate Vector">
                     <strong>Corporate Vector</strong>
                     <span>Profesional, Flat, Biru/Abu</span>
                 </div>
-
                 <div class="style-btn" onclick="selectStyle(this)" data-value="Isometric Tech">
                     <strong>Isometric Tech</strong>
                     <span>3D Teknis, Simetris, Detail</span>
                 </div>
-
                 <div class="style-btn" onclick="selectStyle(this)" data-value="Hand Drawn">
                     <strong>Hand Drawn</strong>
                     <span>Organik, Sketsa, Personal</span>
                 </div>
-
                 <div class="style-btn" onclick="selectStyle(this)" data-value="Dark Mode Neon">
                     <strong>Dark Mode Neon</strong>
                     <span>Futuristik, Kontras Tinggi</span>
                 </div>
-
                 <div class="style-btn" onclick="selectStyle(this)" data-value="Vintage Botanical">
                     <strong>Vintage Botanical</strong>
                     <span>Klasik, Alam, Kertas Tua</span>
                 </div>
-
                 <div class="style-btn" onclick="selectStyle(this)" data-value="Abstract Bauhaus">
                     <strong>Abstract Bauhaus</strong>
                     <span>Geometris, Primer, Seni</span>
@@ -540,11 +503,31 @@
         </div>
 
         <div class="input-section">
-            <h3 class="step-title">6. Materi / Data Infografis (Wajib)</h3>
-            <div class="input-group">
-                <textarea id="materi-data" placeholder="Tempelkan teks data di sini, atau link Google Drive berisi materi..." required></textarea>
-                 <span class="error-message" id="error-materi">Kolom ini wajib diisi dengan materi infografis.</span>
+            <h3 class="step-title">6. Materi / Data Infografis</h3>
+            
+            <div class="visual-grid" style="grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px;" id="source-buttons">
+                <button class="visual-btn" onclick="selectSource(this, 'ai')">
+                    <span>🤖</span> Riset AI
+                </button>
+                <button class="visual-btn active" onclick="selectSource(this, 'manual')">
+                    <span>📝</span> Manual
+                </button>
             </div>
+
+            <div id="manual-input-container">
+                <div class="input-group">
+                    <textarea id="materi-data" placeholder="Tempelkan teks data di sini, atau link Google Drive berisi materi..." required></textarea>
+                     <span class="error-message" id="error-materi">Kolom ini wajib diisi jika memilih Manual.</span>
+                </div>
+            </div>
+
+            <div id="ai-info-container" style="display: none; background: rgba(0, 188, 212, 0.1); padding: 15px; border-radius: 12px; border: 1px solid rgba(0, 188, 212, 0.3);">
+                <p style="font-size: 13px; color: var(--neon-cyan); line-height: 1.4;">
+                    <strong>✨ Riset Otomatis AI Diaktifkan</strong><br>
+                    Kami akan meriset materi yang relevan, valid, dan menarik menggunakan teknologi AI berdasarkan Tujuan & Topik yang Anda pilih. Anda tidak perlu mengisi data manual.
+                </p>
+            </div>
+
         </div>
 
         <div class="input-section contact-section" style="margin-top: 30px;">
@@ -580,6 +563,36 @@
         
         const targetWA = "6285133748005"; 
 
+        // State untuk Sumber Materi (Default Manual)
+        let currentSource = 'manual';
+
+        // Fungsi Memilih Sumber Materi (AI vs Manual)
+        function selectSource(selectedButton, source) {
+            // Update Tampilan Tombol
+            const container = document.getElementById('source-buttons');
+            const buttons = container.querySelectorAll('.visual-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            selectedButton.classList.add('active');
+
+            // Update Logic
+            currentSource = source;
+            const manualContainer = document.getElementById('manual-input-container');
+            const aiInfoContainer = document.getElementById('ai-info-container');
+
+            if (source === 'manual') {
+                manualContainer.style.display = 'block';
+                aiInfoContainer.style.display = 'none';
+            } else {
+                manualContainer.style.display = 'none';
+                aiInfoContainer.style.display = 'block';
+                // Reset error state jika pindah ke AI
+                materiInput.classList.remove('input-invalid');
+                errorMateri.classList.remove('visible');
+            }
+
+            checkCompleteness();
+        }
+
         // Fungsi memilih gaya visual (Style Grid)
         function selectStyle(selectedButton) {
             const container = document.getElementById('style-visual-container');
@@ -607,31 +620,38 @@
             const isNameValid = nama.length >= 3;
             const waPattern = /^08[0-9]{8,}$/; 
             const isWAValid = waPattern.test(wa);
-            const isMateriFilled = materi.length > 0; // Materi Wajib
+            
+            // Validasi Materi (Hanya wajib jika Mode Manual)
+            let isMateriFilled = true;
+            
+            if (currentSource === 'manual') {
+                isMateriFilled = materi.length > 0;
+                
+                // Feedback Error visual hanya jika user sudah berinteraksi atau saat check final
+                if (materiInput.value.trim() === '' && document.activeElement === materiInput) {
+                     // Jangan langsung merah saat mengetik kosong, biarkan user mengetik
+                } 
+            }
 
             toggleValidationFeedback(namaInput, errorNama, isNameValid, "Nama harus diisi minimal 3 karakter.");
             toggleValidationFeedback(waInput, errorWA, isWAValid, "Nomor WA harus diawali '08' dan minimal 10 digit.");
             
-            // Validasi Khusus Materi
-            if (materiInput.value.trim() === '') {
-                materiInput.classList.add('input-invalid');
-                errorMateri.classList.add('visible');
-            } else if (!isMateriFilled) {
-                materiInput.classList.add('input-invalid');
-                errorMateri.classList.add('visible');
-                errorMateri.textContent = "Kolom materi wajib diisi.";
-            } else {
-                materiInput.classList.remove('input-invalid');
-                errorMateri.classList.remove('visible');
+            // Logic Feedback Error Materi
+            if (currentSource === 'manual') {
+                if (materiInput.value.trim() === '') {
+                     // Jika kosong tapi tidak valid, kita handle saat tombol ditekan atau blur
+                     // Di sini kita hanya return status validitasnya
+                } else {
+                    materiInput.classList.remove('input-invalid');
+                    errorMateri.classList.remove('visible');
+                }
             }
-
 
             return { isNameValid, isWAValid, isMateriFilled };
         }
 
         function toggleValidationFeedback(inputElement, errorElement, isValid, errorMessage) {
             if (inputElement.value.trim() === '') {
-                // Untuk Nama/WA: jangan tampilkan error jika kosong, hanya hapus invalid class
                 if (inputElement.id !== 'materi-data') {
                     inputElement.classList.remove('input-invalid');
                     errorElement.classList.remove('visible');
@@ -672,10 +692,18 @@
         // Logic Tombol Order
         btnProcess.addEventListener('click', function() {
             const { isNameValid, isWAValid, isMateriFilled } = validateInputs();
+            
+            // Validasi Akhir Saat Klik Tombol (Khusus Materi Manual yang kosong)
+            if (currentSource === 'manual' && !isMateriFilled) {
+                materiInput.classList.add('input-invalid');
+                errorMateri.classList.add('visible');
+                materiInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
 
-            if (!isNameValid || !isWAValid || !isMateriFilled) {
+            if (!isNameValid || !isWAValid) {
                 document.querySelector('.contact-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
-                alert("Mohon lengkapi atau perbaiki data yang ditandai.");
+                alert("Mohon lengkapi atau perbaiki data nama/WA.");
                 return;
             }
 
@@ -688,10 +716,16 @@
                 const activeStyleBtn = document.querySelector('.style-btn.active');
                 const selectedStyle = activeStyleBtn ? activeStyleBtn.getAttribute('data-value') : 'Auto';
 
-                const activeVisualBtn = document.querySelector('.visual-grid .visual-btn.active');
+                const activeVisualBtn = document.querySelector('.visual-grid[data-group="visual-style"] .visual-btn.active');
                 const visualCharacter = activeVisualBtn ? activeVisualBtn.getAttribute('data-value') : 'Auto';
                 
-                const materi = materiInput.value.trim() || 'T/A (Error Validasi)';
+                // Tentukan isi materi berdasarkan pilihan
+                let finalMateri = "";
+                if (currentSource === 'manual') {
+                    finalMateri = materiInput.value.trim();
+                } else {
+                    finalMateri = "Riset Otomatis oleh Tim (AI) 🤖";
+                }
 
                 // Format Pesan WA
                 let waMessage = `Halo saya ${nama}, baru saja order *JASA INFOGRAFIS*.\n\n`;
@@ -701,7 +735,7 @@
                 waMessage += `• Rasio: ${rasio}\n`;
                 waMessage += `• Gaya Visual: ${selectedStyle}\n`;
                 waMessage += `• Karakter Visual: ${visualCharacter}\n\n`;
-                waMessage += `*Materi/Data:*\n${materi}\n\n`;
+                waMessage += `*Materi/Data:*\n${finalMateri}\n\n`;
                 waMessage += `Mohon segera diproses ya, Terima kasih!`;
 
                 const encodedMessage = encodeURIComponent(waMessage);

@@ -367,7 +367,7 @@
             });
         });
 
-        // 5. Kirim ke WhatsApp
+        // 5. Kirim ke WhatsApp (FORMAT DIPERBAIKI SESUAI PERMINTAAN)
         btnProcess.addEventListener('click', function() {
             if (btnProcess.disabled) return;
             
@@ -377,21 +377,17 @@
             const ratio = getSelectedValue('ratio');
             const instruksi = instructionInput.value.trim() || "-";
             
+            // Format Pesan disamakan dengan contoh di PHOTOGRAPHER (2).HTML
             const message = 
-`*ORDER PHOTOSHOOT BARU* 📸
----------------------------
-👤 *Nama:* ${nama}
+`Halo saya ${nama}, baru saja order *PRODUCT PHOTOSHOOT*
 
-⚙️ *Spesifikasi:*
-• Lighting: ${lighting}
-• Suasana: ${ambiance}
-• Rasio: ${ratio}
+*Detail Order:*
+*Lighting:* ${lighting}
+*Suasana:* ${ambiance}
+*Rasio:* ${ratio}
+*Catatan:* ${instruksi}
 
-📝 *Catatan:*
-${instruksi}
-
----------------------------
-_Mohon info selanjutnya untuk kirim file foto._`;
+File foto akan segera saya kirim ke sini. Mohon segera diproses ya, Terima kasih!`;
 
             const link = `https://wa.me/${targetWA}?text=${encodeURIComponent(message)}`;
             window.open(link, '_blank');

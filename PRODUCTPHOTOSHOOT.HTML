@@ -380,18 +380,15 @@
              <textarea id="instruction-input" placeholder="Contoh: Letakkan di atas meja kayu, tambahkan bunga di samping produk..."></textarea>
         </div>
         
-        <div class="input-section customer-data-section">
-            <h3 class="step-title">5. Data Pemesan (wajib diisi)</h3>
-            <div class="input-text-group">
-                <label for="full-name-input">Nama Lengkap *</label>
-                <input type="text" id="full-name-input" placeholder="Masukkan nama Anda (Min. 3 Karakter)" minlength="3" required>
-                <span class="error-message" id="error-nama">Nama harus diisi minimal 3 karakter.</span>
-            </div>
-            
-            </div>
-
-
-        <button class="btn-process" id="btn-process" disabled>
+        <div class="label-section">
+            <span>3. Data Pemesan (wajib diisi)</span>
+        </div>
+        <div class="input-group">
+            <input type="text" id="nama-lengkap" placeholder="Nama Lengkap Anda (Min. 3 Karakter)" minlength="3" required>
+            <span class="error-message" id="error-nama">Nama harus diisi minimal 3 karakter.</span>
+        </div>
+        
+        <button class="generate-btn" id="btn-order" disabled>
             Klik untuk Order
         </button>
 
@@ -536,4 +533,5 @@
     </script>
 </body>
 </html>
+
 

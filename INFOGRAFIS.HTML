@@ -536,11 +536,8 @@
                 <input type="text" id="nama-lengkap" placeholder="Nama Lengkap Anda (Min. 3 Karakter)" minlength="3" required>
                 <span class="error-message" id="error-nama">Nama harus diisi minimal 3 karakter.</span>
             </div>
-            <div class="input-group">
-                <input type="tel" id="nomor-whatsapp" placeholder="Nomor WhatsApp (Diawali 08, Min. 10 Digit)" pattern="08[0-9]{8,}" required>
-                <span class="error-message" id="error-wa">Nomor WA harus diawali '08' dan minimal 10 digit.</span>
+            
             </div>
-        </div>
         
         <button class="btn-process" id="btn-process" disabled>
             Klik untuk Order
@@ -555,10 +552,8 @@
         const rasioInput = document.getElementById('rasio-gambar');
         const materiInput = document.getElementById('materi-data'); 
         const namaInput = document.getElementById('nama-lengkap');
-        const waInput = document.getElementById('nomor-whatsapp');
         
         const errorNama = document.getElementById('error-nama');
-        const errorWA = document.getElementById('error-wa');
         const errorMateri = document.getElementById('error-materi'); 
         
         const targetWA = "6285133748005"; 
@@ -611,15 +606,12 @@
             checkCompleteness();
         }
 
-        // Validasi Nama, WA, dan Materi
+        // Validasi Nama dan Materi
         function validateInputs() {
             const nama = namaInput.value.trim();
-            const wa = waInput.value.trim();
             const materi = materiInput.value.trim();
             
             const isNameValid = nama.length >= 3;
-            const waPattern = /^08[0-9]{8,}$/; 
-            const isWAValid = waPattern.test(wa);
             
             // Validasi Materi (Hanya wajib jika Mode Manual)
             let isMateriFilled = true;
@@ -634,7 +626,6 @@
             }
 
             toggleValidationFeedback(namaInput, errorNama, isNameValid, "Nama harus diisi minimal 3 karakter.");
-            toggleValidationFeedback(waInput, errorWA, isWAValid, "Nomor WA harus diawali '08' dan minimal 10 digit.");
             
             // Logic Feedback Error Materi
             if (currentSource === 'manual') {
@@ -647,7 +638,7 @@
                 }
             }
 
-            return { isNameValid, isWAValid, isMateriFilled };
+            return { isNameValid, isMateriFilled };
         }
 
         function toggleValidationFeedback(inputElement, errorElement, isValid, errorMessage) {
@@ -674,9 +665,9 @@
             const isRasioSelected = rasioInput.value !== "";
             const isStyleSelected = document.querySelector('.style-btn.active') !== null;
             
-            const { isNameValid, isWAValid, isMateriFilled } = validateInputs();
+            const { isNameValid, isMateriFilled } = validateInputs();
 
-            if (isTujuanSelected && isAudiensSelected && isRasioSelected && isStyleSelected && isNameValid && isWAValid && isMateriFilled) {
+            if (isTujuanSelected && isAudiensSelected && isRasioSelected && isStyleSelected && isNameValid && isMateriFilled) {
                 btnProcess.disabled = false;
             } else {
                 btnProcess.disabled = true;
@@ -686,12 +677,11 @@
         // Event Listeners
         document.addEventListener('DOMContentLoaded', checkCompleteness);
         namaInput.addEventListener('input', checkCompleteness);
-        waInput.addEventListener('input', checkCompleteness);
         materiInput.addEventListener('input', checkCompleteness); 
 
         // Logic Tombol Order
         btnProcess.addEventListener('click', function() {
-            const { isNameValid, isWAValid, isMateriFilled } = validateInputs();
+            const { isNameValid, isMateriFilled } = validateInputs();
             
             // Validasi Akhir Saat Klik Tombol (Khusus Materi Manual yang kosong)
             if (currentSource === 'manual' && !isMateriFilled) {
@@ -701,9 +691,9 @@
                 return;
             }
 
-            if (!isNameValid || !isWAValid) {
+            if (!isNameValid) {
                 document.querySelector('.contact-section').scrollIntoView({ behavior: 'smooth', block: 'center' });
-                alert("Mohon lengkapi atau perbaiki data nama/WA.");
+                alert("Mohon lengkapi atau perbaiki data nama.");
                 return;
             }
 
@@ -742,7 +732,6 @@
                 window.open(`https://wa.me/${targetWA}?text=${encodedMessage}`, '_blank');
                 
                 // Redirect
-                alert("Order Anda telah tercatat. Silakan lanjutkan di WhatsApp!");
                 window.location.href = 'MENU LAYANAN.HTML';
             }
         });

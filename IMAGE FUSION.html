@@ -223,8 +223,6 @@
             margin: 0;
         }
         
-        /* Hapus style untuk small karena elemennya sudah dihapus dari button */
-        
         .ratio-icon {
             width: 20px;
             height: 20px;
@@ -364,10 +362,6 @@
             <input type="text" id="nama-lengkap" placeholder="Nama Lengkap Anda (Min. 3 Karakter)" minlength="3" required>
             <span class="error-message" id="error-nama">Nama harus diisi minimal 3 karakter.</span>
         </div>
-        <div class="input-group">
-            <input type="tel" id="nomor-whatsapp" placeholder="Nomor WhatsApp (Diawali 08, Min. 10 Digit)" pattern="08[0-9]{8,}" required>
-            <span class="error-message" id="error-wa">Nomor WA harus diawali '08' dan minimal 10 digit.</span>
-        </div>
         
         <button class="generate-btn" id="btn-order" disabled>
             Klik untuk Order
@@ -379,11 +373,9 @@
         const promptInput = document.getElementById('prompt-input');
         const btnOrder = document.getElementById('btn-order');
         const namaInput = document.getElementById('nama-lengkap');
-        const waInput = document.getElementById('nomor-whatsapp');
         
         // Element pesan error
         const errorNama = document.getElementById('error-nama');
-        const errorWA = document.getElementById('error-wa');
         
         // Nomor WhatsApp tujuan
         const targetWA = "6285133748005"; 
@@ -410,16 +402,12 @@
         
         function validateInputs() {
             const nama = namaInput.value.trim();
-            const wa = waInput.value.trim();
-            
             const isNameValid = nama.length >= 3;
-            const waPattern = /^08[0-9]{8,}$/; 
-            const isWAValid = waPattern.test(wa);
             
             toggleValidationFeedback(namaInput, errorNama, isNameValid, "Nama harus diisi minimal 3 karakter.");
-            toggleValidationFeedback(waInput, errorWA, isWAValid, "Nomor WA harus diawali '08' dan minimal 10 digit.");
-
-            return { isNameValid, isWAValid };
+            
+            // Validasi WA dihapus
+            return { isNameValid };
         }
 
         function toggleValidationFeedback(inputElement, errorElement, isValid, errorMessage) {
@@ -443,9 +431,10 @@
             const isPromptFilled = promptInput.value.trim().length > 0;
             const isRatioSelected = document.querySelector('.ratio-btn.active') !== null;
             
-            const { isNameValid, isWAValid } = validateInputs();
+            const { isNameValid } = validateInputs();
             
-            if (isPromptFilled && isRatioSelected && isNameValid && isWAValid) {
+            // Cek kelengkapan tanpa WA
+            if (isPromptFilled && isRatioSelected && isNameValid) {
                 btnOrder.disabled = false;
             } else {
                 btnOrder.disabled = true;
@@ -454,9 +443,9 @@
         
         btnOrder.addEventListener('click', () => {
              
-            const { isNameValid, isWAValid } = validateInputs();
+            const { isNameValid } = validateInputs();
 
-            if (!isNameValid || !isWAValid) {
+            if (!isNameValid) {
                 // Scroll ke bagian contact section
                 document.querySelector('.input-group').closest('.fusion-card').querySelector('.label-section:nth-of-type(3)').scrollIntoView({ behavior: 'smooth', block: 'center' });
                 alert("Mohon lengkapi atau perbaiki data pemesan yang ditandai.");
@@ -465,15 +454,14 @@
 
              if (!btnOrder.disabled) {
                 const namaLengkap = namaInput.value.trim();
-                const nomorWA = waInput.value.trim();
                 const selectedRatio = document.querySelector('.ratio-btn.active').getAttribute('data-ratio');
                 const instruksi = promptInput.value.trim();
                 
                 const instruksiTampil = instruksi || "T/A";
                 
+                // Logging simulasi database (tanpa nomor WA pemesan)
                 const orderData = {
                     nama: namaLengkap,
-                    whatsapp: nomorWA,
                     layanan: "Image Fusion",
                     rasio: selectedRatio,
                     instruksi: instruksi,
@@ -483,13 +471,14 @@
                 console.log("--- ORDER IMAGE FUSION TERSIMPAN (simulasi database) ---");
                 console.log(orderData);
                 
+                // Pesan WA yang dikirim ke admin
                 let waMessage = `Halo saya ${namaLengkap}, baru saja order IMAGE FUSION.\n\nDetail Order:\nRasio Output: ${selectedRatio}\nDeskripsi Adegan: ${instruksiTampil}\n\nFile foto akan segera saya kirim ke sini (minimal 2 foto). Mohon segera diproses ya, Terima kasih!`;
                 
                 const encodedMessage = encodeURIComponent(waMessage);
                 
                 window.open(`https://wa.me/${targetWA}?text=${encodedMessage}`, '_blank');
                 
-                alert("Order Anda telah tercatat. Silakan lanjutkan di WhatsApp untuk mengirimkan file foto yang akan difusi!");
+                // alert("Order Anda telah tercatat. Silakan lanjutkan di WhatsApp untuk mengirimkan file foto yang akan difusi!");
                 
                 window.location.href = "MENU LAYANAN.HTML";
              }
@@ -498,8 +487,7 @@
         document.addEventListener('DOMContentLoaded', checkCompleteness);
         promptInput.addEventListener('input', checkCompleteness);
         namaInput.addEventListener('input', checkCompleteness);
-        waInput.addEventListener('input', checkCompleteness);
+        
     </script>
 </body>
 </html>
-

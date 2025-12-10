@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paket Social Media Management | AW Design Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- COPY CSS VARIABLES DARI MAIN MENU AGAR KONSISTEN --- */
+        :root {
+            --bg-dark: #09090b;
+            --surface-dark: #18181b;
+            --surface-light: #27272a;
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+            --glow: 0 0 30px rgba(168, 85, 247, 0.6);
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --border: rgba(255, 255, 255, 0.1);
+            --neon-accent: #a855f7;
+            --success: #10b981;
+            --danger: #ef4444;
+            --highlight-text: #f472b6; 
+        }
+
+        * { box-sizing: border-box; font-family: 'Outfit', sans-serif; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at 50% 10%, rgba(168, 85, 247, 0.1) 0%, transparent 40%);
+            min-height: 100vh;
+            color: var(--text-main);
+            padding: 40px 20px;
+        }
+
+        /* --- NAVIGATION --- */
+        .nav-bar {
+            max-width: 1200px;
+            margin: 0 auto 40px auto;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 600;
+            transition: 0.3s;
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            background: var(--surface-light);
+        }
+
+        .btn-back:hover {
+            color: white;
+            border-color: white;
+            transform: translateX(-5px);
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* --- HEADER SECTION --- */
+        .header-section {
+            text-align: center;
+            margin-bottom: 60px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1 {
+            font-size: 36px;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* --- NOTICE BOX (INFO SISTEM KERJA) --- */
+        .info-box {
+            background: rgba(99, 102, 241, 0.1); /* Tint Indigo tipis */
+            border: 1px dashed rgba(99, 102, 241, 0.4);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: left;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #e0e7ff;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .info-box strong {
+            color: #a5b4fc;
+        }
+
+        .info-icon {
+            font-size: 20px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        /* --- PRICING GRID --- */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: stretch;
+        }
+
+        /* --- CARD STYLES --- */
+        .package-card {
+            background: rgba(24, 24, 27, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* EFEK GLOW SAAT HOVER */
+        .package-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: var(--neon-accent);
+            box-shadow: var(--glow);
+            z-index: 10;
+        }
+
+        /* Highlight for Best Seller */
+        .package-card.best-seller {
+            background: linear-gradient(180deg, rgba(168, 85, 247, 0.08) 0%, var(--surface-dark) 100%);
+            border: 1px solid rgba(168, 85, 247, 0.5);
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+        }
+
+        /* Badge Best Seller */
+        .badge-popular {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-gradient);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: white;
+            box-shadow: 0 5px 15px rgba(236, 72, 153, 0.4);
+        }
+
+        /* Card Content */
+        .pkg-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .pkg-type {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .price-box {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .price {
+            font-size: 32px;
+            font-weight: 800;
+            color: white;
+        }
+
+        .price span {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+
+        /* Separator Section */
+        .section-divider {
+            margin: 20px 0 10px 0;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--neon-accent);
+            font-weight: 700;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .section-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: rgba(168, 85, 247, 0.3);
+        }
+
+        /* Features List */
+        .features-list {
+            list-style: none;
+            margin-bottom: 10px;
+            flex-grow: 1;
+        }
+
+        .features-list li {
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #d4d4d8;
+            line-height: 1.5;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .highlight {
+            color: var(--highlight-text);
+            font-weight: 700;
+        }
+        
+        strong { color: white; }
+
+        .icon-check { color: var(--success); flex-shrink: 0; }
+        .icon-cross { color: var(--danger); flex-shrink: 0; }
+        .icon-star { color: #facc15; flex-shrink: 0; }
+
+        /* Button */
+        .btn-select {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 700;
+            text-decoration: none;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .btn-standard {
+            background: var(--surface-light);
+            color: white;
+            border: 1px solid var(--border);
+        }
+        .btn-standard:hover {
+            background: white;
+            color: black;
+        }
+
+        .btn-gradient {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 10px 20px -5px rgba(236, 72, 153, 0.4);
+        }
+        .btn-gradient:hover {
+            filter: brightness(1.1);
+            transform: scale(1.02);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .pricing-grid {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+            }
+            .package-card:hover {
+                transform: translateY(-5px);
+            }
+            h1 { font-size: 28px; }
+            .info-box { font-size: 13px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-bar">
+        <a href="index.html" class="btn-back">← Kembali ke Menu Utama</a>
+    </div>
+
+    <div class="header-section">
+        <h1>Pilihan Paket SMM</h1>
+        <p class="subtitle">Pilih solusi manajemen sosial media yang paling pas dengan budget dan target bisnis Anda saat ini.</p>
+
+        <div class="info-box">
+            <span class="info-icon">💡</span> 
+            <strong>PENTING: Sistem Kerja Remote (Hemat Biaya)</strong><br>
+            Layanan ini berfokus pada <em>Post-Production & Management</em> secara remote. Artinya, 
+            <strong>bahan konten (foto/video mentah) disediakan oleh Anda</strong>, lalu kami yang mengolahnya menjadi konten matang yang estetik.
+            <br><br>
+            ✅ Tanpa biaya transport/kru lokasi = <strong>Harga Jauh Lebih Terjangkau</strong> dibanding Agency Konvensional.
+        </div>
+    </div>
+
+    <div class="pricing-grid">
+
+        <div class="package-card">
+            <h2 class="pkg-name">Rintisan 🌱</h2>
+            <div class="pkg-type">Starter Pack</div>
+            
+            <div class="price-box">
+                <div class="price">Rp 500k<span>/bulan</span></div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">Solusi Hemat & Rapi</div>
+            </div>
+
+            <ul class="features-list">
+                <li><span class="icon-check">✔</span> <div><strong>12 Konten Feed</strong> (Gambar Statis)</div></li>
+                <li><span class="icon-check">✔</span> <div><span class="highlight">Bonus: 4x Story</span> (Promo/Info)</div></li>
+                <li><span class="icon-check">✔</span> <div>Tayang: <strong>3x Seminggu</strong> (Senin, Rabu, Jumat)</div></li>
+            </ul>
+
+            <div class="section-divider">Fasilitas Termasuk</div>
+            <ul class="features-list">
+                <li><span class="icon-star">★</span> <div><strong>Copywriting Caption</strong> Menarik</div></li>
+                <li><span class="icon-star">★</span> <div>Riset Hashtag Tertarget</div></li>
+                <li><span class="icon-star">★</span> <div>Dijadwalkan Otomatis</div></li>
+                <li><span class="icon-cross">✖</span> <div style="color: var(--text-muted); font-size: 13px;">Tidak Ada Admin (Balas chat mandiri)</div></li>
+            </ul>
+
+            <a href="https://wa.me/6285133748005?text=Halo%20AW%20Design,%20saya%20tertarik%20ambil%20Paket%20SMM%20RINTISAN%20(500k)." class="btn-select btn-standard">
+                Pilih Paket Rintisan
+            </a>
+        </div>
+
+        <div class="package-card best-seller">
+            <div class="badge-popular">🔥 Best Seller</div>
+            <h2 class="pkg-name">Laris Manis</h2>
+            <div class="pkg-type">Growth Pack</div>
+            
+            <div class="price-box">
+                <div class="price">Rp 850k<span>/bulan</span></div>
+                <div style="font-size: 12px; color: #d8b4fe; margin-top: 5px;">Wajib untuk Interaksi!</div>
+            </div>
+
+            <ul class="features-list">
+                <li><span class="icon-check">✔</span> <div><strong>16 Konten Feed</strong> (12 Gambar + 4 Reels)</div></li>
+                <li><span class="icon-check">✔</span> <div><span class="highlight">4x VIDEO REELS</span> (15-30 detik)</div></li>
+                <li><span class="icon-check">✔</span> <div><span class="highlight">Bonus: 12x Story</span> (Interaktif Quiz/Polling)</div></li>
+                <li><span class="icon-check">✔</span> <div>Tayang: <strong>4x Seminggu</strong> (Senin-Minggu)</div></li>
+            </ul>
+
+            <div class="section-divider">Fasilitas Unggulan</div>
+            <ul class="features-list">
+                <li><span class="icon-star">★</span> <div><strong>Optimasi Bio Instagram</strong> (Professional Look)</div></li>
+                <li><span class="icon-star">★</span> <div><strong>Laporan Insight</strong> Bulanan</div></li>
+                <li><span class="icon-star">★</span> <div>Semua Fasilitas Paket Rintisan</div></li>
+                <li><span class="icon-star">★</span> <div><span class="highlight">Admin Ringan:</span> Balas komen publik</div></li>
+            </ul>
+
+            <a href="https://wa.me/6285133748005?text=Halo%20AW%20Design,%20saya%20tertarik%20ambil%20Paket%20SMM%20LARIS%20MANIS%20(850k)." class="btn-select btn-gradient">
+                Pilih Paket Laris Manis
+            </a>
+        </div>
+
+        <div class="package-card">
+            <h2 class="pkg-name">Juragan 👑</h2>
+            <div class="pkg-type">Scale-Up Pack</div>
+            
+            <div class="price-box">
+                <div class="price">Rp 1.45jt<span>/bulan</span></div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 5px;">Terima Beres Total</div>
+            </div>
+
+            <ul class="features-list">
+                <li><span class="icon-check">✔</span> <div><strong>24 Konten Feed</strong> (16 Gambar + 8 Reels)</div></li>
+                <li><span class="icon-check">✔</span> <div><span class="highlight">8x REELS VIRAL</span> (Edit Stitching/Transisi)</div></li>
+                <li><span class="icon-check">✔</span> <div><span class="highlight">Bonus: DAILY STORY</span> (Senin - Sabtu)</div></li>
+                <li><span class="icon-check">✔</span> <div>Tayang: <strong>SETIAP HARI KERJA</strong></div></li>
+            </ul>
+
+            <div class="section-divider">Fasilitas Premium</div>
+            <ul class="features-list">
+                <li><span class="icon-star">★</span> <div><strong>Prioritas Pengerjaan</strong> (Fast Lane)</div></li>
+                <li><span class="icon-star">★</span> <div>Semua Fasilitas Paket Laris Manis</div></li>
+                <li><span class="icon-star">★</span> <div><span class="highlight">FULL ADMIN:</span> Balas DM & Komen (09.00-17.00)</div></li>
+            </ul>
+
+            <a href="https://wa.me/6285133748005?text=Halo%20AW%20Design,%20saya%20tertarik%20ambil%20Paket%20SMM%20JURAGAN%20(1.45jt)." class="btn-select btn-standard">
+                Pilih Paket Juragan
+            </a>
+        </div>
+
+    </div>
+
+</body>
+</html>

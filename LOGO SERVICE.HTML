@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jasa Desain Logo - AW Design Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. SETUP CSS VARIABLE --- */
+        :root {
+            --bg-dark: #09090b;
+            --surface-dark: #18181b;
+            --surface-light: #27272a;
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+            --glow: 0 0 25px rgba(99, 102, 241, 0.4);
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --border: rgba(255, 255, 255, 0.1);
+            --neon-accent: #6366f1; 
+        }
+
+        * { box-sizing: border-box; font-family: 'Outfit', sans-serif; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 80% 10%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 20% 90%, rgba(168, 85, 247, 0.1) 0%, transparent 40%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-main);
+            padding: 20px;
+            position: relative; /* Penting untuk posisi absolute tombol */
+        }
+
+        /* --- 2. NAVIGASI POJOK KIRI ATAS --- */
+        .nav-bar {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            z-index: 100;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            background: rgba(24, 24, 27, 0.6); /* Semi transparan */
+            backdrop-filter: blur(10px);
+            font-size: 14px;
+        }
+
+        .btn-back:hover {
+            color: white;
+            border-color: white;
+            transform: translateX(5px);
+            background: var(--surface-light);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+
+        /* --- 3. CONTAINER UTAMA --- */
+        .service-card {
+            background: rgba(24, 24, 27, 0.85);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            width: 100%;
+            max-width: 600px;
+            border-radius: 32px;
+            border: 1px solid var(--border);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.7);
+            padding: 48px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin-top: 20px; /* Jaga jarak jika di mobile */
+        }
+
+        /* Hiasan Atas */
+        .card-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.4));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, #a5b4fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .price-badge {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.1);
+            color: #818cf8;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            margin-bottom: 24px;
+        }
+
+        .description {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* --- 4. INFORMASI BRIEF --- */
+        .brief-info {
+            background: var(--surface-light);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: left;
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
+        }
+
+        .brief-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brief-text {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* --- 5. TOMBOL AKSI --- */
+        .btn-action {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px;
+            background: var(--primary-gradient);
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-size: 16px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-action:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px -5px rgba(99, 102, 241, 0.6);
+            filter: brightness(1.1);
+        }
+
+        /* Media Query Mobile */
+        @media (max-width: 600px) {
+            body {
+                flex-direction: column; /* Ubah susunan jadi vertikal */
+                justify-content: flex-start;
+                padding-top: 20px;
+            }
+            
+            .nav-bar {
+                position: relative; /* Tidak absolute lagi di HP */
+                top: auto;
+                left: auto;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .service-card { padding: 30px 20px; }
+            h1 { font-size: 26px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-bar">
+        <a href="index.html" class="btn-back">← Kembali ke Menu Utama</a>
+    </div>
+
+    <div class="service-card">
+        <div class="card-icon">✒️</div>
+        
+        <h1>Desain Logo Profesional</h1>
+        <div class="price-badge">Mulai Rp 150.000,-</div>
+        
+        <p class="description">
+            Kami membantu menciptakan identitas visual (Branding) yang kuat, unik, dan berkarakter agar bisnis Anda mudah diingat oleh pelanggan.
+        </p>
+
+        <div class="brief-info">
+            <div class="brief-title">
+                <span>📝</span> Mengapa harus isi formulir?
+            </div>
+            <p class="brief-text">
+                Agar hasil logo sesuai ekspektasi, kami butuh detail tentang nama bisnis, warna favorit, dan referensi gaya Anda.
+            </p>
+        </div>
+
+        <a href="https://forms.gle/1c3Gd9CJu2FLVZSf7" class="btn-action" target="_blank">
+            Isi Form Brief Logo Sekarang ➜
+        </a>
+    </div>
+
+</body>
+</html>

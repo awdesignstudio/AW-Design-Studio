@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AW Design Studio | Visual Services</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. SETUP CSS VARIABLE (Tema Dark Neon) --- */
+        :root {
+            --bg-dark: #09090b;
+            --surface-dark: #18181b;
+            --surface-light: #27272a;
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+            --glow: 0 0 25px rgba(168, 85, 247, 0.4);
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --border: rgba(255, 255, 255, 0.1);
+            --neon-accent: #a855f7;
+        }
+
+        * { box-sizing: border-box; font-family: 'Outfit', sans-serif; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 10% 90%, rgba(236, 72, 153, 0.1) 0%, transparent 40%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-main);
+            padding: 20px;
+        }
+
+        /* --- 2. CONTAINER UTAMA --- */
+        .landing-card {
+            background: rgba(24, 24, 27, 0.85);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            width: 100%;
+            max-width: 1100px; /* Lebar agar muat 3 kolom */
+            border-radius: 32px;
+            border: 1px solid var(--border);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.7);
+            padding: 48px;
+            text-align: center;
+        }
+
+        /* Header Section */
+        .brand-header {
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 42px;
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        .tagline {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .description {
+            font-size: 16px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- 3. PILIHAN LAYANAN (GRID 3 KOLOM) --- */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 Kolom Sejajar */
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .option-card {
+            background: linear-gradient(180deg, var(--surface-light) 0%, var(--surface-dark) 100%);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 35px 20px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            height: 100%;
+        }
+
+        /* Icon Emoji Besar */
+        .option-icon {
+            font-size: 42px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+            transition: transform 0.3s;
+        }
+
+        .option-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .option-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Highlight Text */
+        .price-tag {
+            margin-top: auto; /* Mendorong harga ke bawah kartu */
+            padding-top: 15px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Hover Effects */
+        .option-card:hover {
+            border-color: var(--neon-accent);
+            transform: translateY(-8px);
+            box-shadow: var(--glow);
+        }
+
+        .option-card:hover .option-icon {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .option-card:hover .option-title {
+            color: #d8b4fe;
+        }
+
+        /* --- 4. FOOTER / CONTACT --- */
+        .footer-info {
+            margin-top: 50px;
+            border-top: 1px solid var(--border);
+            padding-top: 24px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .wa-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #4ade80; /* WA Green */
+            text-decoration: none;
+            font-weight: 600;
+            background: rgba(74, 222, 128, 0.1);
+            padding: 10px 24px;
+            border-radius: 50px;
+            transition: all 0.2s;
+            margin-top: 10px;
+            border: 1px solid rgba(74, 222, 128, 0.2);
+        }
+        .wa-link:hover { 
+            background: rgba(74, 222, 128, 0.2);
+            color: #22c55e;
+            transform: translateY(-2px);
+        }
+
+        /* Media Query Tablet & Mobile */
+        @media (max-width: 900px) {
+            .options-grid { 
+                grid-template-columns: 1fr; /* Menjadi 1 kolom (tumpuk ke bawah) di HP/Tablet */
+                gap: 20px; 
+            }
+            .landing-card { 
+                padding: 30px 20px; 
+            }
+            h1 { font-size: 32px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="landing-card">
+        <div class="brand-header">
+            <h1>AW Design Studio</h1>
+            <div class="tagline">One Stop Visual Solution</div>
+            <p class="description">
+                Partner kreatif digital Anda. Kami menyediakan layanan visual lengkap mulai dari editing foto, manajemen sosial media, hingga identitas brand.
+            </p>
+        </div>
+
+        <div class="options-grid">
+            
+            <a href="DISCLAIMER.html" class="option-card">
+                <div class="option-icon">🎨</div>
+                <h2 class="option-title">Jasa Edit Foto</h2>
+                <p class="option-desc">
+                    Retouching, manipulasi, restorasi foto jadul, hingga sketsa wajah digital.
+                </p>
+                <div class="price-tag" style="color: #a855f7;">Mulai Rp 5.000/foto</div>
+            </a>
+
+            <a href="SMM_PACKAGES.HTML" class="option-card">
+                <div class="option-icon">🚀</div>
+                <h2 class="option-title">Social Media</h2>
+                <p class="option-desc">
+                    Kelola Instagram, konten Feed/Reels rutin, dan admin untuk pertumbuhan bisnis.
+                </p>
+                <div class="price-tag" style="color: #ec4899;">Paket Promo Tersedia</div>
+            </a>
+
+            <a href="LOGO SERVICE.HTML" class="option-card">
+                <div class="option-icon">✒️</div>
+                <h2 class="option-title">Desain Logo</h2>
+                <p class="option-desc">
+                    Pembuatan logo UMKM profesional, unik, dan berkarakter untuk branding usaha.
+                </p>
+                <div class="price-tag" style="color: #6366f1;">Mulai Rp 150rb</div>
+            </a>
+
+        </div>
+
+        <div class="footer-info">
+            Butuh konsultasi sebelum memilih? <br>
+            <a href="https://wa.me/6285133748005?text=Halo%20AW%20Design%20Studio,%20saya%20mau%20konsultasi%20tentang%20jasa..." class="wa-link" target="_blank">
+                💬 Chat WhatsApp Admin
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- COPY CSS VARIABLES DARI MAIN MENU AGAR KONSISTEN --- */
+        /* --- CSS VARIABLES --- */
         :root {
             --bg-dark: #09090b;
             --surface-dark: #18181b;
@@ -84,9 +84,9 @@
             margin-bottom: 30px;
         }
 
-        /* --- NOTICE BOX (INFO SISTEM KERJA) --- */
+        /* --- NOTICE BOX --- */
         .info-box {
-            background: rgba(99, 102, 241, 0.1); /* Tint Indigo tipis */
+            background: rgba(99, 102, 241, 0.1);
             border: 1px dashed rgba(99, 102, 241, 0.4);
             border-radius: 16px;
             padding: 20px;
@@ -99,15 +99,8 @@
             position: relative;
         }
         
-        .info-box strong {
-            color: #a5b4fc;
-        }
-
-        .info-icon {
-            font-size: 20px;
-            margin-right: 8px;
-            vertical-align: middle;
-        }
+        .info-box strong { color: #a5b4fc; }
+        .info-icon { font-size: 20px; margin-right: 8px; vertical-align: middle; }
 
         /* --- PRICING GRID --- */
         .pricing-grid {
@@ -132,7 +125,7 @@
             transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* EFEK GLOW SAAT HOVER */
+        /* EFEK GLOW SAAT HOVER (Berlaku untuk SEMUA KARTU) */
         .package-card:hover {
             transform: translateY(-12px) scale(1.02);
             border-color: var(--neon-accent);
@@ -144,7 +137,13 @@
         .package-card.best-seller {
             background: linear-gradient(180deg, rgba(168, 85, 247, 0.08) 0%, var(--surface-dark) 100%);
             border: 1px solid rgba(168, 85, 247, 0.5);
-            box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.1); /* Sedikit shadow statis */
+        }
+        
+        /* Memastikan hover best seller tetap menyala terang */
+        .package-card.best-seller:hover {
+            box-shadow: 0 0 40px rgba(168, 85, 247, 0.6);
+            border-color: #d8b4fe;
         }
 
         /* Badge Best Seller */
@@ -162,6 +161,7 @@
             text-transform: uppercase;
             color: white;
             box-shadow: 0 5px 15px rgba(236, 72, 153, 0.4);
+            z-index: 2;
         }
 
         /* Card Content */
@@ -198,7 +198,7 @@
             color: var(--text-muted);
         }
 
-        /* Separator Section */
+        /* Separator */
         .section-divider {
             margin: 20px 0 10px 0;
             font-size: 12px;
@@ -234,16 +234,50 @@
             gap: 10px;
         }
 
-        .highlight {
-            color: var(--highlight-text);
-            font-weight: 700;
-        }
-        
+        .highlight { color: var(--highlight-text); font-weight: 700; }
         strong { color: white; }
 
         .icon-check { color: var(--success); flex-shrink: 0; }
         .icon-cross { color: var(--danger); flex-shrink: 0; }
         .icon-star { color: #facc15; flex-shrink: 0; }
+
+        /* --- FORM INPUT STYLING --- */
+        .input-group {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .input-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .input-name {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-name:focus {
+            border-color: var(--neon-accent);
+            background: rgba(0,0,0,0.5);
+        }
+
+        .error-msg {
+            font-size: 12px;
+            color: var(--danger);
+            margin-top: 5px;
+            display: none; /* Hidden by default */
+            font-weight: 600;
+        }
 
         /* Button */
         .btn-select {
@@ -257,7 +291,8 @@
             transition: 0.3s;
             border: none;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 10px;
+            font-size: 16px;
         }
 
         .btn-standard {
@@ -316,7 +351,7 @@
 
     <div class="pricing-grid">
 
-        <div class="package-card">
+        <div class="package-card" id="card-rintisan">
             <h2 class="pkg-name">Rintisan 🌱</h2>
             <div class="pkg-type">Starter Pack</div>
             
@@ -339,12 +374,18 @@
                 <li><span class="icon-cross">✖</span> <div style="color: var(--text-muted); font-size: 13px;">Tidak Ada Admin (Balas chat mandiri)</div></li>
             </ul>
 
-            <a href="https://wa.me/6285133748005?text=Halo%20AW%20Design,%20saya%20tertarik%20ambil%20Paket%20SMM%20RINTISAN%20(500k)." class="btn-select btn-standard">
+            <div class="input-group">
+                <label class="input-label">Nama Pemesan:</label>
+                <input type="text" class="input-name" id="name-rintisan" placeholder="Contoh: Budi Santoso" autocomplete="off">
+                <div class="error-msg" id="error-rintisan"></div>
+            </div>
+
+            <button onclick="kirimPesan('RINTISAN', '500k', 'name-rintisan', 'error-rintisan')" class="btn-select btn-standard">
                 Pilih Paket Rintisan
-            </a>
+            </button>
         </div>
 
-        <div class="package-card best-seller">
+        <div class="package-card best-seller" id="card-laris">
             <div class="badge-popular">🔥 Best Seller</div>
             <h2 class="pkg-name">Laris Manis</h2>
             <div class="pkg-type">Growth Pack</div>
@@ -369,12 +410,18 @@
                 <li><span class="icon-star">★</span> <div><span class="highlight">Admin Ringan:</span> Balas komen publik</div></li>
             </ul>
 
-            <a href="https://wa.me/6285133748005?text=Halo%20AW%20Design,%20saya%20tertarik%20ambil%20Paket%20SMM%20LARIS%20MANIS%20(850k)." class="btn-select btn-gradient">
+            <div class="input-group">
+                <label class="input-label" style="color:#d8b4fe">Nama Pemesan:</label>
+                <input type="text" class="input-name" id="name-laris" placeholder="Contoh: Siti Aminah" autocomplete="off">
+                <div class="error-msg" id="error-laris"></div>
+            </div>
+
+            <button onclick="kirimPesan('LARIS MANIS', '850k', 'name-laris', 'error-laris')" class="btn-select btn-gradient">
                 Pilih Paket Laris Manis
-            </a>
+            </button>
         </div>
 
-        <div class="package-card">
+        <div class="package-card" id="card-juragan">
             <h2 class="pkg-name">Juragan 👑</h2>
             <div class="pkg-type">Scale-Up Pack</div>
             
@@ -397,12 +444,62 @@
                 <li><span class="icon-star">★</span> <div><span class="highlight">FULL ADMIN:</span> Balas DM & Komen (09.00-17.00)</div></li>
             </ul>
 
-            <a href="https://wa.me/6285133748005?text=Halo%20AW%20Design,%20saya%20tertarik%20ambil%20Paket%20SMM%20JURAGAN%20(1.45jt)." class="btn-select btn-standard">
+            <div class="input-group">
+                <label class="input-label">Nama Pemesan:</label>
+                <input type="text" class="input-name" id="name-juragan" placeholder="Contoh: Bapak Hartono" autocomplete="off">
+                <div class="error-msg" id="error-juragan"></div>
+            </div>
+
+            <button onclick="kirimPesan('JURAGAN', '1.45jt', 'name-juragan', 'error-juragan')" class="btn-select btn-standard">
                 Pilih Paket Juragan
-            </a>
+            </button>
         </div>
 
     </div>
+
+    <script>
+        function kirimPesan(paket, harga, inputId, errorId) {
+            // Ambil elemen input dan error berdasarkan ID yang dikirim
+            var inputNama = document.getElementById(inputId);
+            var errorMsg = document.getElementById(errorId);
+            var nama = inputNama.value.trim();
+
+            // Reset Error Style
+            errorMsg.style.display = 'none';
+            inputNama.style.borderColor = 'var(--border)';
+
+            // --- VALIDASI ---
+            
+            // 1. Cek apakah kosong
+            if (nama === "") {
+                errorMsg.innerHTML = "⚠ Nama wajib diisi!";
+                errorMsg.style.display = 'block';
+                inputNama.style.borderColor = 'var(--danger)';
+                inputNama.focus(); // Arahkan kursor ke input
+                return; // Stop proses
+            }
+
+            // 2. Cek apakah kurang dari 3 karakter
+            if (nama.length < 3) {
+                errorMsg.innerHTML = "⚠ Nama terlalu pendek (min. 3 huruf)";
+                errorMsg.style.display = 'block';
+                inputNama.style.borderColor = 'var(--danger)';
+                inputNama.focus();
+                return; // Stop proses
+            }
+
+            // --- JIKA VALID ---
+            
+            // Format Pesan WhatsApp
+            var pesan = `Halo AW Design, saya *${nama}*.%0A`;
+            pesan += `Saya tertarik ambil *Paket SMM ${paket}* (${harga}).%0A`;
+            pesan += `Mohon info lebih lanjut untuk proses pemesanannya. Terima kasih.`;
+
+            // Buka WhatsApp di tab baru
+            var waLink = `https://wa.me/6285133748005?text=${pesan}`;
+            window.open(waLink, '_blank');
+        }
+    </script>
 
 </body>
 </html>

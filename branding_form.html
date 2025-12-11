@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Order Terpusat - AW Design Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CSS VARIABLE --- */
+        :root {
+            --bg-dark: #09090b;
+            --surface-dark: #18181b;
+            --surface-light: #27272a;
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
+            --text-main: #ffffff;
+            --text-muted: #a1a1aa;
+            --border: rgba(255, 255, 255, 0.1);
+            --neon-accent: #6366f1; 
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+        }
+
+        * { box-sizing: border-box; font-family: 'Outfit', sans-serif; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 10% 90%, rgba(236, 72, 153, 0.1) 0%, transparent 40%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-main);
+            padding: 40px 20px 200px 20px;
+        }
+
+        /* --- HEADER --- */
+        .header-section { text-align: center; margin-bottom: 40px; max-width: 700px; }
+        h1 { font-size: 32px; font-weight: 800; margin-bottom: 10px; background: linear-gradient(to right, #fff, #a5b4fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .subtitle { color: var(--text-muted); font-size: 16px; line-height: 1.6; }
+        .btn-back { display: inline-block; margin-bottom: 20px; text-decoration: none; color: var(--text-muted); font-size: 14px; border: 1px solid var(--border); padding: 8px 16px; border-radius: 50px; transition: 0.3s; }
+        .btn-back:hover { background: var(--surface-light); color: white; }
+
+        /* --- BAGIAN 1: PAKET UTAMA --- */
+        .section-title { width: 100%; max-width: 1200px; text-align: left; margin-bottom: 20px; font-size: 20px; font-weight: 700; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        
+        .pricing-container {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px; width: 100%; max-width: 1200px; align-items: stretch; margin-bottom: 50px;
+        }
+
+        .p-card {
+            background: rgba(24, 24, 27, 0.6); backdrop-filter: blur(20px);
+            border: 2px solid var(--border); border-radius: 24px; padding: 25px;
+            position: relative; transition: all 0.3s ease; display: flex; flex-direction: column;
+            cursor: pointer;
+        }
+
+        .p-card.selected {
+            border-color: var(--neon-accent);
+            background: rgba(99, 102, 241, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -5px rgba(99, 102, 241, 0.3);
+        }
+        
+        /* Highlight Best Value (DIPERBAIKI) */
+        .p-card.best-value { 
+            border-color: #a855f7; /* Ungu (bukan hijau lagi) */
+            background: linear-gradient(180deg, rgba(168,85,247,0.05) 0%, rgba(24,24,27,0.6) 100%);
+        }
+        .p-card.best-value .checkbox-overlay { border-color: #a855f7; }
+        .p-card.best-value.selected { background: rgba(168, 85, 247, 0.15); border-color: #a855f7; }
+        .p-card.best-value.selected .checkbox-overlay { background: #a855f7; border-color: #a855f7; }
+
+        .p-card:hover { border-color: rgba(255,255,255,0.3); }
+
+        /* Checkbox Lingkaran */
+        .checkbox-overlay {
+            position: absolute; top: 20px; right: 20px; width: 24px; height: 24px;
+            border-radius: 50%; border: 2px solid var(--text-muted);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 10; /* Pastikan di atas */
+        }
+        
+        .p-card.selected .checkbox-overlay { border-color: var(--neon-accent); background: var(--neon-accent); }
+        .p-card.selected .checkbox-overlay::after { content: '✓'; color: white; font-size: 14px; font-weight: bold; }
+
+        .p-title { font-size: 18px; font-weight: 700; margin-bottom: 5px; color: white; }
+        .p-price { font-size: 26px; font-weight: 800; margin-bottom: 15px; color: var(--neon-accent); }
+        .features { list-style: none; margin-bottom: 0; text-align: left; flex-grow: 1; }
+        .features li { font-size: 13px; color: #e4e4e7; margin-bottom: 10px; display: flex; align-items: start; gap: 10px; line-height: 1.4; }
+        .check-icon { color: var(--success); flex-shrink: 0; }
+        .highlight-text { color: #f472b6; font-weight: 600; }
+        .muted-text { color: #52525b; text-decoration: line-through; }
+        
+        /* Badge Hemat (DIPERBAIKI) */
+        .save-badge {
+            background: var(--primary-gradient); /* Warna senada tombol order */
+            color: white; 
+            font-size: 11px; 
+            font-weight: 700;
+            padding: 5px 12px; 
+            border-radius: 50px; 
+            margin-bottom: 15px;
+            align-self: flex-start; /* Rata kiri agar tidak nabrak kanan */
+            box-shadow: 0 4px 10px rgba(236, 72, 153, 0.4);
+            letter-spacing: 0.5px;
+        }
+
+        /* --- BAGIAN 2: ALA CARTE --- */
+        .alacarte-container { width: 100%; max-width: 800px; margin-bottom: 50px; }
+        
+        .info-box {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            color: #fcd34d;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            display: flex; gap: 10px; align-items: center;
+        }
+
+        .menu-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
+
+        .menu-item {
+            display: flex; align-items: center; justify-content: space-between;
+            background: var(--surface-light); padding: 15px 20px; border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .item-info { display: flex; flex-direction: column; text-align: left; }
+        .item-name { font-weight: 600; color: white; margin-bottom: 4px; }
+        .item-price { font-size: 14px; color: var(--neon-accent); }
+        .item-desc { font-size: 12px; color: var(--text-muted); font-style: italic; }
+
+        .item-controls { display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.3); padding: 5px; border-radius: 50px; }
+        .btn-qty { width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(255,255,255,0.1); color: white; font-weight: bold; font-size: 18px; cursor: pointer; transition: 0.2s; }
+        .btn-qty:hover { background: var(--neon-accent); }
+        .qty-input { width: 40px; background: transparent; border: none; color: white; text-align: center; font-weight: 700; font-size: 16px; outline: none; appearance: textfield; }
+
+        /* --- CHECKOUT BAR --- */
+        .checkout-bar {
+            position: fixed; bottom: 0; left: 0; width: 100%;
+            background: rgba(15, 15, 20, 0.98);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            padding: 15px 20px 20px 20px;
+            z-index: 1000;
+            display: flex; flex-direction: column; align-items: center;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+        }
+
+        .checkout-content { width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 15px; }
+
+        .process-info {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 12px;
+            padding: 12px;
+            font-size: 13px;
+            color: #c7d2fe;
+            line-height: 1.5;
+            text-align: left;
+            margin-bottom: 5px;
+            display: flex; gap: 10px; align-items: flex-start;
+        }
+
+        .input-group { width: 100%; display: flex; flex-direction: column; position: relative; }
+        .input-name {
+            width: 100%; padding: 12px; border-radius: 12px;
+            background: rgba(255,255,255,0.1); border: 1px solid var(--border);
+            color: white; font-size: 16px; outline: none;
+        }
+        .input-name:focus { border-color: var(--neon-accent); background: rgba(0,0,0,0.5); }
+        .error-msg { color: var(--error); font-size: 13px; display: none; margin-top: 5px; margin-left: 5px; text-align: left; font-weight: 600; }
+
+        .total-row { display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-size: 14px; }
+        .grand-total { font-size: 24px; font-weight: 800; color: var(--neon-accent); }
+
+        .btn-checkout {
+            width: 100%; padding: 14px; border-radius: 12px; border: none;
+            background: var(--primary-gradient); color: white; font-weight: 700; font-size: 16px;
+            cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-checkout:hover { filter: brightness(1.1); transform: translateY(-2px); }
+
+        @media (min-width: 768px) {
+            .checkout-content { flex-direction: row; flex-wrap: wrap; align-items: center; }
+            .process-info { width: 100%; margin-bottom: 10px; }
+            .input-group { flex: 1; }
+            .btn-checkout { width: auto; padding-left: 40px; padding-right: 40px; margin-top: 0; }
+            .total-row { flex-direction: column; align-items: flex-end; margin-right: 20px; min-width: 150px; }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="btn-back">← Kembali</a>
+
+    <div class="header-section">
+        <h1>Formulir Pemesanan</h1>
+        <p class="subtitle">Pilih Paket yang sesuai, lalu isi nama Anda di bagian bawah.</p>
+    </div>
+
+    <div class="section-title">Langkah 1: Pilih Paket Utama (Opsional)</div>
+    <div class="pricing-container">
+        
+        <div class="p-card" onclick="selectPackage(1, 200000, 'Paket Logo Saja')">
+            <div class="checkbox-overlay" id="check-1"></div>
+            <div class="p-title">🎨 Logo Saja</div>
+            <div class="p-price">Rp 200.000</div>
+            <ul class="features">
+                <li><span class="check-icon">✓</span> 1 Konsep Logo Simple</li>
+                <li><span class="check-icon">✓</span> File JPG & PNG (Transparan)</li>
+                <li><span class="check-icon">✓</span> Revisi Minor 1x</li>
+                <li><span class="muted-text">Tanpa File Master (PDF)</span></li>
+            </ul>
+        </div>
+
+        <div class="p-card best-value" onclick="selectPackage(2, 249000, 'Paket Mulai Dulu')">
+            <div class="checkbox-overlay" id="check-2"></div>
+            
+            <div class="save-badge">LEBIH HEMAT 🔥</div>
+            
+            <div class="p-title">📦 Mulai Dulu</div>
+            <div class="p-price">Rp 249.000</div>
+            <ul class="features">
+                <li><span class="check-icon">✓</span> 1 Konsep Logo Simple</li>
+                <li><span class="check-icon">✓</span> File JPG & PNG (Transparan)</li>
+                <li><span class="check-icon">✓</span> Desain Stiker Kemasan</li>
+                <li><span class="check-icon">✓</span> <span class="highlight-text">Bonus: Foto Profil</span></li>
+            </ul>
+        </div>
+
+        <div class="p-card" onclick="selectPackage(3, 499000, 'Paket Siap Jualan')">
+            <div class="checkbox-overlay" id="check-3"></div>
+            <div class="p-title">🚀 Siap Jualan</div>
+            <div class="p-price">Rp 499.000</div>
+            <ul class="features">
+                <li><span class="check-icon">✓</span> 2 Alternatif Logo + <strong>File Master</strong></li>
+                <li><span class="check-icon">✓</span> Desain Stiker Kemasan</li>
+                <li><span class="check-icon">✓</span> Desain Thank You Card</li>
+                <li><span class="check-icon">✓</span> <span class="highlight-text">Akses Canva Premium (1 Bln)</span></li>
+            </ul>
+        </div>
+
+        <div class="p-card" onclick="selectPackage(4, 999000, 'Paket Juragan')">
+            <div class="checkbox-overlay" id="check-4"></div>
+            <div class="p-title">👑 Juragan</div>
+            <div class="p-price">Rp 999.000</div>
+            <ul class="features">
+                <li><span class="check-icon">✓</span> Paket "Siap Jualan"</li>
+                <li><span class="check-icon">✓</span> <strong>2x Desain Banner/Header</strong></li>
+                <li><span class="check-icon">✓</span> Desain Daftar Menu / Katalog</li>
+                <li><span class="check-icon">✓</span> <span class="highlight-text">Bonus: Setup Google Maps</span></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="alacarte-container">
+        <div class="section-title">Langkah 2: Tambah Item Satuan (Opsional)</div>
+        
+        <div class="info-box">
+            <span style="font-size: 20px;">💡</span>
+            <div>
+                <strong>Info File Master:</strong> Jika Anda memilih <em>Paket Logo Saja</em> atau <em>Mulai Dulu</em>, File Master (PDF Vector) dijual terpisah di bawah ini. Untuk paket lainnya, File Master sudah <strong>GRATIS</strong>.
+            </div>
+        </div>
+
+        <div class="menu-grid" id="menuGrid"></div>
+    </div>
+
+    <div class="checkout-bar">
+        <div class="checkout-content">
+            
+            <div class="process-info">
+                <span>ℹ️</span>
+                <div>
+                    <strong>Langkah Selanjutnya:</strong> Setelah mengisi nama dan klik Order, Anda akan diarahkan ke WhatsApp. Di sana kami akan memberikan <strong>Formulir Brief</strong> (Panduan Desain) agar hasil sesuai keinginan.
+                </div>
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="clientName" class="input-name" placeholder="Ketik Nama Lengkap Anda..." autocomplete="off">
+                <div id="errorMsg" class="error-msg">⚠️ Nama minimal 3 karakter ya, Kak.</div>
+            </div>
+
+            <div class="total-row">
+                <span>Total Bayar:</span>
+                <span class="grand-total" id="grandTotal">Rp 0</span>
+            </div>
+
+            <button onclick="processOrder()" class="btn-checkout">
+                Order via WhatsApp ➜
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA ---
+        let selectedPackageData = null; 
+        let alacarteCart = {}; 
+
+        const alacarteItems = [
+            { id: 101, name: "Desain Banner / Header (Bebas Ukuran)", price: 100000, desc: "Bisa untuk Spanduk Toko, X-Banner, atau Header Sosmed" },
+            { id: 103, name: "Desain Stiker/Label", price: 50000, desc: "" },
+            { id: 104, name: "Desain Daftar Menu", price: 75000, desc: "" },
+            { id: 105, name: "File Master (Mentahan)", price: 50000, desc: "Format PDF Vector (Bisa diedit di Corel/Ilustrator)" } 
+        ];
+
+        // --- FUNGSI PAKET ---
+        function selectPackage(id, price, name) {
+            const cards = document.querySelectorAll('.p-card');
+            
+            if (selectedPackageData && selectedPackageData.id === id) {
+                selectedPackageData = null;
+                cards.forEach(c => c.classList.remove('selected'));
+            } else {
+                selectedPackageData = { id, price, name };
+                cards.forEach(c => c.classList.remove('selected'));
+                cards[id-1].classList.add('selected');
+            }
+            calculateGrandTotal();
+        }
+
+        // --- FUNGSI RENDER ALA CARTE ---
+        const menuGrid = document.getElementById('menuGrid');
+        
+        function renderMenu() {
+            menuGrid.innerHTML = '';
+            alacarteItems.forEach(item => {
+                const qty = alacarteCart[item.id] || 0;
+                
+                const div = document.createElement('div');
+                div.className = 'menu-item';
+                div.innerHTML = `
+                    <div class="item-info">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-price">Rp ${item.price.toLocaleString('id-ID')}</div>
+                        ${item.desc ? `<div class="item-desc">${item.desc}</div>` : ''}
+                    </div>
+                    <div class="item-controls">
+                        <button class="btn-qty" onclick="updateQty(${item.id}, -1)">-</button>
+                        <input type="number" class="qty-input" value="${qty}" readonly>
+                        <button class="btn-qty" onclick="updateQty(${item.id}, 1)">+</button>
+                    </div>
+                `;
+                menuGrid.appendChild(div);
+            });
+        }
+
+        function updateQty(id, change) {
+            if (!alacarteCart[id]) alacarteCart[id] = 0;
+            alacarteCart[id] += change;
+            if (alacarteCart[id] < 0) alacarteCart[id] = 0;
+            renderMenu();
+            calculateGrandTotal();
+        }
+
+        // --- HITUNG TOTAL ---
+        function calculateGrandTotal() {
+            let total = 0;
+            if (selectedPackageData) total += selectedPackageData.price;
+            alacarteItems.forEach(item => {
+                const qty = alacarteCart[item.id] || 0;
+                total += qty * item.price;
+            });
+            document.getElementById('grandTotal').innerText = "Rp " + total.toLocaleString('id-ID');
+        }
+
+        // --- PROSES ORDER WA ---
+        function processOrder() {
+            const nameInput = document.getElementById('clientName');
+            const errorMsg = document.getElementById('errorMsg');
+            const name = nameInput.value.trim();
+
+            if (name.length < 3) {
+                errorMsg.style.display = 'block';
+                nameInput.style.borderColor = '#ef4444';
+                nameInput.focus();
+                return;
+            } else {
+                errorMsg.style.display = 'none';
+                nameInput.style.borderColor = 'rgba(255,255,255,0.1)';
+            }
+
+            let hasAlaCarte = false;
+            alacarteItems.forEach(item => { if((alacarteCart[item.id]||0) > 0) hasAlaCarte = true; });
+
+            if (!selectedPackageData && !hasAlaCarte) {
+                alert("Mohon pilih minimal satu Paket atau satu item Ala Carte ya Kak.");
+                return;
+            }
+
+            let message = `Halo Admin AW Design Studio,%0A`;
+            message += `Perkenalkan saya *${name}*.%0A`;
+            message += `Saya ingin memesan:%0A%0A`;
+
+            if (selectedPackageData) {
+                message += `📦 *${selectedPackageData.name}* @ Rp ${selectedPackageData.price.toLocaleString('id-ID')}%0A`;
+            }
+
+            if (hasAlaCarte) {
+                if (selectedPackageData) message += `%0A`;
+                message += `➕ *Tambahan (Ala Carte):*%0A`;
+                alacarteItems.forEach(item => {
+                    const qty = alacarteCart[item.id] || 0;
+                    if (qty > 0) {
+                        const subtotal = qty * item.price;
+                        message += `- ${item.name} (${qty}x) : Rp ${subtotal.toLocaleString('id-ID')}%0A`;
+                    }
+                });
+            }
+
+            const finalTotal = document.getElementById('grandTotal').innerText;
+            message += `%0A💰 *GRAND TOTAL: ${finalTotal}*%0A%0A`;
+            message += `Saya sudah siap mengisi Formulir Brief. Mohon info pembayarannya. Terima kasih!`;
+
+            const phone = "6285133748005";
+            window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+        }
+
+        renderMenu();
+    </script>
+
+</body>
+</html>

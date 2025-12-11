@@ -18,6 +18,7 @@
             --text-muted: #a1a1aa;
             --border: rgba(255, 255, 255, 0.1);
             --neon-accent: #6366f1; 
+            --error: #ef4444;
         }
 
         * { box-sizing: border-box; font-family: 'Outfit', sans-serif; margin: 0; padding: 0; }
@@ -33,7 +34,7 @@
             align-items: center;
             color: var(--text-main);
             padding: 20px;
-            position: relative; /* Penting untuk posisi absolute tombol */
+            position: relative;
         }
 
         /* --- 2. NAVIGASI POJOK KIRI ATAS --- */
@@ -54,7 +55,7 @@
             padding: 10px 20px;
             border-radius: 50px;
             border: 1px solid var(--border);
-            background: rgba(24, 24, 27, 0.6); /* Semi transparan */
+            background: rgba(24, 24, 27, 0.6);
             backdrop-filter: blur(10px);
             font-size: 14px;
         }
@@ -81,7 +82,7 @@
             text-align: center;
             position: relative;
             overflow: hidden;
-            margin-top: 20px; /* Jaga jarak jika di mobile */
+            margin-top: 20px;
         }
 
         /* Hiasan Atas */
@@ -126,7 +127,7 @@
             margin-bottom: 30px;
         }
 
-        /* --- 4. INFORMASI BRIEF --- */
+        /* --- 4. INFORMASI BRIEF & INPUT --- */
         .brief-info {
             background: var(--surface-light);
             border-radius: 16px;
@@ -140,16 +141,63 @@
             font-size: 16px;
             font-weight: 600;
             color: #fff;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .brief-text {
-            font-size: 13px;
+        .brief-steps {
+            font-size: 14px;
             color: var(--text-muted);
-            line-height: 1.5;
+            line-height: 1.6;
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .brief-steps li {
+            margin-bottom: 6px;
+        }
+
+        /* Styling Input */
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-label {
+            display: block;
+            color: var(--text-main);
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            margin-left: 4px;
+        }
+
+        .custom-input {
+            width: 100%;
+            padding: 16px;
+            border-radius: 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .custom-input:focus {
+            border-color: var(--neon-accent);
+            background: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 13px;
+            margin-top: 6px;
+            display: none; /* Hidden by default */
+            margin-left: 4px;
         }
 
         /* --- 5. TOMBOL AKSI --- */
@@ -181,13 +229,13 @@
         /* Media Query Mobile */
         @media (max-width: 600px) {
             body {
-                flex-direction: column; /* Ubah susunan jadi vertikal */
+                flex-direction: column;
                 justify-content: flex-start;
                 padding-top: 20px;
             }
             
             .nav-bar {
-                position: relative; /* Tidak absolute lagi di HP */
+                position: relative;
                 top: auto;
                 left: auto;
                 width: 100%;
@@ -217,17 +265,60 @@
 
         <div class="brief-info">
             <div class="brief-title">
-                <span>📝</span> Mengapa harus isi formulir?
+                <span>📝</span> Cara Pemesanan Logo:
             </div>
-            <p class="brief-text">
-                Agar hasil logo sesuai ekspektasi, kami butuh detail tentang nama bisnis, warna favorit, dan referensi gaya Anda.
-            </p>
+            <ol class="brief-steps">
+                <li>Masukkan <strong>Nama Lengkap</strong> Anda di kolom bawah.</li>
+                <li>Klik tombol <strong>"Lanjut ke WhatsApp"</strong>.</li>
+                <li>Anda akan diarahkan ke WA admin untuk konfirmasi.</li>
+                <li>Admin akan mengirimkan <strong>Link Form Brief</strong> detail logo di WA.</li>
+            </ol>
         </div>
 
-        <a href="https://forms.gle/1c3Gd9CJu2FLVZSf7" class="btn-action" target="_blank">
-            Isi Form Brief Logo Sekarang ➜
-        </a>
+        <div class="input-group">
+            <label for="clientName" class="input-label">Siapa nama Anda?</label>
+            <input type="text" id="clientName" class="custom-input" placeholder="Ketik nama Anda di sini..." autocomplete="off">
+            <div id="errorMsg" class="error-message">⚠️ Mohon isi nama minimal 3 karakter.</div>
+        </div>
+
+        <button onclick="pesanViaWA()" class="btn-action">
+            Lanjut ke WhatsApp ➜
+        </button>
     </div>
+
+    <script>
+        function pesanViaWA() {
+            // 1. Ambil nilai dari input
+            const nameInput = document.getElementById('clientName');
+            const errorMsg = document.getElementById('errorMsg');
+            const name = nameInput.value.trim();
+
+            // 2. Validasi: Minimal 3 karakter
+            if (name.length < 3) {
+                // Tampilkan pesan error
+                errorMsg.style.display = 'block';
+                // Beri efek border merah sementara
+                nameInput.style.borderColor = '#ef4444';
+                // Fokuskan kembali ke input
+                nameInput.focus();
+                return; // Stop proses
+            }
+
+            // Jika valid, sembunyikan error
+            errorMsg.style.display = 'none';
+            nameInput.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+
+            // 3. Susun Pesan WhatsApp
+            const phone = "6285133748005"; // Format internasional tanpa '+'
+            
+            // Pesan yang sudah di-encode URL agar rapi (enter = %0A)
+            const text = `Halo AW Design Studio, perkenalkan nama saya *${name}*.%0A%0ASaya tertarik memesan Jasa Desain Logo. Mohon dikirimkan link form brief untuk mengisi data order logonya. Terima kasih!`;
+
+            // 4. Buka Link WhatsApp
+            const waLink = `https://wa.me/${phone}?text=${text}`;
+            window.open(waLink, '_blank');
+        }
+    </script>
 
 </body>
 </html>

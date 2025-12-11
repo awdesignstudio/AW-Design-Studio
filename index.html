@@ -18,6 +18,7 @@
             --text-muted: #a1a1aa;
             --border: rgba(255, 255, 255, 0.1);
             --neon-accent: #a855f7;
+            --danger: #ef4444; /* Warna Merah untuk Error */
         }
 
         * { box-sizing: border-box; font-family: 'Outfit', sans-serif; margin: 0; padding: 0; }
@@ -41,7 +42,7 @@
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             width: 100%;
-            max-width: 1100px; /* Lebar agar muat 3 kolom */
+            max-width: 1100px;
             border-radius: 32px;
             border: 1px solid var(--border);
             box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.7);
@@ -85,7 +86,7 @@
         /* --- 3. PILIHAN LAYANAN (GRID 3 KOLOM) --- */
         .options-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 Kolom Sejajar */
+            grid-template-columns: repeat(3, 1fr);
             gap: 25px;
             margin-top: 40px;
         }
@@ -106,7 +107,6 @@
             height: 100%;
         }
 
-        /* Icon Emoji Besar */
         .option-icon {
             font-size: 42px;
             margin-bottom: 20px;
@@ -127,15 +127,13 @@
             line-height: 1.5;
         }
 
-        /* Highlight Text */
         .price-tag {
-            margin-top: auto; /* Mendorong harga ke bawah kartu */
+            margin-top: auto;
             padding-top: 15px;
             font-weight: 600;
             font-size: 14px;
         }
 
-        /* Hover Effects */
         .option-card:hover {
             border-color: var(--neon-accent);
             transform: translateY(-8px);
@@ -150,44 +148,83 @@
             color: #d8b4fe;
         }
 
-        /* --- 4. FOOTER / CONTACT --- */
+        /* --- 4. FOOTER / CONTACT & INPUT FORM --- */
         .footer-info {
             margin-top: 50px;
             border-top: 1px solid var(--border);
-            padding-top: 24px;
+            padding-top: 30px;
             font-size: 14px;
             color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
         }
 
-        .wa-link {
+        .input-group {
+            position: relative;
+            width: 100%;
+            max-width: 350px;
+            text-align: left;
+        }
+
+        .input-name {
+            width: 100%;
+            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 50px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .input-name:focus {
+            border-color: var(--neon-accent);
+            background: rgba(0,0,0,0.5);
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.2);
+        }
+
+        .error-msg {
+            font-size: 12px;
+            color: var(--danger);
+            margin-top: 5px;
+            text-align: center;
+            display: none; /* Hidden by default */
+            font-weight: 600;
+        }
+
+        /* Tombol WA diganti jadi button agar bisa trigger function */
+        .btn-wa {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
-            color: #4ade80; /* WA Green */
-            text-decoration: none;
+            color: #4ade80;
             font-weight: 600;
             background: rgba(74, 222, 128, 0.1);
-            padding: 10px 24px;
+            padding: 12px 30px;
             border-radius: 50px;
             transition: all 0.2s;
-            margin-top: 10px;
             border: 1px solid rgba(74, 222, 128, 0.2);
+            cursor: pointer;
+            font-size: 14px;
+            width: 100%;
+            max-width: 350px;
         }
-        .wa-link:hover { 
+
+        .btn-wa:hover { 
             background: rgba(74, 222, 128, 0.2);
             color: #22c55e;
             transform: translateY(-2px);
         }
 
-        /* Media Query Tablet & Mobile */
+        /* Media Query */
         @media (max-width: 900px) {
-            .options-grid { 
-                grid-template-columns: 1fr; /* Menjadi 1 kolom (tumpuk ke bawah) di HP/Tablet */
-                gap: 20px; 
-            }
-            .landing-card { 
-                padding: 30px 20px; 
-            }
+            .options-grid { grid-template-columns: 1fr; gap: 20px; }
+            .landing-card { padding: 30px 20px; }
             h1 { font-size: 32px; }
         }
     </style>
@@ -208,40 +245,70 @@
             <a href="DISCLAIMER.html" class="option-card">
                 <div class="option-icon">🎨</div>
                 <h2 class="option-title">Jasa Edit Foto</h2>
-                <p class="option-desc">
-                    Retouching, manipulasi, restorasi foto jadul, hingga sketsa wajah digital.
-                </p>
+                <p class="option-desc">Retouching, manipulasi, restorasi foto jadul, hingga sketsa wajah digital.</p>
                 <div class="price-tag" style="color: #a855f7;">Mulai Rp 5.000/foto</div>
             </a>
 
             <a href="SMM_PACKAGES.HTML" class="option-card">
                 <div class="option-icon">🚀</div>
                 <h2 class="option-title">Social Media</h2>
-                <p class="option-desc">
-                    Kelola Instagram, konten Feed/Reels rutin, dan admin untuk pertumbuhan bisnis.
-                </p>
+                <p class="option-desc">Kelola Instagram, konten Feed/Reels rutin, dan admin untuk pertumbuhan bisnis.</p>
                 <div class="price-tag" style="color: #ec4899;">Paket Promo Tersedia</div>
             </a>
 
             <a href="LOGO SERVICE.HTML" class="option-card">
                 <div class="option-icon">✒️</div>
                 <h2 class="option-title">Desain Logo</h2>
-                <p class="option-desc">
-                    Pembuatan logo UMKM profesional, unik, dan berkarakter untuk branding usaha.
-                </p>
+                <p class="option-desc">Pembuatan logo UMKM profesional, unik, dan berkarakter untuk branding usaha.</p>
                 <div class="price-tag" style="color: #6366f1;">Mulai Rp 150rb</div>
             </a>
 
         </div>
 
         <div class="footer-info">
-            Butuh konsultasi sebelum memilih? <br>
-            <a href="https://wa.me/6285133748005?text=Halo%20AW%20Design%20Studio,%20saya%20mau%20konsultasi%20tentang%20jasa..." class="wa-link" target="_blank">
+            <p>Butuh konsultasi sebelum memilih? Silakan isi nama Anda:</p>
+            
+            <div class="input-group">
+                <input type="text" id="clientName" class="input-name" placeholder="Ketik Nama Anda..." autocomplete="off">
+                <div id="nameError" class="error-msg">⚠ Nama wajib diisi (min. 3 huruf)</div>
+            </div>
+
+            <button onclick="startConsultation()" class="btn-wa">
                 💬 Chat WhatsApp Admin
-            </a>
+            </button>
         </div>
     </div>
 
-</body>
+    <script>
+        function startConsultation() {
+            // Ambil elemen
+            const nameInput = document.getElementById('clientName');
+            const errorMsg = document.getElementById('nameError');
+            const name = nameInput.value.trim(); // Hapus spasi di awal/akhir
 
+            // Reset Error
+            errorMsg.style.display = 'none';
+            nameInput.style.borderColor = 'var(--border)';
+
+            // Validasi
+            if (name.length < 3) {
+                // Tampilkan Error
+                errorMsg.style.display = 'block';
+                nameInput.style.borderColor = 'var(--danger)';
+                // Animasi getar sedikit (opsional, visual feedback)
+                nameInput.classList.add('shake');
+                return;
+            }
+
+            // Jika Valid, Susun Link WA
+            // Format: Halo AW Design Studio, perkenalkan saya [Nama]. Saya mau konsultasi tentang jasa...
+            const message = `Halo AW Design Studio, perkenalkan saya *${name}*.%0A%0ASaya mau konsultasi tentang jasa Anda. Mohon info lebih lanjut.`;
+            
+            // Buka WhatsApp di tab baru
+            const waLink = `https://wa.me/6285133748005?text=${message}`;
+            window.open(waLink, '_blank');
+        }
+    </script>
+
+</body>
 </html>

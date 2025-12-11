@@ -18,7 +18,7 @@
             --text-muted: #a1a1aa;
             --border: rgba(255, 255, 255, 0.1);
             --neon-accent: #a855f7;
-            --danger: #ef4444; /* Warna Merah untuk Error */
+            --danger: #ef4444;
         }
 
         * { box-sizing: border-box; font-family: 'Outfit', sans-serif; margin: 0; padding: 0; }
@@ -51,9 +51,7 @@
         }
 
         /* Header Section */
-        .brand-header {
-            margin-bottom: 40px;
-        }
+        .brand-header { margin-bottom: 40px; }
 
         h1 {
             font-size: 42px;
@@ -140,13 +138,8 @@
             box-shadow: var(--glow);
         }
 
-        .option-card:hover .option-icon {
-            transform: scale(1.1) rotate(-5deg);
-        }
-
-        .option-card:hover .option-title {
-            color: #d8b4fe;
-        }
+        .option-card:hover .option-icon { transform: scale(1.1) rotate(-5deg); }
+        .option-card:hover .option-title { color: #d8b4fe; }
 
         /* --- 4. FOOTER / CONTACT & INPUT FORM --- */
         .footer-info {
@@ -192,11 +185,10 @@
             color: var(--danger);
             margin-top: 5px;
             text-align: center;
-            display: none; /* Hidden by default */
+            display: none;
             font-weight: 600;
         }
 
-        /* Tombol WA diganti jadi button agar bisa trigger function */
         .btn-wa {
             display: inline-flex;
             align-items: center;
@@ -221,7 +213,6 @@
             transform: translateY(-2px);
         }
 
-        /* Media Query */
         @media (max-width: 900px) {
             .options-grid { grid-template-columns: 1fr; gap: 20px; }
             .landing-card { padding: 30px 20px; }
@@ -256,11 +247,11 @@
                 <div class="price-tag" style="color: #ec4899;">Paket Promo Tersedia</div>
             </a>
 
-            <a href="LOGO SERVICE.HTML" class="option-card">
-                <div class="option-icon">✒️</div>
-                <h2 class="option-title">Desain Logo</h2>
-                <p class="option-desc">Pembuatan logo UMKM profesional, unik, dan berkarakter untuk branding usaha.</p>
-                <div class="price-tag" style="color: #6366f1;">Mulai Rp 150rb</div>
+            <a href="branding_form.html" class="option-card">
+                <div class="option-icon">✨</div>
+                <h2 class="option-title">Paket Branding & Logo</h2>
+                <p class="option-desc">Solusi "Terima Beres" UMKM. Logo, Banner, Stiker, hingga File Master. Bisa satuan.</p>
+                <div class="price-tag" style="color: #6366f1;">Mulai Rp 200rb</div>
             </a>
 
         </div>
@@ -281,30 +272,20 @@
 
     <script>
         function startConsultation() {
-            // Ambil elemen
             const nameInput = document.getElementById('clientName');
             const errorMsg = document.getElementById('nameError');
-            const name = nameInput.value.trim(); // Hapus spasi di awal/akhir
+            const name = nameInput.value.trim();
 
-            // Reset Error
             errorMsg.style.display = 'none';
             nameInput.style.borderColor = 'var(--border)';
 
-            // Validasi
             if (name.length < 3) {
-                // Tampilkan Error
                 errorMsg.style.display = 'block';
                 nameInput.style.borderColor = 'var(--danger)';
-                // Animasi getar sedikit (opsional, visual feedback)
-                nameInput.classList.add('shake');
                 return;
             }
 
-            // Jika Valid, Susun Link WA
-            // Format: Halo AW Design Studio, perkenalkan saya [Nama]. Saya mau konsultasi tentang jasa...
             const message = `Halo AW Design Studio, perkenalkan saya *${name}*.%0A%0ASaya mau konsultasi tentang jasa Anda. Mohon info lebih lanjut.`;
-            
-            // Buka WhatsApp di tab baru
             const waLink = `https://wa.me/6285133748005?text=${message}`;
             window.open(waLink, '_blank');
         }

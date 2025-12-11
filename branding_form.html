@@ -77,7 +77,6 @@
 
         .p-card:hover { border-color: rgba(255,255,255,0.3); }
 
-        /* Checkbox Lingkaran */
         .checkbox-overlay {
             position: absolute; top: 20px; right: 20px; width: 24px; height: 24px;
             border-radius: 50%; border: 2px solid var(--text-muted);
@@ -89,18 +88,14 @@
         .p-card.selected .checkbox-overlay::after { content: '✓'; color: white; font-size: 14px; font-weight: bold; }
 
         .p-title { font-size: 18px; font-weight: 700; margin-bottom: 5px; color: white; }
-        .p-price { font-size: 26px; font-weight: 800; margin-bottom: 15px; color: var(--neon-accent); }
+        .p-price { font-size: 26px; font-weight: 800; margin-bottom: 15px; color: var(--neon-accent); transition: color 0.3s; }
         .features { list-style: none; margin-bottom: 0; text-align: left; flex-grow: 1; }
         .features li { font-size: 13px; color: #e4e4e7; margin-bottom: 10px; display: flex; align-items: start; gap: 10px; line-height: 1.4; }
         
-        /* Icons */
         .check-icon { color: var(--success); flex-shrink: 0; }
-        .cross-icon { color: var(--error); flex-shrink: 0; font-weight: bold; } /* Icon Silang Merah */
-        
         .highlight-text { color: #f472b6; font-weight: 600; }
         .muted-text { color: #52525b; font-size: 12px; font-style: italic; }
         
-        /* Badge Hemat */
         .save-badge {
             background: var(--primary-gradient); 
             color: white; 
@@ -114,21 +109,45 @@
             letter-spacing: 0.5px;
         }
 
-        /* --- BAGIAN 2: ALA CARTE --- */
-        .alacarte-container { width: 100%; max-width: 800px; margin-bottom: 50px; }
-        
-        .info-box {
-            background: rgba(245, 158, 11, 0.1);
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            color: #fcd34d;
-            padding: 15px;
+        /* --- ADDON BOX (FILE MASTER CHECKBOX) --- */
+        .addon-box {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px dashed var(--text-muted);
             border-radius: 12px;
-            font-size: 13px;
-            line-height: 1.5;
-            margin-bottom: 20px;
-            display: flex; gap: 10px; align-items: center;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .addon-box:hover { border-color: var(--neon-accent); background: rgba(168, 85, 247, 0.1); }
+        
+        /* State Addon Aktif */
+        .p-card.selected .addon-box.active {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid #10b981;
         }
 
+        .addon-checkbox {
+            width: 18px; height: 18px;
+            accent-color: #10b981;
+            cursor: pointer;
+        }
+
+        .addon-text {
+            font-size: 13px;
+            color: #e4e4e7;
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1;
+            text-align: left;
+        }
+
+        /* --- BAGIAN 2: ALA CARTE --- */
+        .alacarte-container { width: 100%; max-width: 800px; margin-bottom: 50px; }
         .menu-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
 
         .menu-item {
@@ -215,35 +234,41 @@
     <div class="section-title">Langkah 1: Pilih Paket Utama (Opsional)</div>
     <div class="pricing-container">
         
-        <div class="p-card" onclick="selectPackage(1, 200000, 'Paket Logo Saja')">
+        <div class="p-card" id="card-1" onclick="selectPackage(1, 200000, 'Paket Logo Saja')">
             <div class="checkbox-overlay" id="check-1"></div>
             <div class="p-title">🎨 Logo Saja</div>
-            <div class="p-price">Rp 200.000</div>
+            <div class="p-price" id="display-price-1">Rp 200.000</div>
             <ul class="features">
                 <li><span class="check-icon">✓</span> 1 Konsep Logo Simple</li>
                 <li><span class="check-icon">✓</span> File JPG & PNG (Transparan)</li>
                 <li><span class="check-icon">✓</span> Revisi Minor 1x</li>
-                <li><span class="cross-icon">✕</span> <span class="muted-text">Tanpa File Master (Tersedia di tambahan item satuan)</span></li>
             </ul>
+            
+            <div class="addon-box" id="addon-box-1" onclick="toggleAddon(event, 1)">
+                <input type="checkbox" class="addon-checkbox" id="addon-input-1">
+                <span class="addon-text">Tambah File Master (+50rb)</span>
+            </div>
         </div>
 
-        <div class="p-card best-value" onclick="selectPackage(2, 249000, 'Paket Mulai Dulu')">
+        <div class="p-card best-value" id="card-2" onclick="selectPackage(2, 249000, 'Paket Mulai Dulu')">
             <div class="checkbox-overlay" id="check-2"></div>
-            
             <div class="save-badge">LEBIH HEMAT 🔥</div>
-            
             <div class="p-title">📦 Mulai Dulu</div>
-            <div class="p-price">Rp 249.000</div>
+            <div class="p-price" id="display-price-2">Rp 249.000</div>
             <ul class="features">
                 <li><span class="check-icon">✓</span> 1 Konsep Logo Simple</li>
                 <li><span class="check-icon">✓</span> File JPG & PNG (Transparan)</li>
                 <li><span class="check-icon">✓</span> Desain Stiker Kemasan</li>
                 <li><span class="check-icon">✓</span> <span class="highlight-text">Bonus: Foto Profil</span></li>
-                <li><span class="cross-icon">✕</span> <span class="muted-text">Tanpa File Master (Tersedia di tambahan item satuan)</span></li>
             </ul>
+
+            <div class="addon-box" id="addon-box-2" onclick="toggleAddon(event, 2)">
+                <input type="checkbox" class="addon-checkbox" id="addon-input-2">
+                <span class="addon-text">Tambah File Master (+50rb)</span>
+            </div>
         </div>
 
-        <div class="p-card" onclick="selectPackage(3, 499000, 'Paket Siap Jualan')">
+        <div class="p-card" id="card-3" onclick="selectPackage(3, 499000, 'Paket Siap Jualan')">
             <div class="checkbox-overlay" id="check-3"></div>
             <div class="p-title">🚀 Siap Jualan</div>
             <div class="p-price">Rp 499.000</div>
@@ -255,7 +280,7 @@
             </ul>
         </div>
 
-        <div class="p-card" onclick="selectPackage(4, 999000, 'Paket Juragan')">
+        <div class="p-card" id="card-4" onclick="selectPackage(4, 999000, 'Paket Juragan')">
             <div class="checkbox-overlay" id="check-4"></div>
             <div class="p-title">👑 Juragan</div>
             <div class="p-price">Rp 999.000</div>
@@ -271,14 +296,6 @@
 
     <div class="alacarte-container">
         <div class="section-title">Langkah 2: Tambah Item Satuan (Opsional)</div>
-        
-        <div class="info-box">
-            <span style="font-size: 20px;">💡</span>
-            <div>
-                <strong>Info File Master:</strong> Jika Anda memilih <em>Paket Logo Saja</em> atau <em>Mulai Dulu</em>, File Master (PDF Vector) dijual terpisah di bawah ini. Untuk paket lainnya, File Master sudah <strong>GRATIS</strong>.
-            </div>
-        </div>
-
         <div class="menu-grid" id="menuGrid"></div>
     </div>
 
@@ -312,27 +329,111 @@
         // --- DATA ---
         let selectedPackageData = null; 
         let alacarteCart = {}; 
+        
+        // Harga Dasar untuk Paket 1 dan 2
+        const basePrices = { 1: 200000, 2: 249000 };
 
         const alacarteItems = [
-            { id: 101, name: "Desain Banner / Header (Bebas Ukuran)", price: 100000, desc: "Bisa untuk Spanduk Toko, X-Banner, atau Header Sosmed" },
-            { id: 103, name: "Desain Stiker/Label", price: 50000, desc: "" },
-            { id: 104, name: "Desain Daftar Menu", price: 75000, desc: "" },
-            { id: 105, name: "File Master (Mentahan)", price: 50000, desc: "Format PDF Vector (Bisa diedit di Corel/Ilustrator)" } 
+            { id: 101, name: "Desain Banner / Spanduk", price: 100000, desc: "Ukuran Bebas (Siap Cetak)" },
+            { id: 102, name: "Desain X-Banner (Standing)", price: 100000, desc: "Ukuran 60x160cm" },
+            { id: 103, name: "Desain Stiker/Label Kemasan", price: 50000, desc: "Bulat / Kotak" },
+            { id: 104, name: "Desain Daftar Menu", price: 75000, desc: "1 Halaman A4" },
+            { id: 105, name: "Desain Kartu Nama", price: 50000, desc: "Depan Belakang" },
+            { id: 106, name: "Desain Thank You Card", price: 35000, desc: "Kartu ucapan dalam paket" },
+            { id: 107, name: "Cover Sorotan IG (Isi 5)", price: 50000, desc: "Ikon Testimoni, Menu, dll" },
+            { id: 108, name: "Label Pengiriman", price: 35000, desc: "Desain label alamat paket" }
         ];
 
-        // --- FUNGSI PAKET ---
-        function selectPackage(id, price, name) {
-            const cards = document.querySelectorAll('.p-card');
-            
-            if (selectedPackageData && selectedPackageData.id === id) {
-                selectedPackageData = null;
-                cards.forEach(c => c.classList.remove('selected'));
-            } else {
-                selectedPackageData = { id, price, name };
-                cards.forEach(c => c.classList.remove('selected'));
-                cards[id-1].classList.add('selected');
+        // --- HELPER: UPDATE TAMPILAN HARGA KARTU ---
+        function updateCardPriceDisplay(id, addOnActive) {
+            const displayEl = document.getElementById(`display-price-${id}`);
+            if (displayEl) {
+                let currentPrice = basePrices[id];
+                if (addOnActive) currentPrice += 50000;
+                displayEl.innerText = "Rp " + currentPrice.toLocaleString('id-ID');
+                
+                // Ubah warna agar terlihat ada perubahan
+                displayEl.style.color = addOnActive ? '#10b981' : 'var(--neon-accent)';
             }
+        }
+
+        // --- FUNGSI PILIH PAKET UTAMA ---
+        function selectPackage(id, price, name) {
+            // 1. Reset tampilan kartu
+            document.querySelectorAll('.p-card').forEach(c => c.classList.remove('selected'));
+
+            // 2. RESET Addon & Harga di paket LAIN
+            const packageWithAddons = [1, 2];
+            packageWithAddons.forEach(otherId => {
+                if (otherId !== id) {
+                    const otherInput = document.getElementById(`addon-input-${otherId}`);
+                    const otherBox = document.getElementById(`addon-box-${otherId}`);
+                    if (otherInput) otherInput.checked = false; 
+                    if (otherBox) otherBox.classList.remove('active'); 
+                    // RESET HARGA KEMBALI KE NORMAL
+                    updateCardPriceDisplay(otherId, false);
+                }
+            });
+            
+            // 3. Cek status Addon di paket yang SEDANG dipilih
+            let isAddonChecked = false;
+            const addonInput = document.getElementById(`addon-input-${id}`);
+            if (addonInput && addonInput.checked) {
+                isAddonChecked = true;
+            }
+
+            // 4. Logika Select/Deselect
+            // Jika klik paket yang SAMA dan TIDAK klik addon, maka deselect
+            if (selectedPackageData && selectedPackageData.id === id && !window.isTogglingAddon) {
+                selectedPackageData = null; // Deselect
+                
+                // Reset addon di paket ini juga jika deselect
+                if(addonInput) {
+                    addonInput.checked = false;
+                    document.getElementById(`addon-box-${id}`).classList.remove('active');
+                    updateCardPriceDisplay(id, false); // Reset harga
+                }
+            } else {
+                // Select Paket Baru
+                selectedPackageData = { id, price, name, hasAddon: isAddonChecked };
+                const card = document.getElementById(`card-${id}`);
+                card.classList.add('selected');
+                
+                const addonBox = document.getElementById(`addon-box-${id}`);
+                if (addonBox && isAddonChecked) addonBox.classList.add('active');
+            }
+            
+            window.isTogglingAddon = false;
             calculateGrandTotal();
+        }
+
+        // --- FUNGSI TOGGLE ADDON (CHECKBOX) ---
+        function toggleAddon(event, id) {
+            event.stopPropagation();
+
+            const checkbox = document.getElementById(`addon-input-${id}`);
+            const addonBox = document.getElementById(`addon-box-${id}`);
+            
+            if (event.target !== checkbox) {
+                checkbox.checked = !checkbox.checked;
+            }
+
+            if (checkbox.checked) {
+                addonBox.classList.add('active');
+            } else {
+                addonBox.classList.remove('active');
+            }
+
+            // UPDATE HARGA KARTU SECARA VISUAL
+            updateCardPriceDisplay(id, checkbox.checked);
+
+            window.isTogglingAddon = true;
+
+            let price, name;
+            if(id === 1) { price = basePrices[1]; name = 'Paket Logo Saja'; }
+            if(id === 2) { price = basePrices[2]; name = 'Paket Mulai Dulu'; }
+
+            selectPackage(id, price, name);
         }
 
         // --- FUNGSI RENDER ALA CARTE ---
@@ -372,7 +473,12 @@
         // --- HITUNG TOTAL ---
         function calculateGrandTotal() {
             let total = 0;
-            if (selectedPackageData) total += selectedPackageData.price;
+            if (selectedPackageData) {
+                total += selectedPackageData.price;
+                if (selectedPackageData.hasAddon) {
+                    total += 50000;
+                }
+            }
             alacarteItems.forEach(item => {
                 const qty = alacarteCart[item.id] || 0;
                 total += qty * item.price;
@@ -409,7 +515,15 @@
             message += `Saya ingin memesan:%0A%0A`;
 
             if (selectedPackageData) {
-                message += `📦 *${selectedPackageData.name}* @ Rp ${selectedPackageData.price.toLocaleString('id-ID')}%0A`;
+                let pkgPrice = selectedPackageData.price;
+                let pkgName = selectedPackageData.name;
+                
+                if (selectedPackageData.hasAddon) {
+                    pkgName += " (+ File Master)";
+                    pkgPrice += 50000;
+                }
+
+                message += `📦 *${pkgName}* @ Rp ${pkgPrice.toLocaleString('id-ID')}%0A`;
             }
 
             if (hasAlaCarte) {
@@ -437,4 +551,3 @@
 
 </body>
 </html>
-

@@ -18,6 +18,8 @@
             --text-muted: #a1a1aa;
             --border: rgba(255, 255, 255, 0.1);
             --neon-accent: #a855f7;
+            --price-tag-bg: rgba(16, 185, 129, 0.15); /* Hijau untuk harga */
+            --price-text: #34d399;
         }
 
         * { box-sizing: border-box; font-family: 'Outfit', sans-serif; margin: 0; padding: 0; }
@@ -28,19 +30,15 @@
                 radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
                 radial-gradient(circle at 10% 90%, rgba(236, 72, 153, 0.1) 0%, transparent 40%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             color: var(--text-main);
-            padding: 20px;
-            position: relative; /* Penting untuk tombol back */
+            padding: 80px 20px 40px 20px; /* Padding top ditambah untuk nav bar */
         }
 
-        /* --- 2. NAVIGASI POJOK KIRI ATAS --- */
+        /* --- 2. NAVIGASI --- */
         .nav-bar {
-            position: absolute;
-            top: 30px;
-            left: 30px;
+            position: fixed; /* Fixed agar tetap di atas saat scroll */
+            top: 20px;
+            left: 20px;
             z-index: 100;
         }
 
@@ -54,7 +52,7 @@
             padding: 10px 20px;
             border-radius: 50px;
             border: 1px solid var(--border);
-            background: rgba(24, 24, 27, 0.6);
+            background: rgba(24, 24, 27, 0.8);
             backdrop-filter: blur(10px);
             font-size: 14px;
         }
@@ -64,136 +62,170 @@
             border-color: white;
             transform: translateX(5px);
             background: var(--surface-light);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
         }
 
-        /* --- 3. CONTAINER UTAMA (MENU CARD) --- */
-        .menu-card {
-            background: rgba(24, 24, 27, 0.8);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+        /* --- 3. CONTAINER UTAMA --- */
+        .container {
             width: 100%;
-            max-width: 800px;
-            border-radius: 24px;
-            border: 1px solid var(--border);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
-            padding: 32px;
-            margin-top: 20px; /* Jarak aman di mobile */
+            max-width: 900px;
+            margin: 0 auto;
         }
 
-        /* Header */
-        .card-header {
+        /* Header Halaman */
+        .page-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
         }
 
         h1 {
-            font-size: 32px;
-            font-weight: 700;
+            font-size: 36px;
+            font-weight: 800;
             background: var(--primary-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             letter-spacing: -0.5px;
         }
 
         .subtitle {
             font-size: 16px;
             color: var(--text-muted);
-            font-weight: 300;
         }
 
-        /* --- 4. GRID LAYOUT UNTUK LAYANAN --- */
+        /* --- 4. SECTION GROUPING --- */
+        .service-section {
+            background: rgba(24, 24, 27, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        /* Judul Kategori Harga */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+        }
+
+        .category-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Badge Harga */
+        .price-badge {
+            background: var(--price-tag-bg);
+            color: var(--price-text);
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            text-align: right;
+            border: 1px solid rgba(52, 211, 153, 0.2);
+        }
+        
+        .price-main { font-size: 18px; display: block; font-weight: 800; }
+        .price-promo { font-size: 13px; opacity: 0.9; display: block; margin-top: 2px;}
+
+        /* --- 5. GRID LAYANAN --- */
         .service-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 2 Kolom */
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* Responsif otomatis */
             gap: 20px;
         }
 
         /* Kartu Layanan */
         .service-card {
-            background: var(--surface-dark);
-            border: 1px solid var(--border);
+            background: var(--surface-light);
+            border: 1px solid transparent;
             border-radius: 16px;
             padding: 20px;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 140px;
         }
 
-        /* Efek Neon Hover/Active */
-        .service-card:hover, .service-card.active {
+        .service-card:hover {
             border-color: var(--neon-accent);
-            background: rgba(168, 85, 247, 0.1);
+            background: rgba(168, 85, 247, 0.08);
             transform: translateY(-5px);
             box-shadow: var(--glow);
         }
 
-        .service-card:hover .service-title, .service-card.active .service-title {
-            color: var(--neon-accent);
-        }
-
-        /* Badge Nomor (Floating Neon) */
         .service-number {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--neon-accent);
-            opacity: 0.2;
-            transition: opacity 0.3s;
+            top: 15px;
+            right: 15px;
+            font-size: 32px;
+            font-weight: 800;
+            color: rgba(255,255,255,0.03);
+            transition: 0.3s;
         }
 
         .service-card:hover .service-number {
-            opacity: 0.6;
+            color: rgba(168, 85, 247, 0.15);
         }
 
-        /* Detail Teks */
         .service-title {
             font-size: 18px;
-            font-weight: 600;
+            font-weight: 700;
             margin-bottom: 8px;
             color: var(--text-main);
-            transition: color 0.3s;
+            position: relative;
+            z-index: 1;
         }
 
         .service-description {
             font-size: 13px;
             color: var(--text-muted);
-            line-height: 1.6;
+            line-height: 1.5;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Khusus Section Premium (Design) */
+        .premium-section {
+            border-color: rgba(236, 72, 153, 0.3);
+            background: linear-gradient(180deg, rgba(236, 72, 153, 0.05) 0%, rgba(24, 24, 27, 0.6) 100%);
         }
         
-        .service-card.span-all {
-            grid-column: span 2; 
+        .premium-section .price-badge {
+            background: rgba(236, 72, 153, 0.15);
+            color: #f472b6;
+            border-color: rgba(236, 72, 153, 0.3);
         }
 
-        /* Media Query untuk Mobile */
-        @media (max-width: 600px) {
-            body {
-                flex-direction: column; /* Ubah susunan jadi vertikal */
-                justify-content: flex-start;
-                padding-top: 20px;
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
             }
-
-            .nav-bar {
-                position: relative; /* Tidak absolute lagi di HP */
-                top: auto;
-                left: auto;
+            .price-badge {
                 width: 100%;
-                margin-bottom: 20px;
+                text-align: left;
             }
-
-            .service-grid {
-                grid-template-columns: 1fr; /* Menjadi 1 kolom di layar kecil */
+            .price-main, .price-promo {
+                display: inline-block;
+                margin-right: 5px;
             }
-            .menu-card {
-                padding: 20px;
-            }
-            .service-card.span-all {
-                grid-column: span 1;
-            }
+            .price-promo::before { content: "• "; }
         }
     </style>
 </head>
@@ -203,85 +235,94 @@
         <a href="index.html" class="btn-back">← Kembali ke Menu Utama</a>
     </div>
 
-    <div class="menu-card">
-        <div class="card-header">
+    <div class="container">
+        
+        <div class="page-header">
             <h1>Jasa Edit Foto</h1>
-            <p class="subtitle">Silakan pilih jenis jasa edit yang diinginkan untuk melanjutkan proses.
-Tarif selain Infografis Rp. 5.000/foto, (Tarif Paket Rp. 12.000/3 foto, berlaku kelipatan). Tarif Infografis & Poster Rp. 25.000/foto, (Tarif Paket Infografis & Poster Rp. 60.000/3 foto, berlaku kelipatan)</p>
+            <p class="subtitle">Pilih kategori layanan yang Anda butuhkan di bawah ini.</p>
         </div>
 
-        <div class="service-grid">
-            
-            <div class="service-card" onclick="selectService(this, 'ImageFusion')">
-                <span class="service-number">1</span>
-                <div class="service-details">
+        <div class="service-section">
+            <div class="section-header">
+                <div class="category-title">
+                    <span>✨ Standard Editing</span>
+                </div>
+                <div class="price-badge">
+                    <span class="price-main">Rp 5.000 / foto</span>
+                    <span class="price-promo">Paket Hemat: Rp 12.000 / 3 foto</span>
+                </div>
+            </div>
+
+            <div class="service-grid">
+                <div class="service-card" onclick="selectService(this, 'ImageFusion')">
+                    <span class="service-number">1</span>
                     <h3 class="service-title">Image Fusion</h3>
-                    <p class="service-description">untuk menggabungkan 2-5 foto ke dalam 1 gambar, menciptakan visual baru yang unik.</p>
+                    <p class="service-description">Menggabungkan 2-5 foto ke dalam 1 gambar visual baru yang unik.</p>
                 </div>
-            </div>
 
-            <div class="service-card" onclick="selectService(this, 'TrueVision')">
-                <span class="service-number">2</span>
-                <div class="service-details">
+                <div class="service-card" onclick="selectService(this, 'TrueVision')">
+                    <span class="service-number">2</span>
                     <h3 class="service-title">TrueVision</h3>
-                    <p class="service-description">untuk meningkatkan kualitas foto dengan memperbaiki pencahayaan, ketajaman, dan warna (bisa untuk foto jadul).</p>
+                    <p class="service-description">Meningkatkan kualitas foto: perbaikan cahaya, ketajaman, & warna (bisa foto jadul).</p>
                 </div>
-            </div>
 
-            <div class="service-card" onclick="selectService(this, 'InstantProPhotoshoot')">
-                <span class="service-number">3</span>
-                <div class="service-details">
+                <div class="service-card" onclick="selectService(this, 'InstantProPhotoshoot')">
+                    <span class="service-number">3</span>
                     <h3 class="service-title">Product Photoshoot</h3>
-                    <p class="service-description">untuk membuat berbagai skenario photoshoot produk profesional.</p>
+                    <p class="service-description">Membuat berbagai skenario background photoshoot produk profesional.</p>
                 </div>
-            </div>
 
-            <div class="service-card" onclick="selectService(this, 'Fotografer')">
-                <span class="service-number">4</span>
-                <div class="service-details">
-                    <h3 class="service-title">Fotografer</h3>
-                    <p class="service-description">untuk membuat foto bayi baru lahir, anak-anak, adegan haji/umroh, pas foto dan foto ibu hamil.</p>
+                <div class="service-card" onclick="selectService(this, 'Fotografer')">
+                    <span class="service-number">4</span>
+                    <h3 class="service-title">Fotografer AI</h3>
+                    <p class="service-description">Foto bayi newborn, anak-anak, haji/umroh, pas foto, hingga ibu hamil.</p>
                 </div>
-            </div>
 
-            <div class="service-card" onclick="selectService(this, 'SmartSketch')">
-                <span class="service-number">5</span>
-                <div class="service-details">
+                <div class="service-card" onclick="selectService(this, 'SmartSketch')">
+                    <span class="service-number">5</span>
                     <h3 class="service-title">Smart Sketch</h3>
-                    <p class="service-description">untuk mengubah gambar sketsa anda menjadi sebuah gambar digital yang keren dan terperinci.</p>
+                    <p class="service-description">Mengubah gambar sketsa coretan menjadi gambar digital keren & terperinci.</p>
                 </div>
-            </div>
 
-            <div class="service-card" onclick="selectService(this, 'InstantArtify')">
-                <span class="service-number">6</span>
-                <div class="service-details">
+                <div class="service-card" onclick="selectService(this, 'InstantArtify')">
+                    <span class="service-number">6</span>
                     <h3 class="service-title">Instant Artify</h3>
-                    <p class="service-description">untuk mengubah foto anda menjadi karya seni atau karikatur yang keren dengan berbagai gaya artistik.</p>
+                    <p class="service-description">Mengubah foto biasa menjadi karya seni lukisan atau karikatur artistik.</p>
                 </div>
             </div>
-
-            <div class="service-card" onclick="selectService(this, 'Infografis')">
-                <span class="service-number">7</span>
-                <div class="service-details">
-                    <h3 class="service-title">Infografis</h3>
-                    <p class="service-description">untuk mengubah informasi atau data yang rumit menjadi tampilan visual yang menarik, ringkas, dan mudah dipahami.</p>
-                </div>
-            </div>
-
-            <div class="service-card" onclick="selectService(this, 'Poster')">
-                <span class="service-number">8</span>
-                <div class="service-details">
-                    <h3 class="service-title">Poster</h3>
-                    <p class="service-description">untuk membuat poster produk kamu jadi menarik dan berkualitas tinggi.</p>
-                </div>
-            </div>
-
         </div>
+
+        <div class="service-section premium-section">
+            <div class="section-header">
+                <div class="category-title">
+                    <span>🎨 Creative Design</span>
+                </div>
+                <div class="price-badge">
+                    <span class="price-main">Rp 25.000 / foto</span>
+                    <span class="price-promo">Paket Hemat: Rp 60.000 / 3 foto</span>
+                </div>
+            </div>
+
+            <div class="service-grid">
+                <div class="service-card" onclick="selectService(this, 'Infografis')">
+                    <span class="service-number">7</span>
+                    <h3 class="service-title">Infografis</h3>
+                    <p class="service-description">Mengubah data rumit menjadi visual yang menarik, ringkas, dan mudah dipahami.</p>
+                </div>
+
+                <div class="service-card" onclick="selectService(this, 'Poster')">
+                    <span class="service-number">8</span>
+                    <h3 class="service-title">Poster Iklan</h3>
+                    <p class="service-description">Desain poster promosi produk berkualitas tinggi untuk kebutuhan marketing.</p>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
         function selectService(selectedCard, serviceId) {
-            // Mapping serviceId ke nama file yang benar (termasuk kapitalisasi)
+            // Mapping serviceId ke nama file yang benar
             const fileMap = {
                 'ImageFusion': 'IMAGE FUSION.html',
                 'TrueVision': 'TRUEVISION.HTML',
@@ -293,20 +334,16 @@ Tarif selain Infografis Rp. 5.000/foto, (Tarif Paket Rp. 12.000/3 foto, berlaku 
                 'Poster': 'POSTER.HTML'
             };
             
-            // 1. Hapus kelas 'active' dari semua kartu
-            const cards = document.querySelectorAll('.service-card');
-            cards.forEach(card => card.classList.remove('active'));
+            // Visual feedback saat klik
+            selectedCard.style.borderColor = 'var(--neon-accent)';
+            selectedCard.style.backgroundColor = 'rgba(168, 85, 247, 0.2)';
 
-            // 2. Tambahkan kelas 'active' ke kartu yang diklik
-            selectedCard.classList.add('active');
-            
-            // 3. Navigasi
+            // Navigasi
             const targetFile = fileMap[serviceId];
             if (targetFile) {
-                // Memberikan delay singkat untuk visual feedback
                 setTimeout(() => {
                     window.location.href = targetFile;
-                }, 200); 
+                }, 150); 
             } else {
                  console.error(`File target tidak ditemukan untuk ID: ${serviceId}`);
             }
@@ -314,5 +351,3 @@ Tarif selain Infografis Rp. 5.000/foto, (Tarif Paket Rp. 12.000/3 foto, berlaku 
     </script>
 </body>
 </html>
-
-

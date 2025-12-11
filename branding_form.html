@@ -35,8 +35,8 @@
             align-items: center;
             color: var(--text-main);
             
-            /* PERBAIKAN: Padding bawah diperbesar (350px) agar konten tidak tertutup di HP */
-            padding: 40px 20px 350px 20px; 
+            /* Padding bawah disesuaikan karena footer sekarang lebih pendek */
+            padding: 40px 20px 220px 20px; 
         }
 
         /* --- HEADER --- */
@@ -149,7 +149,20 @@
         }
 
         /* --- BAGIAN 2: ALA CARTE --- */
-        .alacarte-container { width: 100%; max-width: 800px; margin-bottom: 50px; }
+        .alacarte-container { width: 100%; max-width: 800px; margin-bottom: 30px; }
+        
+        .info-box {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            color: #fcd34d;
+            padding: 15px;
+            border-radius: 12px;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            display: flex; gap: 10px; align-items: center;
+        }
+
         .menu-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
 
         .menu-item {
@@ -168,7 +181,24 @@
         .btn-qty:hover { background: var(--neon-accent); }
         .qty-input { width: 40px; background: transparent; border: none; color: white; text-align: center; font-weight: 700; font-size: 16px; outline: none; appearance: textfield; }
 
-        /* --- CHECKOUT BAR (Sticky Footer) --- */
+        /* --- 3. PROCESS INFO (SCROLLABLE AREA) --- */
+        /* Dipindahkan dari footer ke sini agar bisa di-scroll */
+        .process-info-scroll {
+            width: 100%; 
+            max-width: 800px;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 13px;
+            color: #c7d2fe;
+            line-height: 1.5;
+            text-align: left;
+            margin-bottom: 20px;
+            display: flex; gap: 10px; align-items: flex-start;
+        }
+
+        /* --- 4. CHECKOUT BAR (FIXED) --- */
         .checkout-bar {
             position: fixed; bottom: 0; left: 0; width: 100%;
             background: rgba(15, 15, 20, 0.98);
@@ -181,19 +211,6 @@
         }
 
         .checkout-content { width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 15px; }
-
-        .process-info {
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: 12px;
-            padding: 12px;
-            font-size: 13px;
-            color: #c7d2fe;
-            line-height: 1.5;
-            text-align: left;
-            margin-bottom: 5px;
-            display: flex; gap: 10px; align-items: flex-start;
-        }
 
         .input-group { width: 100%; display: flex; flex-direction: column; position: relative; }
         .input-name {
@@ -215,11 +232,9 @@
         }
         .btn-checkout:hover { filter: brightness(1.1); transform: translateY(-2px); }
 
-        /* Media Query untuk Desktop */
         @media (min-width: 768px) {
-            body { padding-bottom: 150px; } /* Reset padding di desktop */
+            body { padding-bottom: 150px; }
             .checkout-content { flex-direction: row; flex-wrap: wrap; align-items: center; }
-            .process-info { width: 100%; margin-bottom: 10px; }
             .input-group { flex: 1; }
             .btn-checkout { width: auto; padding-left: 40px; padding-right: 40px; margin-top: 0; }
             .total-row { flex-direction: column; align-items: flex-end; margin-right: 20px; min-width: 150px; }
@@ -300,19 +315,27 @@
 
     <div class="alacarte-container">
         <div class="section-title">Langkah 2: Tambah Item Satuan (Opsional)</div>
+        
+        <div class="info-box">
+            <span style="font-size: 20px;">💡</span>
+            <div>
+                <strong>Info File Master:</strong> Jika Anda memilih <em>Paket Logo Saja</em> atau <em>Mulai Dulu</em>, File Master (PDF Vector) dijual terpisah di atas (Add-on). Untuk paket lainnya, File Master sudah <strong>GRATIS</strong>.
+            </div>
+        </div>
+
         <div class="menu-grid" id="menuGrid"></div>
+    </div>
+
+    <div class="process-info-scroll">
+        <span style="font-size: 18px;">ℹ️</span>
+        <div>
+            <strong>Langkah Selanjutnya:</strong> Setelah mengisi nama dan klik tombol Order di bawah, Anda akan diarahkan ke WhatsApp Admin. Di sana kami akan mengirimkan <strong>Formulir Brief (Panduan Desain)</strong> agar hasil desain sesuai keinginan Anda.
+        </div>
     </div>
 
     <div class="checkout-bar">
         <div class="checkout-content">
             
-            <div class="process-info">
-                <span>ℹ️</span>
-                <div>
-                    <strong>Langkah Selanjutnya:</strong> Setelah mengisi nama dan klik Order, Anda akan diarahkan ke WhatsApp. Di sana kami akan memberikan <strong>Formulir Brief</strong> (Panduan Desain) agar hasil sesuai keinginan.
-                </div>
-            </div>
-
             <div class="input-group">
                 <input type="text" id="clientName" class="input-name" placeholder="Ketik Nama Lengkap Anda..." autocomplete="off">
                 <div id="errorMsg" class="error-msg">⚠️ Nama minimal 3 karakter ya, Kak.</div>
@@ -546,4 +569,3 @@
 
 </body>
 </html>
-

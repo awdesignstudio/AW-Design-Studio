@@ -34,7 +34,9 @@
             flex-direction: column;
             align-items: center;
             color: var(--text-main);
-            padding: 40px 20px 200px 20px;
+            
+            /* PERBAIKAN: Padding bawah diperbesar (350px) agar konten tidak tertutup di HP */
+            padding: 40px 20px 350px 20px; 
         }
 
         /* --- HEADER --- */
@@ -166,7 +168,7 @@
         .btn-qty:hover { background: var(--neon-accent); }
         .qty-input { width: 40px; background: transparent; border: none; color: white; text-align: center; font-weight: 700; font-size: 16px; outline: none; appearance: textfield; }
 
-        /* --- CHECKOUT BAR --- */
+        /* --- CHECKOUT BAR (Sticky Footer) --- */
         .checkout-bar {
             position: fixed; bottom: 0; left: 0; width: 100%;
             background: rgba(15, 15, 20, 0.98);
@@ -213,7 +215,9 @@
         }
         .btn-checkout:hover { filter: brightness(1.1); transform: translateY(-2px); }
 
+        /* Media Query untuk Desktop */
         @media (min-width: 768px) {
+            body { padding-bottom: 150px; } /* Reset padding di desktop */
             .checkout-content { flex-direction: row; flex-wrap: wrap; align-items: center; }
             .process-info { width: 100%; margin-bottom: 10px; }
             .input-group { flex: 1; }
@@ -224,7 +228,7 @@
 </head>
 <body>
 
-    <a href="index.html" class="btn-back">← Kembali ke Menu Utama</a>
+    <a href="index.html" class="btn-back">← Kembali</a>
 
     <div class="header-section">
         <h1>Formulir Pemesanan</h1>
@@ -330,7 +334,6 @@
         let selectedPackageData = null; 
         let alacarteCart = {}; 
         
-        // Harga Dasar untuk Paket 1 dan 2
         const basePrices = { 1: 200000, 2: 249000 };
 
         const alacarteItems = [
@@ -352,17 +355,15 @@
                 if (addOnActive) currentPrice += 50000;
                 displayEl.innerText = "Rp " + currentPrice.toLocaleString('id-ID');
                 
-                // Ubah warna agar terlihat ada perubahan
                 displayEl.style.color = addOnActive ? '#10b981' : 'var(--neon-accent)';
             }
         }
 
         // --- FUNGSI PILIH PAKET UTAMA ---
         function selectPackage(id, price, name) {
-            // 1. Reset tampilan kartu
             document.querySelectorAll('.p-card').forEach(c => c.classList.remove('selected'));
 
-            // 2. RESET Addon & Harga di paket LAIN
+            // RESET Addon di paket LAIN
             const packageWithAddons = [1, 2];
             packageWithAddons.forEach(otherId => {
                 if (otherId !== id) {
@@ -370,31 +371,26 @@
                     const otherBox = document.getElementById(`addon-box-${otherId}`);
                     if (otherInput) otherInput.checked = false; 
                     if (otherBox) otherBox.classList.remove('active'); 
-                    // RESET HARGA KEMBALI KE NORMAL
                     updateCardPriceDisplay(otherId, false);
                 }
             });
             
-            // 3. Cek status Addon di paket yang SEDANG dipilih
+            // Cek status Addon paket ini
             let isAddonChecked = false;
             const addonInput = document.getElementById(`addon-input-${id}`);
             if (addonInput && addonInput.checked) {
                 isAddonChecked = true;
             }
 
-            // 4. Logika Select/Deselect
-            // Jika klik paket yang SAMA dan TIDAK klik addon, maka deselect
+            // Deselect logic
             if (selectedPackageData && selectedPackageData.id === id && !window.isTogglingAddon) {
-                selectedPackageData = null; // Deselect
-                
-                // Reset addon di paket ini juga jika deselect
+                selectedPackageData = null; 
                 if(addonInput) {
                     addonInput.checked = false;
                     document.getElementById(`addon-box-${id}`).classList.remove('active');
-                    updateCardPriceDisplay(id, false); // Reset harga
+                    updateCardPriceDisplay(id, false); 
                 }
             } else {
-                // Select Paket Baru
                 selectedPackageData = { id, price, name, hasAddon: isAddonChecked };
                 const card = document.getElementById(`card-${id}`);
                 card.classList.add('selected');
@@ -407,7 +403,7 @@
             calculateGrandTotal();
         }
 
-        // --- FUNGSI TOGGLE ADDON (CHECKBOX) ---
+        // --- FUNGSI TOGGLE ADDON ---
         function toggleAddon(event, id) {
             event.stopPropagation();
 
@@ -424,7 +420,6 @@
                 addonBox.classList.remove('active');
             }
 
-            // UPDATE HARGA KARTU SECARA VISUAL
             updateCardPriceDisplay(id, checkbox.checked);
 
             window.isTogglingAddon = true;
@@ -510,7 +505,7 @@
                 return;
             }
 
-            let message = `Halo AW Design Studio,%0A`;
+            let message = `Halo Admin AW Design Studio,%0A`;
             message += `Perkenalkan saya *${name}*.%0A`;
             message += `Saya ingin memesan:%0A%0A`;
 

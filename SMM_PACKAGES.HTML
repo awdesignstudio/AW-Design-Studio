@@ -31,6 +31,7 @@
             min-height: 100vh;
             color: var(--text-main);
             padding: 40px 20px;
+            padding-bottom: 120px; /* Space for fixed bottom if needed, or just breathing room */
         }
 
         /* --- NAVIGATION --- */
@@ -113,6 +114,7 @@
         }
 
         /* --- CARD STYLES --- */
+        /* Changed from div to label to make clickable */
         .package-card {
             background: rgba(24, 24, 27, 0.6);
             backdrop-filter: blur(10px);
@@ -122,28 +124,71 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: all 0.3s ease;
+            cursor: pointer; /* Menunjukkan bisa diklik */
         }
 
-        /* EFEK GLOW SAAT HOVER (Berlaku untuk SEMUA KARTU) */
-        .package-card:hover {
-            transform: translateY(-12px) scale(1.02);
+        /* Hide Default Radio Button */
+        .package-card input[type="radio"] {
+            display: none;
+        }
+
+        /* CUSTOM RADIO CIRCLE (Pojok Kanan Atas) */
+        .radio-indicator {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid var(--text-muted);
+            background: transparent;
+            transition: 0.3s;
+            z-index: 5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .radio-indicator::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            transform: scale(0);
+            transition: 0.3s;
+        }
+
+        /* STATE: CHECKED (Saat dipilih) */
+        .package-card input[type="radio"]:checked + .radio-indicator {
             border-color: var(--neon-accent);
-            box-shadow: var(--glow);
-            z-index: 10;
+            background: var(--neon-accent);
+            box-shadow: 0 0 15px var(--neon-accent);
+        }
+
+        .package-card input[type="radio"]:checked + .radio-indicator::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Border Kartu saat dipilih */
+        .package-card:has(input[type="radio"]:checked) {
+            border-color: var(--neon-accent);
+            transform: translateY(-8px);
+            background: rgba(168, 85, 247, 0.05);
+        }
+
+        /* Hover Effect */
+        .package-card:hover {
+            border-color: rgba(168, 85, 247, 0.5);
         }
 
         /* Highlight for Best Seller */
         .package-card.best-seller {
             background: linear-gradient(180deg, rgba(168, 85, 247, 0.08) 0%, var(--surface-dark) 100%);
             border: 1px solid rgba(168, 85, 247, 0.5);
-            box-shadow: 0 0 20px rgba(168, 85, 247, 0.1); /* Sedikit shadow statis */
-        }
-        
-        /* Memastikan hover best seller tetap menyala terang */
-        .package-card.best-seller:hover {
-            box-shadow: 0 0 40px rgba(168, 85, 247, 0.6);
-            border-color: #d8b4fe;
         }
 
         /* Badge Best Seller */
@@ -170,6 +215,7 @@
             font-weight: 700;
             color: white;
             margin-bottom: 5px;
+            padding-right: 30px; /* Space agar tidak tabrakan dengan radio button */
         }
 
         .pkg-type {
@@ -241,27 +287,63 @@
         .icon-cross { color: var(--danger); flex-shrink: 0; }
         .icon-star { color: #facc15; flex-shrink: 0; }
 
-        /* --- FORM INPUT STYLING --- */
+        /* --- CHECKOUT SECTION (BOTTOM) --- */
+        .checkout-section {
+            max-width: 600px;
+            margin: 60px auto 0 auto;
+            background: var(--surface-light);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .checkout-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        /* New Style: Selected Package Summary Box */
+        .selected-summary {
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid var(--neon-accent);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 15px;
+            display: none; /* Hidden by default */
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .input-group {
-            margin-top: 20px;
             text-align: left;
+            margin-bottom: 20px;
         }
 
         .input-label {
             font-size: 12px;
             color: var(--text-muted);
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             display: block;
         }
 
         .input-name {
             width: 100%;
-            padding: 12px 15px;
+            padding: 15px;
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid var(--border);
-            border-radius: 10px;
+            border-radius: 12px;
             color: white;
-            font-size: 14px;
+            font-size: 16px;
             outline: none;
             transition: 0.3s;
         }
@@ -272,45 +354,30 @@
         }
 
         .error-msg {
-            font-size: 12px;
+            font-size: 13px;
             color: var(--danger);
-            margin-top: 5px;
-            display: none; /* Hidden by default */
+            margin-top: 8px;
+            display: none;
             font-weight: 600;
+            text-align: left;
         }
 
-        /* Button */
-        .btn-select {
+        .btn-order {
             display: block;
             width: 100%;
-            padding: 15px;
+            padding: 16px;
             border-radius: 12px;
-            text-align: center;
             font-weight: 700;
-            text-decoration: none;
-            transition: 0.3s;
+            font-size: 18px;
             border: none;
             cursor: pointer;
-            margin-top: 10px;
-            font-size: 16px;
-        }
-
-        .btn-standard {
-            background: var(--surface-light);
-            color: white;
-            border: 1px solid var(--border);
-        }
-        .btn-standard:hover {
-            background: white;
-            color: black;
-        }
-
-        .btn-gradient {
             background: var(--primary-gradient);
             color: white;
             box-shadow: 0 10px 20px -5px rgba(236, 72, 153, 0.4);
+            transition: 0.3s;
         }
-        .btn-gradient:hover {
+
+        .btn-order:hover {
             filter: brightness(1.1);
             transform: scale(1.02);
         }
@@ -321,8 +388,8 @@
                 grid-template-columns: 1fr;
                 max-width: 500px;
             }
-            .package-card:hover {
-                transform: translateY(-5px);
+            .checkout-section {
+                width: 90%;
             }
             h1 { font-size: 28px; }
             .info-box { font-size: 13px; }
@@ -351,7 +418,10 @@
 
     <div class="pricing-grid">
 
-        <div class="package-card" id="card-rintisan">
+        <label class="package-card" for="paket-rintisan">
+            <input type="radio" name="paket_smm" id="paket-rintisan" value="RINTISAN|500k">
+            <div class="radio-indicator"></div>
+
             <h2 class="pkg-name">Rintisan 🌱</h2>
             <div class="pkg-type">Starter Pack</div>
             
@@ -373,20 +443,14 @@
                 <li><span class="icon-star">★</span> <div>Dijadwalkan Otomatis</div></li>
                 <li><span class="icon-cross">✖</span> <div style="color: var(--text-muted); font-size: 13px;">Tidak Ada Admin (Balas chat mandiri)</div></li>
             </ul>
+        </label>
 
-            <div class="input-group">
-                <label class="input-label">Nama Pemesan:</label>
-                <input type="text" class="input-name" id="name-rintisan" placeholder="Contoh: Budi Santoso" autocomplete="off">
-                <div class="error-msg" id="error-rintisan"></div>
-            </div>
-
-            <button onclick="kirimPesan('RINTISAN', '500k', 'name-rintisan', 'error-rintisan')" class="btn-select btn-standard">
-                Pilih Paket Rintisan
-            </button>
-        </div>
-
-        <div class="package-card best-seller" id="card-laris">
+        <label class="package-card best-seller" for="paket-laris">
             <div class="badge-popular">🔥 Best Seller</div>
+            
+            <input type="radio" name="paket_smm" id="paket-laris" value="LARIS MANIS|850k">
+            <div class="radio-indicator"></div>
+
             <h2 class="pkg-name">Laris Manis</h2>
             <div class="pkg-type">Growth Pack</div>
             
@@ -399,7 +463,7 @@
                 <li><span class="icon-check">✔</span> <div><strong>16 Konten Feed</strong> (12 Gambar + 4 Reels)</div></li>
                 <li><span class="icon-check">✔</span> <div><span class="highlight">4x VIDEO REELS</span> (15-30 detik)</div></li>
                 <li><span class="icon-check">✔</span> <div><span class="highlight">Bonus: 12x Story</span> (Interaktif Quiz/Polling)</div></li>
-                <li><span class="icon-check">✔</span> <div>Tayang: <strong>4x Seminggu</strong> (Senin-Minggu)</div></li>
+                <li><span class="icon-check">✔</span> <div>Tayang: <strong>4x Seminggu</strong> (Senin, Rabu, Jumat, Minggu)</div></li>
             </ul>
 
             <div class="section-divider">Fasilitas Unggulan</div>
@@ -409,19 +473,12 @@
                 <li><span class="icon-star">★</span> <div>Semua Fasilitas Paket Rintisan</div></li>
                 <li><span class="icon-star">★</span> <div><span class="highlight">Admin Ringan:</span> Balas komen publik</div></li>
             </ul>
+        </label>
 
-            <div class="input-group">
-                <label class="input-label" style="color:#d8b4fe">Nama Pemesan:</label>
-                <input type="text" class="input-name" id="name-laris" placeholder="Contoh: Siti Aminah" autocomplete="off">
-                <div class="error-msg" id="error-laris"></div>
-            </div>
+        <label class="package-card" for="paket-juragan">
+            <input type="radio" name="paket_smm" id="paket-juragan" value="JURAGAN|1.45jt">
+            <div class="radio-indicator"></div>
 
-            <button onclick="kirimPesan('LARIS MANIS', '850k', 'name-laris', 'error-laris')" class="btn-select btn-gradient">
-                Pilih Paket Laris Manis
-            </button>
-        </div>
-
-        <div class="package-card" id="card-juragan">
             <h2 class="pkg-name">Juragan 👑</h2>
             <div class="pkg-type">Scale-Up Pack</div>
             
@@ -434,7 +491,7 @@
                 <li><span class="icon-check">✔</span> <div><strong>24 Konten Feed</strong> (16 Gambar + 8 Reels)</div></li>
                 <li><span class="icon-check">✔</span> <div><span class="highlight">8x REELS VIRAL</span> (Edit Stitching/Transisi)</div></li>
                 <li><span class="icon-check">✔</span> <div><span class="highlight">Bonus: DAILY STORY</span> (Senin - Sabtu)</div></li>
-                <li><span class="icon-check">✔</span> <div>Tayang: <strong>SETIAP HARI KERJA</strong></div></li>
+                <li><span class="icon-check">✔</span> <div>Tayang: <strong>SETIAP HARI KERJA</strong> (Senin-Sabtu)</div></li>
             </ul>
 
             <div class="section-divider">Fasilitas Premium</div>
@@ -443,59 +500,92 @@
                 <li><span class="icon-star">★</span> <div>Semua Fasilitas Paket Laris Manis</div></li>
                 <li><span class="icon-star">★</span> <div><span class="highlight">FULL ADMIN:</span> Balas DM & Komen (09.00-17.00)</div></li>
             </ul>
-
-            <div class="input-group">
-                <label class="input-label">Nama Pemesan:</label>
-                <input type="text" class="input-name" id="name-juragan" placeholder="Contoh: Bapak Hartono" autocomplete="off">
-                <div class="error-msg" id="error-juragan"></div>
-            </div>
-
-            <button onclick="kirimPesan('JURAGAN', '1.45jt', 'name-juragan', 'error-juragan')" class="btn-select btn-standard">
-                Pilih Paket Juragan
-            </button>
-        </div>
+        </label>
 
     </div>
 
+    <div class="checkout-section">
+        <h3 class="checkout-title">Selesaikan Pesanan Anda</h3>
+        
+        <div id="summary-box" class="selected-summary">
+            Anda memilih: <strong id="summary-text" style="color: #d8b4fe;">-</strong>
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">Nama Pemesan / Brand:</label>
+            <input type="text" class="input-name" id="final-name" placeholder="Tulis nama Anda di sini..." autocomplete="off">
+            <div class="error-msg" id="global-error"></div>
+        </div>
+
+        <button onclick="prosesPesanan()" class="btn-order">
+            Kirim Order via WhatsApp 🚀
+        </button>
+    </div>
+
     <script>
-        function kirimPesan(paket, harga, inputId, errorId) {
-            // Ambil elemen input dan error berdasarkan ID yang dikirim
-            var inputNama = document.getElementById(inputId);
-            var errorMsg = document.getElementById(errorId);
+        // SCRIPT: Deteksi Perubahan Pilihan Paket
+        document.querySelectorAll('input[name="paket_smm"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                // Ambil value dari radio yang diklik (contoh: "RINTISAN|500k")
+                var detail = this.value.split('|');
+                var namaPaket = detail[0];
+                var hargaPaket = detail[1];
+                
+                var summaryBox = document.getElementById('summary-box');
+                var summaryText = document.getElementById('summary-text');
+                
+                // Update Teks di kotak konfirmasi
+                summaryText.innerHTML = "Paket " + namaPaket + " (" + hargaPaket + ")";
+                
+                // Tampilkan kotak (karena defaultnya hidden)
+                summaryBox.style.display = 'block';
+            });
+        });
+
+        // SCRIPT: Proses Tombol Order
+        function prosesPesanan() {
+            // 1. Ambil Paket yang Dipilih (Radio Button)
+            var paketTerpilih = document.querySelector('input[name="paket_smm"]:checked');
+            
+            // 2. Ambil Input Nama
+            var inputNama = document.getElementById('final-name');
+            var errorMsg = document.getElementById('global-error');
             var nama = inputNama.value.trim();
 
-            // Reset Error Style
+            // Reset Error
             errorMsg.style.display = 'none';
             inputNama.style.borderColor = 'var(--border)';
 
             // --- VALIDASI ---
-            
-            // 1. Cek apakah kosong
-            if (nama === "") {
-                errorMsg.innerHTML = "⚠ Nama wajib diisi!";
-                errorMsg.style.display = 'block';
-                inputNama.style.borderColor = 'var(--danger)';
-                inputNama.focus(); // Arahkan kursor ke input
-                return; // Stop proses
+
+            // Cek apakah paket sudah dipilih
+            if (!paketTerpilih) {
+                alert("⚠ Silakan pilih salah satu paket terlebih dahulu (Klik kartu paketnya).");
+                return;
             }
 
-            // 2. Cek apakah kurang dari 3 karakter
-            if (nama.length < 3) {
-                errorMsg.innerHTML = "⚠ Nama terlalu pendek (min. 3 huruf)";
+            // Cek apakah nama diisi
+            if (nama === "" || nama.length < 3) {
+                errorMsg.innerHTML = "⚠ Mohon isi nama Anda (minimal 3 huruf) sebelum order.";
                 errorMsg.style.display = 'block';
                 inputNama.style.borderColor = 'var(--danger)';
                 inputNama.focus();
-                return; // Stop proses
+                return;
             }
 
             // --- JIKA VALID ---
             
+            // Pecah value paket (Format: NAMA|HARGA)
+            var detailPaket = paketTerpilih.value.split('|');
+            var namaPaket = detailPaket[0];
+            var hargaPaket = detailPaket[1];
+
             // Format Pesan WhatsApp
             var pesan = `Halo AW Design Studio, saya *${nama}*.%0A`;
-            pesan += `Saya tertarik ambil *Paket SMM ${paket}* (${harga}).%0A`;
-            pesan += `Mohon info lebih lanjut untuk proses pemesanannya. Terima kasih.`;
+            pesan += `Saya sudah memilih dan tertarik ambil *Paket SMM ${namaPaket}* (${hargaPaket}).%0A`;
+            pesan += `Mohon info langkah selanjutnya untuk pembayaran dan pengiriman materi. Terima kasih.`;
 
-            // Buka WhatsApp di tab baru
+            // Buka WhatsApp
             var waLink = `https://wa.me/6285133748005?text=${pesan}`;
             window.open(waLink, '_blank');
         }
@@ -503,4 +593,3 @@
 
 </body>
 </html>
-

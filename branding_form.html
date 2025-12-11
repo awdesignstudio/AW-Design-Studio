@@ -66,9 +66,9 @@
             box-shadow: 0 10px 30px -5px rgba(99, 102, 241, 0.3);
         }
         
-        /* Highlight Best Value (DIPERBAIKI) */
+        /* Highlight Best Value */
         .p-card.best-value { 
-            border-color: #a855f7; /* Ungu (bukan hijau lagi) */
+            border-color: #a855f7; 
             background: linear-gradient(180deg, rgba(168,85,247,0.05) 0%, rgba(24,24,27,0.6) 100%);
         }
         .p-card.best-value .checkbox-overlay { border-color: #a855f7; }
@@ -82,7 +82,7 @@
             position: absolute; top: 20px; right: 20px; width: 24px; height: 24px;
             border-radius: 50%; border: 2px solid var(--text-muted);
             display: flex; align-items: center; justify-content: center;
-            z-index: 10; /* Pastikan di atas */
+            z-index: 10;
         }
         
         .p-card.selected .checkbox-overlay { border-color: var(--neon-accent); background: var(--neon-accent); }
@@ -92,20 +92,24 @@
         .p-price { font-size: 26px; font-weight: 800; margin-bottom: 15px; color: var(--neon-accent); }
         .features { list-style: none; margin-bottom: 0; text-align: left; flex-grow: 1; }
         .features li { font-size: 13px; color: #e4e4e7; margin-bottom: 10px; display: flex; align-items: start; gap: 10px; line-height: 1.4; }
-        .check-icon { color: var(--success); flex-shrink: 0; }
-        .highlight-text { color: #f472b6; font-weight: 600; }
-        .muted-text { color: #52525b; text-decoration: line-through; }
         
-        /* Badge Hemat (DIPERBAIKI) */
+        /* Icons */
+        .check-icon { color: var(--success); flex-shrink: 0; }
+        .cross-icon { color: var(--error); flex-shrink: 0; font-weight: bold; } /* Icon Silang Merah */
+        
+        .highlight-text { color: #f472b6; font-weight: 600; }
+        .muted-text { color: #52525b; font-size: 12px; font-style: italic; }
+        
+        /* Badge Hemat */
         .save-badge {
-            background: var(--primary-gradient); /* Warna senada tombol order */
+            background: var(--primary-gradient); 
             color: white; 
             font-size: 11px; 
             font-weight: 700;
             padding: 5px 12px; 
             border-radius: 50px; 
             margin-bottom: 15px;
-            align-self: flex-start; /* Rata kiri agar tidak nabrak kanan */
+            align-self: flex-start;
             box-shadow: 0 4px 10px rgba(236, 72, 153, 0.4);
             letter-spacing: 0.5px;
         }
@@ -219,7 +223,7 @@
                 <li><span class="check-icon">✓</span> 1 Konsep Logo Simple</li>
                 <li><span class="check-icon">✓</span> File JPG & PNG (Transparan)</li>
                 <li><span class="check-icon">✓</span> Revisi Minor 1x</li>
-                <li><span class="muted-text">Tanpa File Master (PDF)</span></li>
+                <li><span class="cross-icon">✕</span> <span class="muted-text">Tanpa File Master (Tersedia di Ala Carte)</span></li>
             </ul>
         </div>
 
@@ -235,6 +239,7 @@
                 <li><span class="check-icon">✓</span> File JPG & PNG (Transparan)</li>
                 <li><span class="check-icon">✓</span> Desain Stiker Kemasan</li>
                 <li><span class="check-icon">✓</span> <span class="highlight-text">Bonus: Foto Profil</span></li>
+                <li><span class="cross-icon">✕</span> <span class="muted-text">Tanpa File Master (Tersedia di Ala Carte)</span></li>
             </ul>
         </div>
 
@@ -431,6 +436,4 @@
     </script>
 
 </body>
-
 </html>
-
